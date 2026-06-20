@@ -453,5 +453,55 @@ async function saveEdit() {
 }
 </script>
 
+<script>
+/* Smart nav — swaps Login for Profile+Logout when user is logged in */
+(function() {
+  var token = localStorage.getItem('hh_token');
+  var navLinks = document.querySelectorAll('nav ul li');
+
+  navLinks.forEach(function(li) {
+    var a = li.querySelector('a');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    var isLogin = href.indexOf('auth.html') !== -1
+               && href.indexOf('redirect=donate') === -1
+               && !a.classList.contains('donate-btn');
+    if (!isLogin) return;
+
+    if (token) {
+      var user = {};
+      try { user = JSON.parse(localStorage.getItem('hh_user') || '{}'); } catch(e) {}
+      var name = user.first_name || 'My Profile';
+
+      var pLi = document.createElement('li');
+      var pA = document.createElement('a');
+      pA.href = 'profile.html';
+      pA.textContent = '\u{1F464} ' + name;
+      pA.style.cssText = 'color:#96BF8A;font-weight:700;';
+      pLi.appendChild(pA);
+
+      var lLi = document.createElement('li');
+      var lA = document.createElement('a');
+      lA.href = '#';
+      lA.textContent = 'Logout';
+      lA.style.cssText = 'color:#e74c3c;font-weight:700;';
+      lA.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (confirm('Are you sure you want to logout?')) {
+          localStorage.removeItem('hh_token');
+          localStorage.removeItem('hh_user');
+          window.location.href = 'helpingheart.html';
+        }
+      });
+      lLi.appendChild(lA);
+
+      li.parentNode.insertBefore(pLi, li);
+      li.parentNode.insertBefore(lLi, li);
+      li.style.display = 'none';
+    }
+  });
+})();
+</script>
+
 </body>
 </html>

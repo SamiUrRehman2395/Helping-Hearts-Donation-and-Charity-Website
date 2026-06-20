@@ -690,6 +690,10 @@ nav ul li a:hover { background:var(--main-color); color:#fff; }
     <div class="panel" id="panel-2">
         <div class="card">
             <h2>Your Information</h2>
+            <div id="logged-in-banner" style="display:none;flex-direction:column;gap:8px;background:#e8f5e9;border:1px solid #c8e6c9;padding:16px;border-radius:14px;margin-bottom:18px;color:#2d6b3b;">
+                <strong>Logged in as <span id="logged-in-name"></span></strong>
+                <span style="font-size:0.95rem;color:#4f7942;">Your donation will be processed using your account details.</span>
+            </div>
             <p class="card-subtitle">Help us send you a receipt and impact report</p>
 
             <div class="input-row">
@@ -952,6 +956,35 @@ let selectedAmount = 0;
 let selectedFreq = 'one-time';
 let selectedPayment = 'card';
 let campaignName = '';
+
+// Redirect and autofill for logged-in users
+(function() {
+  var token = localStorage.getItem('hh_token');
+  if (!token) {
+    window.location.href = 'auth.html?redirect=donate.html';
+    return;
+  }
+
+  var user = {};
+  try { user = JSON.parse(localStorage.getItem('hh_user') || '{}'); } catch (e) {}
+
+  var fname = document.getElementById('d-fname');
+  var lname = document.getElementById('d-lname');
+  var email = document.getElementById('d-email');
+  var phone = document.getElementById('d-phone');
+
+  if (fname && user.first_name) fname.value = user.first_name;
+  if (lname && user.last_name) lname.value = user.last_name;
+  if (email && user.email) email.value = user.email;
+  if (phone && user.phone) phone.value = user.phone;
+
+  var banner = document.getElementById('logged-in-banner');
+  var bannerName = document.getElementById('logged-in-name');
+  if (banner && bannerName) {
+    banner.style.display = 'flex';
+    bannerName.textContent = [user.first_name, user.last_name].filter(Boolean).join(' ') || user.email || 'Logged-in user';
+  }
+})();
 
 // Slug map — campaign name to database slug
 const slugMap = {
