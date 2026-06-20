@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us - Helping Hearts</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--main-color:#96BF8A;--accent-color:#2ecc71;--donate-color:#e74c3c;--bg-light:#f7f7f7;--text-color:#333;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+html{scroll-behavior:smooth;}
+nav{display:flex;justify-content:space-between;align-items:center;padding:15px 50px;background:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.08);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:15px;}
+.logo img{width:80px;transition:transform 0.3s;}
+.logo img:hover{transform:scale(1.08) rotate(-3deg);}
+.logo h2{color:var(--main-color);font-weight:700;}
+nav ul{display:flex;list-style:none;align-items:center;gap:20px;}
+nav ul li a{text-decoration:none;color:var(--text-color);font-weight:600;padding:8px 14px;transition:0.3s;border-radius:6px;}
+nav ul li a:not(.donate-btn):hover{color:var(--main-color);background:rgba(150,191,138,0.1);}
+.donate-btn{background:var(--donate-color)!important;color:#fff!important;padding:10px 22px!important;border-radius:8px!important;font-weight:700!important;box-shadow:0 4px 15px rgba(231,76,60,0.35);}
+.donate-btn:hover{background:#c0392b!important;transform:translateY(-2px)!important;}
+
+/* HERO */
+.about-hero{
+    background:linear-gradient(135deg,rgba(26,42,26,0.75),rgba(0,0,0,0.6)),url('view-hands-holding-red-heart-represent-affection.jpg') center/cover no-repeat;
+    color:#fff;text-align:center;padding:100px 40px;position:relative;overflow:hidden;
+}
+.about-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(150,191,138,0.2),transparent 70%);}
+.about-hero-content{position:relative;z-index:2;max-width:700px;margin:0 auto;animation:fadeUp 1s ease both;}
+.about-hero-tag{display:inline-block;background:rgba(150,191,138,0.25);border:1px solid rgba(150,191,138,0.6);color:#a8d9a0;padding:6px 18px;border-radius:30px;font-size:0.85rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:24px;}
+.about-hero h1{font-size:3.8rem;font-weight:800;line-height:1.2;margin-bottom:20px;}
+.about-hero h1 span{color:#a8d9a0;}
+.about-hero p{font-size:1.15rem;opacity:0.88;line-height:1.75;max-width:580px;margin:0 auto;}
+
+/* SECTION LABEL */
+.section-label{display:inline-block;background:rgba(150,191,138,0.15);color:#5a9a4f;padding:5px 16px;border-radius:20px;font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:18px;}
+
+/* STORY SECTION */
+.story{padding:100px 40px;background:#fff;}
+.story-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.story-text .section-label{display:block;text-align:left;}
+.story-text h2{font-size:2.6rem;font-weight:800;color:var(--text-color);margin-bottom:20px;line-height:1.2;}
+.story-text h2 span{color:var(--main-color);}
+.story-text p{color:#666;line-height:1.85;margin-bottom:18px;font-size:1.02rem;}
+.story-highlight{background:linear-gradient(135deg,rgba(150,191,138,0.1),rgba(46,204,113,0.08));border-left:4px solid var(--main-color);padding:18px 22px;border-radius:0 12px 12px 0;margin:24px 0;font-style:italic;color:#444;font-size:1.02rem;line-height:1.7;}
+.story-image{border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.15);position:relative;}
+.story-image img{width:100%;height:450px;object-fit:cover;transition:0.5s;}
+.story-image:hover img{transform:scale(1.04);}
+.story-badge{position:absolute;bottom:24px;left:24px;background:rgba(255,255,255,0.95);padding:14px 20px;border-radius:14px;box-shadow:0 8px 25px rgba(0,0,0,0.15);}
+.story-badge h4{font-size:1.5rem;color:var(--accent-color);font-weight:800;}
+.story-badge p{font-size:0.8rem;color:#888;font-weight:600;}
+
+/* VALUES */
+.values{padding:100px 40px;background:var(--bg-light);text-align:center;}
+.values h2{font-size:2.6rem;font-weight:800;color:var(--text-color);margin-bottom:16px;}
+.values>p{color:#888;max-width:550px;margin:0 auto 60px;font-size:1.05rem;}
+.values-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;max-width:1100px;margin:0 auto;}
+.value-card{background:#fff;border-radius:20px;padding:38px 28px;box-shadow:0 8px 30px rgba(0,0,0,0.07);transition:0.35s;position:relative;overflow:hidden;text-align:left;}
+.value-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--main-color),var(--accent-color));transform:scaleX(0);transform-origin:left;transition:0.4s;}
+.value-card:hover{transform:translateY(-8px);box-shadow:0 18px 45px rgba(0,0,0,0.12);}
+.value-card:hover::after{transform:scaleX(1);}
+.value-icon{font-size:2.8rem;margin-bottom:18px;display:block;}
+.value-card h3{font-size:1.2rem;font-weight:700;color:var(--text-color);margin-bottom:12px;}
+.value-card p{color:#777;font-size:0.92rem;line-height:1.7;}
+
+/* NUMBERS */
+.numbers{background:linear-gradient(135deg,#1a3a1a,#2d5a2d);padding:100px 40px;text-align:center;color:#fff;position:relative;overflow:hidden;}
+.numbers .section-label{background:rgba(255,255,255,0.1);color:#a8d9a0;}
+.numbers h2{font-size:2.6rem;font-weight:800;margin-bottom:16px;}
+.numbers>p{opacity:0.8;max-width:550px;margin:0 auto 60px;font-size:1.05rem;}
+.numbers-grid{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;max-width:1000px;margin:0 auto;}
+.number-item{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:36px 40px;min-width:180px;transition:0.3s;}
+.number-item:hover{background:rgba(255,255,255,0.12);transform:translateY(-6px);}
+.number-item h3{font-size:2.8rem;font-weight:800;color:var(--accent-color);}
+.number-item p{opacity:0.75;font-size:0.88rem;margin-top:8px;}
+
+/* TEAM */
+.team{padding:100px 40px;background:#fff;text-align:center;}
+.team h2{font-size:2.6rem;font-weight:800;color:var(--text-color);margin-bottom:16px;}
+.team>p{color:#888;max-width:550px;margin:0 auto 60px;font-size:1.05rem;}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px;max-width:1000px;margin:0 auto;}
+.team-card{background:var(--bg-light);border-radius:20px;padding:36px 24px;transition:0.35s;border:1px solid #eee;}
+.team-card:hover{transform:translateY(-8px);box-shadow:0 16px 40px rgba(0,0,0,0.1);background:#fff;}
+.team-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--main-color),var(--accent-color));display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 18px;}
+.team-card h3{font-size:1.1rem;font-weight:700;color:var(--text-color);margin-bottom:6px;}
+.team-card .role{color:var(--main-color);font-size:0.85rem;font-weight:600;margin-bottom:12px;}
+.team-card p{color:#888;font-size:0.85rem;line-height:1.6;}
+
+/* HOW WE WORK */
+.hiw{padding:100px 40px;background:var(--bg-light);text-align:center;}
+.hiw h2{font-size:2.6rem;font-weight:800;color:var(--text-color);margin-bottom:14px;}
+.hiw>p{color:#888;max-width:500px;margin:0 auto 60px;font-size:1.05rem;}
+.hiw-steps{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;align-items:flex-start;max-width:1000px;margin:0 auto;}
+.hiw-step{text-align:center;max-width:200px;}
+.step-num{width:64px;height:64px;background:linear-gradient(135deg,var(--main-color),var(--accent-color));color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;margin:0 auto 18px;box-shadow:0 6px 20px rgba(46,204,113,0.35);transition:0.3s;}
+.hiw-step:hover .step-num{transform:scale(1.1) rotate(5deg);}
+.hiw-step h4{font-size:1.05rem;font-weight:700;color:var(--text-color);margin-bottom:8px;}
+.hiw-step p{font-size:0.85rem;color:#888;line-height:1.6;}
+.hiw-arrow{align-self:center;font-size:1.8rem;color:#ccc;padding-bottom:30px;}
+
+/* CTA */
+.cta{background:linear-gradient(135deg,var(--donate-color),#c0392b);color:#fff;text-align:center;padding:100px 40px;position:relative;overflow:hidden;}
+.cta h2{font-size:2.8rem;font-weight:800;margin-bottom:16px;position:relative;z-index:1;}
+.cta p{font-size:1.1rem;opacity:0.9;margin-bottom:36px;max-width:520px;margin-left:auto;margin-right:auto;position:relative;z-index:1;}
+.cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;}
+.cta-btn-white{display:inline-block;padding:17px 42px;background:#fff;color:var(--donate-color);border-radius:12px;font-weight:800;font-size:1.05rem;text-decoration:none;transition:0.3s;box-shadow:0 6px 25px rgba(0,0,0,0.2);}
+.cta-btn-white:hover{transform:translateY(-4px);box-shadow:0 12px 35px rgba(0,0,0,0.3);}
+.cta-btn-outline{display:inline-block;padding:17px 42px;background:transparent;color:#fff;border:2px solid rgba(255,255,255,0.6);border-radius:12px;font-weight:700;font-size:1.05rem;text-decoration:none;transition:0.3s;}
+.cta-btn-outline:hover{background:rgba(255,255,255,0.15);transform:translateY(-4px);}
+
+footer{background:#1a2a1a;color:#ccc;padding:40px 40px 30px;}
+.footer-inner{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:30px;max-width:1100px;margin:0 auto 30px;}
+.footer-brand h3{color:var(--main-color);font-size:1.3rem;margin-bottom:8px;}
+.footer-brand p{font-size:0.88rem;color:#aaa;max-width:260px;line-height:1.6;}
+.footer-links h4{color:#fff;font-size:0.95rem;margin-bottom:14px;}
+.footer-links ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.footer-links ul a{color:#aaa;text-decoration:none;font-size:0.88rem;transition:0.3s;}
+.footer-links ul a:hover{color:var(--main-color);}
+.footer-bottom{text-align:center;border-top:1px solid rgba(255,255,255,0.08);padding-top:20px;font-size:0.88rem;color:#888;max-width:1100px;margin:0 auto;}
+
+.reveal{opacity:0;transform:translateY(30px);transition:0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+@media(max-width:768px){.about-hero h1{font-size:2.4rem;}nav{padding:12px 20px;}.story-inner{grid-template-columns:1fr;gap:40px;}}
+
+/* ════════════════════════════════════════════════
+   GLOBAL MOBILE RESPONSIVE — Helping Hearts
+   Works on all pages: web, Android, iOS
+   ════════════════════════════════════════════════ */
+
+/* Hamburger button */
+.hh-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px; height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 200;
+}
+.hh-hamburger span {
+  display: block;
+  height: 3px;
+  background: #333;
+  border-radius: 3px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.hh-hamburger.hh-hamburger-open span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+.hh-hamburger.hh-hamburger-open span:nth-child(2) { opacity: 0; }
+.hh-hamburger.hh-hamburger-open span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+
+/* Mobile nav overlay */
+.hh-nav-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 150;
+}
+.hh-nav-overlay.hh-overlay-active { display: block; }
+
+/* ── 768px and below ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* NAV */
+  nav {
+    padding: 12px 16px !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 160 !important;
+  }
+  .logo img { width: 52px !important; }
+  .logo h2  { font-size: 1rem !important; }
+
+  .hh-hamburger { display: flex; }
+
+  nav ul {
+    display: none !important;
+    position: fixed !important;
+    top: 0; right: 0;
+    width: min(300px, 80vw);
+    height: 100vh;
+    background: #fff;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+    padding: 80px 0 30px !important;
+    box-shadow: -4px 0 30px rgba(0,0,0,0.15);
+    z-index: 170;
+    overflow-y: auto;
+  }
+  nav ul.hh-nav-open { display: flex !important; }
+  nav ul li { width: 100%; }
+  nav ul li a {
+    display: block !important;
+    padding: 14px 24px !important;
+    border-radius: 0 !important;
+    font-size: 1rem !important;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .donate-btn {
+    margin: 12px 20px !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+  }
+  .admin-btn {
+    margin: 8px 20px !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+  }
+
+  /* HERO sections */
+  .hero           { height: 95vh !important; min-height: 500px; }
+  .hero h1        { font-size: 2rem !important; }
+  .hero p         { font-size: 1rem !important; }
+  .hero-btns a    { padding: 13px 24px !important; font-size: 0.92rem !important; }
+  .hero-btns      { flex-direction: column !important; align-items: center !important; }
+  .hero-tag       { font-size: 0.75rem !important; }
+
+  .about-hero h1, .contact-hero h1, .campaigns-hero h1 {
+    font-size: 2rem !important;
+  }
+  .donate-hero h1 { font-size: 1.8rem !important; }
+
+  /* STATS BARS */
+  .stats-bar      { flex-direction: column !important; gap: 0 !important; }
+  .stat-item      { border-right: none !important; border-bottom: 1px solid #eee; padding: 20px 16px !important; }
+  .stat-item:last-child { border-bottom: none; }
+  .stat-item h3   { font-size: 1.6rem !important; }
+
+  .quick-strip    { flex-direction: column !important; }
+  .quick-item     { border-right: none !important; border-bottom: 1px solid #eee; padding: 18px 20px !important; min-width: unset !important; }
+
+  /* GRIDS → single column */
+  .mission-cards,
+  .causes-grid,
+  .testi-grid,
+  .values-grid,
+  .team-grid      { grid-template-columns: 1fr !important; }
+
+  .impact-grid,
+  .hiw-steps,
+  .numbers-grid   { flex-direction: column !important; align-items: center !important; gap: 16px !important; }
+  .hiw-arrow      { display: none !important; }
+
+  .number-item, .impact-item { min-width: unset !important; width: 100%; max-width: 300px; }
+
+  /* SECTION PADDING */
+  .mission, .causes, .hiw, .values, .team, .numbers, .impact-section,
+  .testimonials, .cta, .story, .map-section, .faq, .contact-main,
+  .hiw-section, .cta-section, .impact-section { padding: 60px 16px !important; }
+
+  /* CONTACT */
+  .contact-inner  { grid-template-columns: 1fr !important; gap: 30px !important; }
+  .form-row       { grid-template-columns: 1fr !important; }
+
+  /* STORY */
+  .story-inner    { grid-template-columns: 1fr !important; gap: 30px !important; }
+  .story-image img{ height: 280px !important; }
+
+  /* CAMPAIGNS */
+  .featured-card  { grid-template-columns: 1fr !important; }
+  .featured-img   { height: 220px !important; }
+  .featured-content { padding: 24px !important; }
+  .cards          { grid-template-columns: 1fr !important; }
+
+  /* AUTH CARD */
+  .auth-wrapper   { margin-top: 76px; border-radius: 0 !important; }
+  .auth-body      { padding: 24px 20px !important; }
+  .input-row      { grid-template-columns: 1fr !important; }
+
+  /* DONATE */
+  .amount-grid    { grid-template-columns: 1fr 1fr !important; }
+  .custom-amount  { grid-column: span 2 !important; }
+  .payment-methods{ grid-template-columns: 1fr 1fr !important; }
+  .btn-row        { flex-direction: column !important; }
+  .btn-back, .btn-next, .btn-donate { width: 100% !important; }
+  .stepper        { gap: 4px !important; padding: 16px 8px !important; }
+  .step-label     { font-size: 0.72rem !important; }
+  .step-line      { width: 20px !important; }
+  .card           { padding: 20px 16px !important; }
+
+  /* FOOTER */
+  footer { padding: 30px 16px 20px !important; }
+  .footer-inner { flex-direction: column !important; gap: 24px !important; }
+  .footer-brand p { max-width: 100% !important; }
+
+  /* CTA buttons */
+  .cta-buttons    { flex-direction: column !important; align-items: center !important; }
+  .cta-btn-white, .cta-btn-outline { width: 100%; max-width: 320px; text-align: center; padding: 15px 24px !important; }
+
+  /* CONFIRM actions */
+  .confirm-actions { flex-direction: column !important; align-items: center !important; }
+  .btn-outline, .btn-filled { width: 100%; max-width: 320px; text-align: center; }
+
+  /* MODAL */
+  .modal-body     { padding: 16px !important; }
+  .modal-stats-row{ grid-template-columns: 1fr 1fr !important; }
+  .modal-ben-grid { grid-template-columns: 1fr !important; }
+  .modal-actions  { flex-direction: column !important; }
+  .modal-donate-btn, .modal-share-btn { width: 100%; text-align: center; }
+}
+
+/* ── 480px and below (small phones) ──────────────────────── */
+@media (max-width: 480px) {
+  .hero h1        { font-size: 1.7rem !important; }
+  .amount-grid    { grid-template-columns: 1fr !important; }
+  .custom-amount  { grid-column: span 1 !important; }
+  .payment-methods{ grid-template-columns: 1fr 1fr !important; }
+  .freq-btn       { padding: 10px 6px !important; font-size: 0.82rem !important; }
+  .social-btns    { flex-direction: column !important; }
+  .share-btns     { flex-wrap: wrap !important; justify-content: center !important; }
+  .social-links   { flex-wrap: wrap !important; }
+  .campaigns-hero h1 { font-size: 1.7rem !important; }
+  .filters        { gap: 6px !important; }
+  .filter-btn     { padding: 7px 14px !important; font-size: 0.82rem !important; }
+  .modal-stats-row{ grid-template-columns: 1fr !important; }
+}
+
+/* ── Tap target minimum size for iOS/Android ─────────────── */
+@media (max-width: 768px) {
+  a, button, [role="button"] { min-height: 44px; }
+  .amount-btn, .freq-btn, .pay-method { min-height: 48px !important; }
+}
+
+</style>
+</head>
+<body>
+<nav>
+    <div class="logo">
+        <img src="logo.png" alt="Helping Hearts Logo">
+        <h2>Helping Hearts</h2>
+    </div>
+    <ul>
+        <li><a href="helpingheart.html">Home</a></li>
+        <li><a href="campaigns.html">Campaigns</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a class="donate-btn" href="auth.html?redirect=donate.html">Donate</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<section class="about-hero">
+    <div class="about-hero-content">
+        <div class="about-hero-tag">🌱 Our Story</div>
+        <h1>We Believe Every Life <span>Deserves Dignity</span></h1>
+        <p>Helping Hearts was born from a simple belief — that compassion, when organized and transparent, can transform society. Here's who we are and why we do this.</p>
+    </div>
+</section>
+
+<!-- STORY -->
+<section class="story">
+    <div class="story-inner">
+        <div class="story-text reveal">
+            <div class="section-label">How It Started</div>
+            <h2>A Simple Idea That <span>Changed Lives</span></h2>
+            <p>In 2020, a group of young Pakistanis watched their community struggle through the economic aftermath of the pandemic — families without food, children missing school, patients unable to afford basic treatment.</p>
+            <p>They didn't wait for someone else to fix it. They created Helping Hearts — a platform to bridge generous donors with people in real need, with radical transparency at its core.</p>
+            <div class="story-highlight">"If we could show donors exactly where every rupee goes, they'd give more — and people in need would get more. So that's what we built."</div>
+            <p>Today, Helping Hearts has raised over PKR 42 million and helped more than 15,000 people across 12 cities in Pakistan.</p>
+        </div>
+        <div class="story-image reveal">
+            <img src="view-hands-holding-red-heart-represent-affection.jpg" alt="Helping Hearts Story">
+            <div class="story-badge"><h4>6 Years</h4><p>Of Making a Difference</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- VALUES -->
+<section class="values">
+    <div class="section-label">What Drives Us</div>
+    <h2>Our Core Values</h2>
+    <p>These aren't just words on a wall. They're the principles we apply to every campaign, every rupee, every interaction.</p>
+    <div class="values-grid">
+        <div class="value-card reveal">
+            <span class="value-icon">🔍</span>
+            <h3>Radical Transparency</h3>
+            <p>Every donation is tracked and reported with field photos and financial breakdowns. You always know exactly where your money goes and what it accomplished.</p>
+        </div>
+        <div class="value-card reveal">
+            <span class="value-icon">⚡</span>
+            <h3>Speed of Impact</h3>
+            <p>In a crisis, every hour counts. We deploy 98% of funds to beneficiaries within 48–72 hours — because lives depend on how fast we move.</p>
+        </div>
+        <div class="value-card reveal">
+            <span class="value-icon">🤝</span>
+            <h3>Community First</h3>
+            <p>We partner with verified local NGOs, hospitals, and schools embedded in communities — people who know exactly what's needed and how to deliver it.</p>
+        </div>
+        <div class="value-card reveal">
+            <span class="value-icon">❤️</span>
+            <h3>Human Dignity</h3>
+            <p>Every person we help has a name, a story, and full dignity. We treat each beneficiary with the care and respect they deserve — not as a statistic.</p>
+        </div>
+        <div class="value-card reveal">
+            <span class="value-icon">🛡️</span>
+            <h3>Accountability</h3>
+            <p>We hold ourselves to the highest standard. Our finances are independently audited and every campaign outcome is documented and published for donors.</p>
+        </div>
+        <div class="value-card reveal">
+            <span class="value-icon">🌱</span>
+            <h3>Long-Term Thinking</h3>
+            <p>Beyond emergency relief, we invest in education and health programs that build sustainable futures — breaking cycles of poverty, not just temporarily relieving them.</p>
+        </div>
+    </div>
+</section>
+
+<!-- NUMBERS -->
+<section class="numbers">
+    <div class="section-label">Our Track Record</div>
+    <h2>Numbers That Speak for Themselves</h2>
+    <p>Six years of consistent, accountable work across Pakistan — here's what we've built together.</p>
+    <div class="numbers-grid">
+        <div class="number-item reveal"><h3>15K+</h3><p>Lives Directly Helped</p></div>
+        <div class="number-item reveal"><h3>PKR 42M+</h3><p>Total Funds Raised</p></div>
+        <div class="number-item reveal"><h3>5,200+</h3><p>Children in School</p></div>
+        <div class="number-item reveal"><h3>12 Cities</h3><p>Coverage Across Pakistan</p></div>
+        <div class="number-item reveal"><h3>98%</h3><p>Funds Reach Beneficiaries</p></div>
+        <div class="number-item reveal"><h3>2,000+</h3><p>Active Volunteers</p></div>
+    </div>
+</section>
+
+<!-- TEAM -->
+<section class="team">
+    <div class="section-label">The People Behind It</div>
+    <h2>Meet Our Team</h2>
+    <p>Passionate individuals united by one mission — making compassion measurable and impactful.</p>
+    <div class="team-grid">
+        <div class="team-card reveal">
+            <div class="team-avatar">👨‍💼</div>
+            <h3>Sami-Ur-Rehman</h3>
+            <div class="role">Founder & CEO</div>
+            <p>Former NGO worker turned entrepreneur. Sami's vision of transparent giving launched Helping Hearts in 2020.</p>
+        </div>
+        <div class="team-card reveal">
+            <div class="team-avatar">👩‍💻</div>
+            <h3>Maham Iftikhar</h3>
+            <div class="role">Head of Operations</div>
+            <p>Coordinates field teams across 12 cities, ensuring funds are deployed with maximum speed and accountability.</p>
+        </div>
+        <div class="team-card reveal">
+            <div class="team-avatar">👨‍🏫</div>
+            <h3>Komal Fawad</h3>
+            <div class="role">Campaigns Director</div>
+            <p>Verifies every campaign and works directly with local partners to ensure community needs are accurately represented.</p>
+        </div>
+        <div class="team-card reveal">
+            <div class="team-avatar">👩‍⚕️</div>
+            <h3>Dr. Maira Khan</h3>
+            <div class="role">Medical Advisor</div>
+            <p>Oversees medical campaigns, ensures healthcare funds are allocated to highest-need patients across rural areas.</p>
+        </div>
+    </div>
+</section>
+
+<!-- HOW WE WORK -->
+<section class="hiw">
+    <div class="section-label">Our Process</div>
+    <h2>How We Operate</h2>
+    <p>Every campaign goes through a rigorous process before a single rupee is raised.</p>
+    <div class="hiw-steps">
+        <div class="hiw-step reveal"><div class="step-num">1</div><h4>Verify Need</h4><p>Our field team visits and validates every campaign before it goes live on the platform</p></div>
+        <div class="hiw-arrow">→</div>
+        <div class="hiw-step reveal"><div class="step-num">2</div><h4>Raise Funds</h4><p>Campaigns go public and donors contribute with full transparency on how funds will be used</p></div>
+        <div class="hiw-arrow">→</div>
+        <div class="hiw-step reveal"><div class="step-num">3</div><h4>Deploy Fast</h4><p>Within 48–72 hours of receiving funds, 98% reaches beneficiaries through our local partners</p></div>
+        <div class="hiw-arrow">→</div>
+        <div class="hiw-step reveal"><div class="step-num">4</div><h4>Report Back</h4><p>Donors receive photos, updates, and a full financial breakdown showing every rupee used</p></div>
+    </div>
+</section>
+
+<section class="cta">
+    <h2>Join Us in Making a Difference</h2>
+    <p>Whether you donate, volunteer, or spread the word — you are a part of the Helping Hearts mission.</p>
+    <div class="cta-buttons">
+        <a class="cta-btn-white" href="auth.html?redirect=donate.html">❤️ Donate Now</a>
+        <a class="cta-btn-outline" href="campaigns.html">Browse Campaigns</a>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-brand"><h3>❤️ Helping Hearts</h3><p>Connecting kind souls with people in need — transparently, efficiently, and with love.</p></div>
+        <div class="footer-links"><h4>Quick Links</h4><ul><li><a href="helpingheart.html">Home</a></li><li><a href="campaigns.html">Campaigns</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+        <div class="footer-links"><h4>Our Causes</h4><ul><li><a href="campaigns.html">🌊 Flood Relief</a></li><li><a href="campaigns.html">📚 Education</a></li><li><a href="campaigns.html">💊 Medical Aid</a></li><li><a href="campaigns.html">🍽️ Food Support</a></li></ul></div>
+        <div class="footer-links"><h4>Contact</h4><ul><li><a href="#">📞 +92 300 1234567</a></li><li><a href="#">📧 helpinghearts@gmail.com</a></li><li><a href="#">📍 Lahore, Pakistan</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 Helping Hearts | Made with ❤️ in Pakistan</p></div>
+</footer>
+
+<script>
+const reveals=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}});},{threshold:0.1});
+reveals.forEach(el=>obs.observe(el));
+</script>
+
+<script>
+// ── Mobile hamburger menu ─────────────────────────────────────
+(function(){
+  var nav = document.querySelector('nav');
+  if (!nav) return;
+  var ul = nav.querySelector('ul');
+  if (!ul) return;
+
+  // Create hamburger button
+  var btn = document.createElement('button');
+  btn.className = 'hh-hamburger';
+  btn.setAttribute('aria-label','Toggle menu');
+  btn.innerHTML = '<span></span><span></span><span></span>';
+  nav.appendChild(btn);
+
+  // Create mobile overlay
+  var overlay = document.createElement('div');
+  overlay.className = 'hh-nav-overlay';
+  document.body.appendChild(overlay);
+
+  function openMenu(){
+    ul.classList.add('hh-nav-open');
+    overlay.classList.add('hh-overlay-active');
+    btn.classList.add('hh-hamburger-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu(){
+    ul.classList.remove('hh-nav-open');
+    overlay.classList.remove('hh-overlay-active');
+    btn.classList.remove('hh-hamburger-open');
+    document.body.style.overflow = '';
+  }
+
+  btn.addEventListener('click', function(){
+    ul.classList.contains('hh-nav-open') ? closeMenu() : openMenu();
+  });
+  overlay.addEventListener('click', closeMenu);
+  ul.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', closeMenu);
+  });
+})();
+</script>
+
+<script>
+/* Smart nav — swaps Login for Profile+Logout when user is logged in */
+(function() {
+  var token = localStorage.getItem('hh_token');
+  var navLinks = document.querySelectorAll('nav ul li');
+
+  navLinks.forEach(function(li) {
+    var a = li.querySelector('a');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    // Target the Login link (auth.html, NOT the donate redirect)
+    var isLogin = href.indexOf('auth.html') !== -1
+               && href.indexOf('redirect=donate') === -1
+               && !a.classList.contains('donate-btn');
+    if (!isLogin) return;
+
+    if (token) {
+      // User is logged in — replace Login with Profile name + Logout
+      var user = {};
+      try { user = JSON.parse(localStorage.getItem('hh_user') || '{}'); } catch(e) {}
+      var name = user.first_name || 'My Profile';
+
+      // Profile link
+      var pLi = document.createElement('li');
+      var pA  = document.createElement('a');
+      pA.href = 'profile.html';
+      pA.textContent = '\u{1F464} ' + name;
+      pA.style.cssText = 'color:#96BF8A;font-weight:700;';
+      pLi.appendChild(pA);
+
+      // Logout link
+      var lLi = document.createElement('li');
+      var lA  = document.createElement('a');
+      lA.href = '#';
+      lA.textContent = 'Logout';
+      lA.style.cssText = 'color:#e74c3c;font-weight:700;';
+      lA.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (confirm('Are you sure you want to logout?')) {
+          localStorage.removeItem('hh_token');
+          localStorage.removeItem('hh_user');
+          window.location.href = 'helpingheart.html';
+        }
+      });
+      lLi.appendChild(lA);
+
+      li.parentNode.insertBefore(pLi, li);
+      li.parentNode.insertBefore(lLi, li);
+      li.style.display = 'none';
+    }
+  });
+})();
+</script>
+</body>
+</html>

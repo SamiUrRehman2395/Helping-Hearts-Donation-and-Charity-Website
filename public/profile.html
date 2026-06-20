@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile — Helping Hearts</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Poppins',sans-serif;background:#f7f7f7;color:#333;}
+:root{--main:#96BF8A;--accent:#2ecc71;--red:#e74c3c;--dark:#1a1a2e;}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;padding:15px 50px;background:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.08);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:15px;}
+.logo img{width:60px;}
+.logo h2{font-size:1.4rem;font-weight:800;color:var(--main);}
+nav ul{display:flex;list-style:none;align-items:center;gap:20px;}
+nav ul li a{text-decoration:none;color:#333;font-weight:600;padding:8px 14px;transition:0.3s;border-radius:6px;}
+nav ul li a:not(.donate-btn):hover{color:var(--main);background:rgba(150,191,138,0.1);}
+.donate-btn{background:var(--red)!important;color:#fff!important;padding:10px 22px!important;border-radius:8px!important;font-weight:700!important;}
+
+/* PROFILE HERO */
+.profile-hero{background:linear-gradient(135deg,#1a3a1a,#2d5a2d);padding:60px 40px 40px;text-align:center;color:#fff;}
+.avatar{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--main),var(--accent));display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:800;color:#fff;margin:0 auto 16px;border:4px solid rgba(255,255,255,0.25);}
+.profile-hero h1{font-size:1.8rem;font-weight:800;margin-bottom:4px;}
+.profile-hero p{font-size:0.9rem;opacity:0.8;margin-bottom:12px;}
+.member-badge{display:inline-block;background:rgba(150,191,138,0.25);border:1px solid rgba(150,191,138,0.5);color:#a8d9a0;padding:4px 16px;border-radius:20px;font-size:0.75rem;font-weight:600;letter-spacing:1px;}
+
+/* STATS BAR */
+.stats-bar{display:flex;background:#fff;border-bottom:1px solid #eee;}
+.stat-item{flex:1;text-align:center;padding:24px 20px;border-right:1px solid #eee;}
+.stat-item:last-child{border-right:none;}
+.stat-num{font-size:1.8rem;font-weight:800;color:var(--accent);}
+.stat-label{font-size:0.78rem;color:#888;font-weight:600;margin-top:3px;}
+
+/* LAYOUT */
+.container{max-width:1100px;margin:40px auto;padding:0 30px;display:grid;grid-template-columns:1fr 2fr;gap:28px;}
+
+/* CARDS */
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 4px 20px rgba(0,0,0,0.06);}
+.card h3{font-size:1rem;font-weight:700;color:#333;margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.card h3 span{font-size:1.2rem;}
+
+/* PROFILE DETAILS */
+.field{margin-bottom:18px;}
+.field label{display:block;font-size:0.75rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;}
+.field p{font-size:0.95rem;color:#333;font-weight:500;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+/* LOGOUT */
+.logout-btn{width:100%;padding:12px;border:2px solid var(--red);color:var(--red);background:#fff;border-radius:10px;font-size:0.9rem;font-weight:700;cursor:pointer;transition:0.3s;font-family:'Poppins',sans-serif;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.logout-btn:hover{background:var(--red);color:#fff;}
+.edit-btn{width:100%;padding:11px;border:2px solid var(--main);color:var(--main);background:#fff;border-radius:10px;font-size:0.9rem;font-weight:700;cursor:pointer;transition:0.3s;font-family:'Poppins',sans-serif;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.edit-btn:hover{background:var(--main);color:#fff;}
+
+/* DONATION HISTORY */
+.donation-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #f0f0f0;}
+.donation-row:last-child{border-bottom:none;}
+.don-left{display:flex;align-items:center;gap:12px;}
+.don-icon{width:42px;height:42px;border-radius:10px;background:rgba(150,191,138,0.1);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.don-campaign{font-size:0.9rem;font-weight:600;color:#333;}
+.don-date{font-size:0.78rem;color:#888;margin-top:2px;}
+.don-freq{font-size:0.7rem;color:#96BF8A;font-weight:600;background:rgba(150,191,138,0.1);padding:2px 8px;border-radius:10px;margin-top:3px;display:inline-block;}
+.don-right{text-align:right;}
+.don-amount{font-size:1rem;font-weight:800;color:#333;}
+.don-method{font-size:0.75rem;color:#888;margin-top:2px;}
+.status-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;margin-top:4px;}
+.status-completed{background:#dcfce7;color:#16a34a;}
+.status-pending{background:#fef3c7;color:#d97706;}
+.status-failed{background:#fee2e2;color:#dc2626;}
+.status-refunded{background:#e0e7ff;color:#4f46e5;}
+
+.empty-state{text-align:center;padding:40px 20px;color:#aaa;}
+.empty-state div{font-size:2.5rem;margin-bottom:12px;}
+.empty-state p{font-size:0.9rem;}
+.empty-state a{display:inline-block;margin-top:14px;padding:10px 24px;background:var(--red);color:#fff;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.9rem;}
+
+.loading{text-align:center;padding:30px;color:#aaa;font-size:0.9rem;}
+
+/* JOINED */
+.joined-info{background:linear-gradient(135deg,rgba(150,191,138,0.1),rgba(46,204,113,0.05));border:1px solid rgba(150,191,138,0.2);border-radius:12px;padding:16px;text-align:center;margin-top:16px;}
+.joined-info p{font-size:0.8rem;color:#666;}
+.joined-info strong{display:block;font-size:1rem;color:var(--main);font-weight:700;margin-top:4px;}
+
+/* MOBILE */
+.hh-hamburger{display:none;flex-direction:column;justify-content:space-between;width:28px;height:20px;background:none;border:none;cursor:pointer;padding:0;}
+.hh-hamburger span{display:block;height:3px;background:#333;border-radius:3px;transition:transform 0.3s,opacity 0.3s;}
+.hh-nav-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:150;}
+.hh-nav-overlay.hh-overlay-active{display:block;}
+@media(max-width:768px){
+  nav{padding:12px 16px!important;}
+  .hh-hamburger{display:flex;}
+  nav ul{display:none!important;position:fixed!important;top:0;right:0;width:min(300px,80vw);height:100vh;background:#fff;flex-direction:column!important;align-items:flex-start!important;gap:0!important;padding:80px 0 30px!important;box-shadow:-4px 0 30px rgba(0,0,0,0.15);z-index:170;overflow-y:auto;}
+  nav ul.hh-nav-open{display:flex!important;}
+  nav ul li{width:100%;}
+  nav ul li a{display:block!important;padding:14px 24px!important;border-radius:0!important;font-size:1rem!important;border-bottom:1px solid #f0f0f0;}
+  .container{grid-template-columns:1fr;padding:0 16px;}
+  .field-row{grid-template-columns:1fr;}
+  .stats-bar{flex-direction:column;}
+  .stat-item{border-right:none;border-bottom:1px solid #eee;}
+  .profile-hero{padding:40px 20px 30px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <img src="logo.png" alt="Logo">
+    <h2>Helping Hearts</h2>
+  </div>
+  <ul id="main-nav-ul">
+    <li><a href="helpingheart.html">Home</a></li>
+    <li><a href="campaigns.html">Campaigns</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a class="donate-btn" href="donate.html">Donate</a></li>
+    <li id="nav-profile-item" style="display:none"><a href="profile.html" style="color:var(--main);font-weight:700;">👤 My Profile</a></li>
+    <li id="nav-logout-item" style="display:none"><a href="#" onclick="logout()" style="color:var(--red);font-weight:700;">Logout</a></li>
+    <li id="nav-login-item"><a href="auth.html">Login</a></li>
+  </ul>
+  <button class="hh-hamburger" aria-label="Menu" id="hh-ham">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- PROFILE HERO -->
+<div class="profile-hero">
+  <div class="avatar" id="avatar-initials" onclick="openAvatarPicker()" style="cursor:pointer;position:relative;overflow:hidden;" title="Click to change profile picture"><span id="avatar-initials-text">?</span>
+    <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.55);font-size:0.6rem;padding:3px 0;font-weight:600;color:#fff;">📷 Change</div>
+  </div>
+  <h1 id="profile-name">Loading...</h1>
+  <p id="profile-email"></p>
+  <span class="member-badge">❤️ Helping Hearts Member</span>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num" id="stat-total">—</div><div class="stat-label">Total Donated</div></div>
+  <div class="stat-item"><div class="stat-num" id="stat-count">—</div><div class="stat-label">Donations Made</div></div>
+  <div class="stat-item"><div class="stat-num" id="stat-campaigns">—</div><div class="stat-label">Campaigns Supported</div></div>
+</div>
+
+<div class="container">
+
+  <!-- LEFT: Profile Info -->
+  <div>
+    <div class="card">
+      <h3><span>👤</span> Account Details</h3>
+      <div class="field-row">
+        <div class="field"><label>First Name</label><p id="d-fname">—</p></div>
+        <div class="field"><label>Last Name</label><p id="d-lname">—</p></div>
+      </div>
+      <div class="field"><label>Email Address</label><p id="d-email">—</p></div>
+      <div class="field"><label>Phone</label><p id="d-phone">—</p></div>
+
+      <div class="joined-info">
+        <p>Member since</p>
+        <strong id="d-joined">—</strong>
+      </div>
+
+      <button class="edit-btn" onclick="openEditModal()">
+        ✏️ Edit Profile
+      </button>
+      <button class="logout-btn" onclick="logout()">
+        🚪 Logout
+      </button>
+    </div>
+  </div>
+
+  <!-- RIGHT: Donation History -->
+  <div>
+    <div class="card">
+      <h3><span>🧾</span> Donation History</h3>
+      <div id="donations-list"><div class="loading">Loading your donations...</div></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const API = window.location.hostname === 'localhost' ? 'http://localhost:5000/api' : '/api';
+
+// ── Auth check — redirect to login if not logged in ──────────
+const token = localStorage.getItem('hh_token');
+const userData = localStorage.getItem('hh_user');
+
+if (!token) {
+  window.location.href = 'auth.html?redirect=profile.html';
+}
+
+// ── Show nav state ───────────────────────────────────────────
+if (token) {
+  document.getElementById('nav-profile-item').style.display = '';
+  document.getElementById('nav-logout-item').style.display  = '';
+  document.getElementById('nav-login-item').style.display   = 'none';
+}
+
+// ── Load profile from localStorage first (instant) ──────────
+if (userData) {
+  const u = JSON.parse(userData);
+  populateProfile(u);
+}
+
+// ── Then fetch fresh data from server ───────────────────────
+async function loadProfile() {
+  try {
+    const res = await fetch(`${API}/auth/me`, {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const data = await res.json();
+    if (data.success && data.user) {
+      populateProfile(data.user);
+      localStorage.setItem('hh_user', JSON.stringify(data.user));
+    }
+  } catch(e) { console.warn('Could not refresh profile'); }
+}
+
+function populateProfile(u) {
+  currentUserData = u;
+  const name = `${u.first_name || ''} ${u.last_name || ''}`.trim();
+
+  document.getElementById('profile-name').textContent    = name || 'My Profile';
+  document.getElementById('profile-email').textContent   = u.email || '';
+  document.getElementById('d-fname').textContent  = u.first_name || '—';
+  document.getElementById('d-lname').textContent  = u.last_name  || '—';
+  document.getElementById('d-email').textContent  = u.email      || '—';
+  document.getElementById('d-phone').textContent  = u.phone      || 'Not provided';
+  applyAvatar(u);
+
+  if (u.created_at) {
+    const d = new Date(u.created_at);
+    document.getElementById('d-joined').textContent =
+      d.toLocaleDateString('en-PK', { year:'numeric', month:'long', day:'numeric' });
+  }
+}
+
+// ── Load donation history ────────────────────────────────────
+async function loadDonations() {
+  try {
+    const res  = await fetch(`${API}/donations/my`, {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const data = await res.json();
+    const list = document.getElementById('donations-list');
+
+    if (!data.success || !data.donations || data.donations.length === 0) {
+      list.innerHTML = `
+        <div class="empty-state">
+          <div>💝</div>
+          <p>You haven't made any donations yet.</p>
+          <a href="campaigns.html">Browse Campaigns →</a>
+        </div>`;
+      document.getElementById('stat-total').textContent    = 'PKR 0';
+      document.getElementById('stat-count').textContent    = '0';
+      document.getElementById('stat-campaigns').textContent = '0';
+      return;
+    }
+
+    const dons = data.donations;
+
+    // Calculate stats
+    const total    = dons.reduce((s,d) => s + parseFloat(d.amount||0), 0);
+    const campaigns = new Set(dons.filter(d=>d.campaign_title).map(d=>d.campaign_title)).size;
+    document.getElementById('stat-total').textContent     = 'PKR ' + total.toLocaleString();
+    document.getElementById('stat-count').textContent     = dons.length;
+    document.getElementById('stat-campaigns').textContent = campaigns;
+
+    // Icons per campaign
+    const icons = {
+      'flood':'🌊','education':'📚','girls':'👧','medical':'🏥',
+      'cancer':'❤️','food':'🍱','earthquake':'🏔️','general':'💝'
+    };
+    function getIcon(title) {
+      if (!title) return '💝';
+      const t = title.toLowerCase();
+      for (const [k,v] of Object.entries(icons)) if (t.includes(k)) return v;
+      return '💝';
+    }
+
+    const freqLabels = {'one-time':'One-time','monthly':'Monthly','annually':'Annual'};
+    const statusClass = {'completed':'status-completed','pending':'status-pending','failed':'status-failed','refunded':'status-refunded'};
+
+    list.innerHTML = dons.map(d => `
+      <div class="donation-row">
+        <div class="don-left">
+          <div class="don-icon">${getIcon(d.campaign_title)}</div>
+          <div>
+            <div class="don-campaign">${d.campaign_title || 'General Donation'}</div>
+            <div class="don-date">${new Date(d.created_at).toLocaleDateString('en-PK',{year:'numeric',month:'short',day:'numeric'})}</div>
+            <span class="don-freq">${freqLabels[d.frequency] || d.frequency}</span>
+          </div>
+        </div>
+        <div class="don-right">
+          <div class="don-amount">${d.currency} ${parseFloat(d.amount).toLocaleString()}</div>
+          <div class="don-method">${d.payment_method}</div>
+          <span class="status-badge ${statusClass[d.payment_status]||'status-pending'}">${d.payment_status}</span>
+        </div>
+      </div>`).join('');
+
+  } catch(e) {
+    document.getElementById('donations-list').innerHTML = '<div class="loading">Could not load donations.</div>';
+  }
+}
+
+// ── Logout ───────────────────────────────────────────────────
+function logout() {
+  if (!confirm('Are you sure you want to logout?')) return;
+  localStorage.removeItem('hh_token');
+  localStorage.removeItem('hh_user');
+  window.location.href = 'helpingheart.html';
+}
+
+// ── Hamburger menu ───────────────────────────────────────────
+(function(){
+  const ul  = document.getElementById('main-nav-ul');
+  const btn = document.getElementById('hh-ham');
+  const ovl = document.createElement('div');
+  ovl.className = 'hh-nav-overlay';
+  document.body.appendChild(ovl);
+  function open(){ul.classList.add('hh-nav-open');ovl.classList.add('hh-overlay-active');document.body.style.overflow='hidden';}
+  function close(){ul.classList.remove('hh-nav-open');ovl.classList.remove('hh-overlay-active');document.body.style.overflow='';}
+  btn.addEventListener('click',()=>ul.classList.contains('hh-nav-open')?close():open());
+  ovl.addEventListener('click',close);
+  ul.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
+})();
+
+loadProfile();
+loadDonations();
+</script>
+<!-- AVATAR PICKER MODAL -->
+<div id="avatar-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:16px;padding:28px;max-width:420px;width:100%;">
+    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;">📷 Change Profile Picture</h3>
+    <p style="font-size:0.85rem;color:#888;margin-bottom:12px;">Paste an image URL below (e.g. from Imgur, Gravatar, or any direct image link)</p>
+    <input type="text" id="avatar-url-input" placeholder="https://example.com/my-photo.jpg"
+      style="width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:0.9rem;font-family:'Poppins',sans-serif;margin-bottom:14px;">
+    <div style="display:flex;gap:10px;">
+      <button onclick="closeAvatarPicker()" style="flex:1;padding:11px;border:1.5px solid #ddd;background:#fff;border-radius:10px;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif;">Cancel</button>
+      <button onclick="saveAvatar()" style="flex:1;padding:11px;border:none;background:var(--main);color:#fff;border-radius:10px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;">Save Picture</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT PROFILE MODAL -->
+<div id="edit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:16px;padding:28px;max-width:420px;width:100%;">
+    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;">✏️ Edit Profile</h3>
+    <div class="field-row" style="margin-bottom:14px;">
+      <div><label style="display:block;font-size:0.75rem;font-weight:700;color:#888;margin-bottom:5px;">First Name</label>
+        <input type="text" id="edit-fname" style="width:100%;padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-family:'Poppins',sans-serif;"></div>
+      <div><label style="display:block;font-size:0.75rem;font-weight:700;color:#888;margin-bottom:5px;">Last Name</label>
+        <input type="text" id="edit-lname" style="width:100%;padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-family:'Poppins',sans-serif;"></div>
+    </div>
+    <label style="display:block;font-size:0.75rem;font-weight:700;color:#888;margin-bottom:5px;">Phone</label>
+    <input type="text" id="edit-phone" placeholder="+92 300 0000000"
+      style="width:100%;padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-family:'Poppins',sans-serif;margin-bottom:16px;">
+    <div id="edit-error" style="display:none;color:var(--red);font-size:0.8rem;margin-bottom:10px;"></div>
+    <div style="display:flex;gap:10px;">
+      <button onclick="closeEditModal()" style="flex:1;padding:11px;border:1.5px solid #ddd;background:#fff;border-radius:10px;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif;">Cancel</button>
+      <button onclick="saveEdit()" style="flex:1;padding:11px;border:none;background:var(--main);color:#fff;border-radius:10px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentUserData = {};
+
+function openAvatarPicker() {
+  document.getElementById('avatar-url-input').value = currentUserData.avatar_url || '';
+  document.getElementById('avatar-modal').style.display = 'flex';
+}
+function closeAvatarPicker() {
+  document.getElementById('avatar-modal').style.display = 'none';
+}
+async function saveAvatar() {
+  const url = document.getElementById('avatar-url-input').value.trim();
+  try {
+    const res = await fetch(`${API}/auth/me`, {
+      method: 'PATCH',
+      headers: { 'Content-Type':'application/json', 'Authorization':'Bearer ' + token },
+      body: JSON.stringify({ avatar_url: url })
+    });
+    const data = await res.json();
+    if (data.success) {
+      currentUserData = data.user;
+      localStorage.setItem('hh_user', JSON.stringify(data.user));
+      applyAvatar(data.user);
+      closeAvatarPicker();
+    } else {
+      alert(data.message || 'Could not update picture');
+    }
+  } catch(e) { alert('Could not update picture'); }
+}
+
+function applyAvatar(u) {
+  const el = document.getElementById('avatar-initials');
+  const textEl = document.getElementById('avatar-initials-text');
+  const initials = `${(u.first_name||'?')[0]}${(u.last_name||'')[0]||''}`.toUpperCase();
+  if (u.avatar_url) {
+    el.style.backgroundImage = `url('${u.avatar_url}')`;
+    el.style.backgroundSize = 'cover';
+    el.style.backgroundPosition = 'center';
+    textEl.textContent = '';
+  } else {
+    el.style.backgroundImage = 'none';
+    textEl.textContent = initials;
+  }
+}
+
+function openEditModal() {
+  document.getElementById('edit-fname').value = currentUserData.first_name || '';
+  document.getElementById('edit-lname').value = currentUserData.last_name  || '';
+  document.getElementById('edit-phone').value = currentUserData.phone     || '';
+  document.getElementById('edit-error').style.display = 'none';
+  document.getElementById('edit-modal').style.display = 'flex';
+}
+function closeEditModal() {
+  document.getElementById('edit-modal').style.display = 'none';
+}
+async function saveEdit() {
+  const first_name = document.getElementById('edit-fname').value.trim();
+  const last_name  = document.getElementById('edit-lname').value.trim();
+  const phone      = document.getElementById('edit-phone').value.trim();
+  const errEl = document.getElementById('edit-error');
+
+  if (!first_name || !last_name) {
+    errEl.textContent = 'First and last name are required';
+    errEl.style.display = 'block';
+    return;
+  }
+  try {
+    const res = await fetch(`${API}/auth/me`, {
+      method: 'PATCH',
+      headers: { 'Content-Type':'application/json', 'Authorization':'Bearer ' + token },
+      body: JSON.stringify({ first_name, last_name, phone })
+    });
+    const data = await res.json();
+    if (data.success) {
+      currentUserData = data.user;
+      localStorage.setItem('hh_user', JSON.stringify(data.user));
+      populateProfile(data.user);
+      closeEditModal();
+    } else {
+      errEl.textContent = data.message || 'Could not save changes';
+      errEl.style.display = 'block';
+    }
+  } catch(e) {
+    errEl.textContent = 'Network error — please try again';
+    errEl.style.display = 'block';
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — Helping Hearts</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #96BF8A; --dark-green: #3d6b4f; --accent: #2ecc71;
+  --red: #e74c3c; --orange: #e67e22; --blue: #3498db;
+  --bg: #f4f6f9; --card: #fff; --text: #333; --muted: #888;
+  --border: #e0e0e0; --sidebar-w: 240px;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:var(--bg);color:var(--text);}
+
+/* ── LOGIN ── */
+#login-screen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#2c3e50,#3d6b4f);
+}
+.login-card{background:#fff;border-radius:16px;padding:40px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.login-card h2{text-align:center;color:var(--dark-green);margin-bottom:6px;font-size:1.6rem;}
+.login-card p{text-align:center;color:var(--muted);font-size:.9rem;margin-bottom:0;}
+.back-btn{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:22px;padding-top:18px;border-top:1px solid #eee;}
+.back-btn a{color:#555;font-size:.88rem;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:9px;border:2px solid #ddd;transition:.2s;background:#fff;}
+.back-btn a:hover{background:#f0f0f0;border-color:#bbb;color:#222;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-weight:600;font-size:.85rem;color:#555;margin-bottom:5px;}
+.form-group input{width:100%;padding:11px 14px;border:2px solid var(--border);border-radius:10px;font-size:.95rem;font-family:'Poppins',sans-serif;outline:none;transition:.3s;}
+.form-group input:focus{border-color:var(--green);}
+.btn{display:inline-block;padding:12px 22px;border:none;border-radius:10px;font-size:.95rem;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif;transition:.25s;}
+.btn-primary{background:var(--accent);color:#fff;width:100%;margin-top:6px;}
+.btn-primary:hover{background:#27ae60;transform:translateY(-1px);}
+.btn-sm{padding:6px 14px;font-size:.8rem;border-radius:7px;}
+.btn-danger{background:var(--red);color:#fff;}
+.btn-warning{background:var(--orange);color:#fff;}
+.btn-success{background:var(--accent);color:#fff;}
+.btn-info{background:var(--blue);color:#fff;}
+#login-error{color:var(--red);font-size:.85rem;text-align:center;margin-top:10px;display:none;}
+
+/* ── APP SHELL ── */
+#app{display:none;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{
+  position:fixed;top:0;left:0;bottom:0;width:var(--sidebar-w);
+  background:linear-gradient(180deg,#2c3e50 0%,#3d6b4f 100%);
+  color:#fff;display:flex;flex-direction:column;z-index:100;
+}
+.sidebar-logo{padding:22px 20px;border-bottom:1px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:10px;}
+.sidebar-logo img{width:40px;border-radius:8px;}
+.sidebar-logo h3{font-size:1rem;font-weight:700;}
+.sidebar-logo span{font-size:.7rem;opacity:.7;display:block;}
+.sidebar-nav{flex:1;padding:16px 0;overflow-y:auto;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:12px 22px;cursor:pointer;transition:.2s;font-size:.9rem;font-weight:500;color:rgba(255,255,255,.8);}
+.nav-item:hover,.nav-item.active{background:rgba(255,255,255,.15);color:#fff;}
+.nav-item .icon{width:20px;text-align:center;font-size:1rem;}
+.sidebar-footer{padding:16px 22px;border-top:1px solid rgba(255,255,255,.12);font-size:.8rem;opacity:.7;}
+
+/* MAIN */
+.main-content{margin-left:var(--sidebar-w);min-height:100vh;display:flex;flex-direction:column;}
+
+/* TOPBAR */
+.topbar{background:#fff;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 10px rgba(0,0,0,.06);position:sticky;top:0;z-index:50;}
+.topbar h1{font-size:1.25rem;color:var(--dark-green);}
+.topbar-right{display:flex;align-items:center;gap:14px;}
+.admin-badge{background:var(--bg);padding:6px 14px;border-radius:20px;font-size:.85rem;font-weight:600;color:var(--dark-green);}
+.logout-btn{background:none;border:2px solid var(--red);color:var(--red);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:.85rem;font-weight:600;transition:.2s;}
+.logout-btn:hover{background:var(--red);color:#fff;}
+
+/* CONTENT */
+.page{display:none;padding:28px;flex:1;}
+.page.active{display:block;}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-bottom:28px;}
+.stat-card{background:#fff;border-radius:14px;padding:22px;box-shadow:0 4px 16px rgba(0,0,0,.06);display:flex;align-items:center;gap:16px;}
+.stat-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+.stat-icon.green{background:#e8f5e9;} .stat-icon.blue{background:#e3f2fd;}
+.stat-icon.orange{background:#fff3e0;} .stat-icon.red{background:#fde8e8;}
+.stat-value{font-size:1.6rem;font-weight:700;color:var(--text);}
+.stat-label{font-size:.82rem;color:var(--muted);}
+
+/* CARDS */
+.card{background:#fff;border-radius:14px;padding:22px;box-shadow:0 4px 16px rgba(0,0,0,.06);margin-bottom:22px;}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.card-title{font-size:1rem;font-weight:700;color:var(--dark-green);}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:.88rem;}
+thead tr{background:var(--bg);}
+th{padding:12px 14px;text-align:left;font-weight:600;color:#555;white-space:nowrap;}
+td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#fafafa;}
+
+/* BADGES */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:600;}
+.badge-completed,.badge-active,.badge-1{background:#e8f5e9;color:#2e7d32;}
+.badge-pending{background:#fff3e0;color:#e65100;}
+.badge-failed,.badge-0{background:#fde8e8;color:#c62828;}
+.badge-refunded{background:#e3f2fd;color:#1565c0;}
+
+/* FILTERS */
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
+.filters input,.filters select{padding:9px 12px;border:2px solid var(--border);border-radius:9px;font-size:.88rem;font-family:'Poppins',sans-serif;outline:none;transition:.2s;}
+.filters input:focus,.filters select:focus{border-color:var(--green);}
+.filters input{flex:1;min-width:180px;}
+
+/* PAGINATION */
+.pagination{display:flex;align-items:center;gap:8px;justify-content:center;padding-top:16px;}
+.pagination button{padding:7px 14px;border:2px solid var(--border);background:#fff;border-radius:8px;cursor:pointer;font-size:.85rem;font-weight:600;transition:.2s;}
+.pagination button:hover,.pagination button.active{background:var(--green);border-color:var(--green);color:#fff;}
+.pagination span{color:var(--muted);font-size:.85rem;}
+
+/* CHART BAR */
+.bar-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.bar-label{width:160px;font-size:.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar-track{flex:1;background:var(--bg);border-radius:6px;height:12px;}
+.bar-fill{height:12px;border-radius:6px;background:var(--accent);transition:width .6s;}
+.bar-val{font-size:.8rem;color:var(--muted);min-width:80px;text-align:right;}
+
+/* SPINNER */
+.loading{text-align:center;padding:40px;color:var(--muted);font-size:1rem;}
+.loading::after{content:' ⏳';}
+
+/* ALERT */
+.alert{padding:12px 16px;border-radius:10px;font-size:.9rem;margin-bottom:16px;display:none;}
+.alert-success{background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;}
+.alert-error{background:#fde8e8;color:#c62828;border:1px solid #ef9a9a;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:16px;padding:30px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.modal h3{font-size:1.2rem;color:var(--dark-green);margin-bottom:18px;}
+.modal-row{display:flex;gap:12px;margin-bottom:10px;font-size:.9rem;}
+.modal-row strong{width:140px;flex-shrink:0;color:#555;}
+.modal-close{float:right;background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted);}
+
+/* ════════════════════════════════════════════════
+   GLOBAL MOBILE RESPONSIVE — Helping Hearts
+   Works on all pages: web, Android, iOS
+   ════════════════════════════════════════════════ */
+
+/* Hamburger button */
+.hh-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px; height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 200;
+}
+.hh-hamburger span {
+  display: block;
+  height: 3px;
+  background: #333;
+  border-radius: 3px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.hh-hamburger.hh-hamburger-open span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+.hh-hamburger.hh-hamburger-open span:nth-child(2) { opacity: 0; }
+.hh-hamburger.hh-hamburger-open span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+
+/* Mobile nav overlay */
+.hh-nav-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 150;
+}
+.hh-nav-overlay.hh-overlay-active { display: block; }
+
+/* ── 768px and below ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* NAV */
+  nav {
+    padding: 12px 16px !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 160 !important;
+  }
+  .logo img { width: 52px !important; }
+  .logo h2  { font-size: 1rem !important; }
+
+  .hh-hamburger { display: flex; }
+
+  nav ul {
+    display: none !important;
+    position: fixed !important;
+    top: 0; right: 0;
+    width: min(300px, 80vw);
+    height: 100vh;
+    background: #fff;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+    padding: 80px 0 30px !important;
+    box-shadow: -4px 0 30px rgba(0,0,0,0.15);
+    z-index: 170;
+    overflow-y: auto;
+  }
+  nav ul.hh-nav-open { display: flex !important; }
+  nav ul li { width: 100%; }
+  nav ul li a {
+    display: block !important;
+    padding: 14px 24px !important;
+    border-radius: 0 !important;
+    font-size: 1rem !important;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .donate-btn {
+    margin: 12px 20px !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+  }
+  .admin-btn {
+    margin: 8px 20px !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+  }
+
+  /* HERO sections */
+  .hero           { height: 95vh !important; min-height: 500px; }
+  .hero h1        { font-size: 2rem !important; }
+  .hero p         { font-size: 1rem !important; }
+  .hero-btns a    { padding: 13px 24px !important; font-size: 0.92rem !important; }
+  .hero-btns      { flex-direction: column !important; align-items: center !important; }
+  .hero-tag       { font-size: 0.75rem !important; }
+
+  .about-hero h1, .contact-hero h1, .campaigns-hero h1 {
+    font-size: 2rem !important;
+  }
+  .donate-hero h1 { font-size: 1.8rem !important; }
+
+  /* STATS BARS */
+  .stats-bar      { flex-direction: column !important; gap: 0 !important; }
+  .stat-item      { border-right: none !important; border-bottom: 1px solid #eee; padding: 20px 16px !important; }
+  .stat-item:last-child { border-bottom: none; }
+  .stat-item h3   { font-size: 1.6rem !important; }
+
+  .quick-strip    { flex-direction: column !important; }
+  .quick-item     { border-right: none !important; border-bottom: 1px solid #eee; padding: 18px 20px !important; min-width: unset !important; }
+
+  /* GRIDS → single column */
+  .mission-cards,
+  .causes-grid,
+  .testi-grid,
+  .values-grid,
+  .team-grid      { grid-template-columns: 1fr !important; }
+
+  .impact-grid,
+  .hiw-steps,
+  .numbers-grid   { flex-direction: column !important; align-items: center !important; gap: 16px !important; }
+  .hiw-arrow      { display: none !important; }
+
+  .number-item, .impact-item { min-width: unset !important; width: 100%; max-width: 300px; }
+
+  /* SECTION PADDING */
+  .mission, .causes, .hiw, .values, .team, .numbers, .impact-section,
+  .testimonials, .cta, .story, .map-section, .faq, .contact-main,
+  .hiw-section, .cta-section, .impact-section { padding: 60px 16px !important; }
+
+  /* CONTACT */
+  .contact-inner  { grid-template-columns: 1fr !important; gap: 30px !important; }
+  .form-row       { grid-template-columns: 1fr !important; }
+
+  /* STORY */
+  .story-inner    { grid-template-columns: 1fr !important; gap: 30px !important; }
+  .story-image img{ height: 280px !important; }
+
+  /* CAMPAIGNS */
+  .featured-card  { grid-template-columns: 1fr !important; }
+  .featured-img   { height: 220px !important; }
+  .featured-content { padding: 24px !important; }
+  .cards          { grid-template-columns: 1fr !important; }
+
+  /* AUTH CARD */
+  .auth-wrapper   { margin-top: 76px; border-radius: 0 !important; }
+  .auth-body      { padding: 24px 20px !important; }
+  .input-row      { grid-template-columns: 1fr !important; }
+
+  /* DONATE */
+  .amount-grid    { grid-template-columns: 1fr 1fr !important; }
+  .custom-amount  { grid-column: span 2 !important; }
+  .payment-methods{ grid-template-columns: 1fr 1fr !important; }
+  .btn-row        { flex-direction: column !important; }
+  .btn-back, .btn-next, .btn-donate { width: 100% !important; }
+  .stepper        { gap: 4px !important; padding: 16px 8px !important; }
+  .step-label     { font-size: 0.72rem !important; }
+  .step-line      { width: 20px !important; }
+  .card           { padding: 20px 16px !important; }
+
+  /* FOOTER */
+  footer { padding: 30px 16px 20px !important; }
+  .footer-inner { flex-direction: column !important; gap: 24px !important; }
+  .footer-brand p { max-width: 100% !important; }
+
+  /* CTA buttons */
+  .cta-buttons    { flex-direction: column !important; align-items: center !important; }
+  .cta-btn-white, .cta-btn-outline { width: 100%; max-width: 320px; text-align: center; padding: 15px 24px !important; }
+
+  /* CONFIRM actions */
+  .confirm-actions { flex-direction: column !important; align-items: center !important; }
+  .btn-outline, .btn-filled { width: 100%; max-width: 320px; text-align: center; }
+
+  /* MODAL */
+  .modal-body     { padding: 16px !important; }
+  .modal-stats-row{ grid-template-columns: 1fr 1fr !important; }
+  .modal-ben-grid { grid-template-columns: 1fr !important; }
+  .modal-actions  { flex-direction: column !important; }
+  .modal-donate-btn, .modal-share-btn { width: 100%; text-align: center; }
+}
+
+/* ── 480px and below (small phones) ──────────────────────── */
+@media (max-width: 480px) {
+  .hero h1        { font-size: 1.7rem !important; }
+  .amount-grid    { grid-template-columns: 1fr !important; }
+  .custom-amount  { grid-column: span 1 !important; }
+  .payment-methods{ grid-template-columns: 1fr 1fr !important; }
+  .freq-btn       { padding: 10px 6px !important; font-size: 0.82rem !important; }
+  .social-btns    { flex-direction: column !important; }
+  .share-btns     { flex-wrap: wrap !important; justify-content: center !important; }
+  .social-links   { flex-wrap: wrap !important; }
+  .campaigns-hero h1 { font-size: 1.7rem !important; }
+  .filters        { gap: 6px !important; }
+  .filter-btn     { padding: 7px 14px !important; font-size: 0.82rem !important; }
+  .modal-stats-row{ grid-template-columns: 1fr !important; }
+}
+
+/* ── Tap target minimum size for iOS/Android ─────────────── */
+@media (max-width: 768px) {
+  a, button, [role="button"] { min-height: 44px; }
+  .amount-btn, .freq-btn, .pay-method { min-height: 48px !important; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ LOGIN SCREEN ═══════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="width:68px;height:68px;background:linear-gradient(135deg,#2c3e50,#3d6b4f);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:30px;">🛡️</div>
+      <h2 style="font-size:1.5rem;color:#2c3e50;margin-bottom:6px;">Admin Login</h2>
+      <p style="color:#888;font-size:.88rem;margin-bottom:0;">Helping Hearts &mdash; Secure Access</p>
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="admin-email" placeholder="admin@helpinghearts.org">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="admin-pass" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')adminLogin()">
+    </div>
+    <button class="btn btn-primary" onclick="adminLogin()" style="margin-top:10px;font-size:1rem;">🔐 Sign In to Dashboard</button>
+    <p id="login-error" style="color:#e74c3c;font-size:.85rem;text-align:center;margin-top:10px;display:none;">❌ Invalid credentials. Please try again.</p>
+    <div class="back-btn">
+      <a href="/helpingheart.html">&#8592; Back to Home</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ APP SHELL ═══════════════ -->
+<div id="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="/logo.png" alt="">
+      <div><h3>Helping Hearts</h3><span>Admin Panel</span></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" onclick="showPage('dashboard')"><span class="icon">📊</span> Dashboard</div>
+      <div class="nav-item" onclick="showPage('donations')"><span class="icon">💳</span> Donations</div>
+      <div class="nav-item" onclick="showPage('users')"><span class="icon">👥</span> Users</div>
+      <div class="nav-item" onclick="showPage('campaigns')"><span class="icon">📋</span> Campaigns</div>
+      <div class="nav-item" onclick="showPage('messages')"><span class="icon">✉️</span> Messages <span id="msg-badge" style="display:none;background:#e74c3c;color:#fff;border-radius:10px;padding:1px 7px;font-size:.75rem;margin-left:6px;">0</span></div>
+    </nav>
+    <div class="sidebar-footer">Helping Hearts © 2025</div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-content">
+    <div class="topbar">
+      <h1 id="page-title">Dashboard</h1>
+      <div class="topbar-right">
+        <span class="admin-badge" id="admin-name-badge">Admin</span>
+        <button class="logout-btn" onclick="adminLogout()">Logout</button>
+      </div>
+    </div>
+
+    <!-- ── DASHBOARD ── -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-grid" id="stats-grid">
+        <div class="loading">Loading stats</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">💰 Donations by Campaign</span></div>
+        <div id="campaign-bars"><div class="loading">Loading</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">🕐 Recent Donations (last 10)</span></div>
+        <div class="table-wrap" id="recent-table"><div class="loading">Loading</div></div>
+      </div>
+    </div>
+
+    <!-- ── DONATIONS ── -->
+    <div class="page" id="page-donations">
+      <div class="card">
+        <div class="card-header"><span class="card-title">💳 All Donations</span></div>
+        <div class="filters">
+          <input type="text" id="don-search" placeholder="Search email, name, txn ref…" oninput="debounce(loadDonations,400)()">
+          <select id="don-status" onchange="loadDonations()">
+            <option value="">All Statuses</option>
+            <option>pending</option><option>completed</option>
+            <option>failed</option><option>refunded</option>
+          </select>
+          <select id="don-method" onchange="loadDonations()">
+            <option value="">All Methods</option>
+            <option>card</option><option>easypaisa</option><option>jazzcash</option>
+            <option>bank</option><option>sadapay</option><option>crypto</option>
+          </select>
+        </div>
+        <div class="table-wrap" id="don-table"><div class="loading">Loading donations</div></div>
+        <div class="pagination" id="don-pagination"></div>
+      </div>
+    </div>
+
+    <!-- ── USERS ── -->
+    <div class="page" id="page-users">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">👥 Registered Users</span>
+          <button onclick="openAddUserModal()" style="padding:8px 18px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-weight:700;font-size:0.85rem;cursor:pointer;">➕ Add User</button>
+        </div>
+        <div class="table-wrap" id="users-table"><div class="loading">Loading users</div></div>
+        <div class="pagination" id="users-pagination"></div>
+      </div>
+    </div>
+
+    <!-- ── CAMPAIGNS ── -->
+    <div class="page" id="page-campaigns">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">📋 Campaigns</span>
+          <button onclick="openAddCampaignModal()" style="padding:8px 18px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-weight:700;font-size:0.85rem;cursor:pointer;">➕ Add Campaign</button>
+        </div>
+        <div class="table-wrap" id="campaigns-table"><div class="loading">Loading campaigns</div></div>
+      </div>
+    </div>
+
+    <!-- ── MESSAGES ── -->
+    <div class="page" id="page-messages">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">✉️ Contact Messages</span>
+          <div style="display:flex;gap:0;border:2px solid var(--border);border-radius:9px;overflow:hidden;">
+            <button id="mf-all"    onclick="setMsgFilter('all')"    style="padding:6px 16px;background:var(--accent);color:#fff;border:none;cursor:pointer;font-size:.82rem;font-weight:600;">All</button>
+            <button id="mf-unread" onclick="setMsgFilter('unread')" style="padding:6px 16px;background:transparent;color:var(--muted);border:none;border-left:2px solid var(--border);cursor:pointer;font-size:.82rem;font-weight:600;">Unread</button>
+            <button id="mf-read"   onclick="setMsgFilter('read')"   style="padding:6px 16px;background:transparent;color:var(--muted);border:none;border-left:2px solid var(--border);cursor:pointer;font-size:.82rem;font-weight:600;">Read</button>
+          </div>
+        </div>
+        <div class="table-wrap" id="messages-table"><div class="loading">Loading messages</div></div>
+      </div>
+    </div>
+
+  </div><!-- /main-content -->
+</div><!-- /app -->
+
+<!-- ── MESSAGE VIEW MODAL ── -->
+<div id="msg-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:16px;padding:32px;width:90%;max-width:580px;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25);position:relative;">
+    <button onclick="closeMsgModal()" style="position:absolute;top:16px;right:20px;background:none;border:none;font-size:1.5rem;cursor:pointer;color:#999;line-height:1;">✕</button>
+    <h3 id="mm-subject" style="color:var(--dark-green);margin:0 0 16px;padding-right:32px;font-size:1.1rem;"></h3>
+    <div style="display:flex;flex-wrap:wrap;gap:14px;font-size:.85rem;color:#666;padding-bottom:16px;margin-bottom:20px;border-bottom:1px solid var(--border);">
+      <span>👤 <strong id="mm-name"></strong></span>
+      <span>✉️ <a id="mm-email" href="#" style="color:var(--accent);"></a></span>
+      <span id="mm-phone-row">📞 <strong id="mm-phone"></strong></span>
+      <span>🕐 <strong id="mm-date"></strong></span>
+    </div>
+    <p id="mm-body" style="font-size:.95rem;line-height:1.8;color:#333;white-space:pre-wrap;margin:0;"></p>
+    <div id="mm-actions" style="margin-top:24px;display:flex;gap:10px;justify-content:flex-end;"></div>
+  </div>
+</div>
+
+<!-- DONATION DETAIL MODAL -->
+<!-- ADD USER MODAL -->
+<div id="add-user-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:16px;padding:28px;max-width:440px;width:100%;max-height:88vh;overflow-y:auto;">
+    <h3 style="margin:0 0 18px;color:var(--dark-green);font-size:1.15rem;">➕ Add New User</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div>
+        <label style="display:block;font-size:0.78rem;font-weight:700;color:#888;margin-bottom:4px;">First Name</label>
+        <input id="au-fname" type="text" style="width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;">
+      </div>
+      <div>
+        <label style="display:block;font-size:0.78rem;font-weight:700;color:#888;margin-bottom:4px;">Last Name</label>
+        <input id="au-lname" type="text" style="width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;">
+      </div>
+    </div>
+    <label style="display:block;font-size:0.78rem;font-weight:700;color:#888;margin-bottom:4px;">Email</label>
+    <input id="au-email" type="email" style="width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;margin-bottom:12px;">
+    <label style="display:block;font-size:0.78rem;font-weight:700;color:#888;margin-bottom:4px;">Phone (optional)</label>
+    <input id="au-phone" type="text" style="width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;margin-bottom:12px;">
+    <label style="display:block;font-size:0.78rem;font-weight:700;color:#888;margin-bottom:4px;">Password (min 8 characters)</label>
+    <input id="au-password" type="password" style="width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;margin-bottom:14px;">
+    <div id="au-error" style="display:none;color:#dc2626;font-size:0.82rem;margin-bottom:10px;"></div>
+    <div style="display:flex;gap:10px;">
+      <button onclick="closeAddUserModal()" style="flex:1;padding:11px;border:1.5px solid var(--border);background:#fff;border-radius:9px;font-weight:600;cursor:pointer;">Cancel</button>
+      <button onclick="submitAddUser()" style="flex:1;padding:11px;border:none;background:var(--accent);color:#fff;border-radius:9px;font-weight:700;cursor:pointer;">Create User</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD CAMPAIGN MODAL -->
+<div id="add-campaign-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:16px;padding:28px;max-width:480px;width:100%;max-height:88vh;overflow-y:auto;">
+    <h3 style="margin:0 0 18px;color:var(--dark-green);font-size:1.15rem;">➕ Add New Campaign</h3>
+    <label style="display:block;font-size:0.78rem;font-weight:700;color:#888;margin-bottom:4px;">Campaign Title</label>
+    <input id="ac-title" type="text" placeholder="e.g. Winter Clothing Drive" style="width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;margin-bottom:12px;">
+    <label style="display:block;font-size:0.78rem;font-weight:700;color:#888;margin-bottom:4px;">URL Slug (auto-generated, editable)</label>
+    <input id="ac-slug" type="text" placeholder="winter-clothing-drive" style="width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:monospace;margin-bottom:12px;">
+    <label style="display:block;font-size:0.78rem;font-weight:700;color:#888;margin-bottom:4px;">Description</label>
+    <textarea id="ac-desc" rows="3" placeholder="What is this campaign for?" style="width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;margin-bottom:12px;resize:vertical;"></textarea>
+    <label style="display:block;font-size:0.78rem;font-weight:700;color:#888;margin-bottom:4px;">Goal Amount (PKR)</label>
+    <input id="ac-goal" type="number" placeholder="500000" style="width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;margin-bottom:12px;">
+    <label style="display:block;font-size:0.78rem;font-weight:700;color:#888;margin-bottom:4px;">Image filename (optional — must exist in /public)</label>
+    <input id="ac-image" type="text" placeholder="e.g. winter-drive.jpg" style="width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;margin-bottom:14px;">
+    <div id="ac-error" style="display:none;color:#dc2626;font-size:0.82rem;margin-bottom:10px;"></div>
+    <div style="display:flex;gap:10px;">
+      <button onclick="closeAddCampaignModal()" style="flex:1;padding:11px;border:1.5px solid var(--border);background:#fff;border-radius:9px;font-weight:600;cursor:pointer;">Cancel</button>
+      <button onclick="submitAddCampaign()" style="flex:1;padding:11px;border:none;background:var(--accent);color:#fff;border-radius:9px;font-weight:700;cursor:pointer;">Create Campaign</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="don-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3>💳 Donation Details</h3>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+const API = window.location.hostname === 'localhost' ? 'http://localhost:5000/api' : '/api';
+let adminToken = null; // Always require login on page load
+localStorage.removeItem('admin_token');
+let donPage = 1, usersPage = 1;
+
+// ── INIT ───────────────────────────────────────────────────
+window.onload = () => {
+  if (false) {
+    showApp();
+  }
+};
+
+// ── LOGIN ──────────────────────────────────────────────────
+async function adminLogin() {
+  const email = document.getElementById('admin-email').value.trim();
+  const pass  = document.getElementById('admin-pass').value;
+  if (!email || !pass) return;
+
+  try {
+    const r = await fetch(`${API}/admin/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pass }),
+    });
+    const d = await r.json();
+    if (!d.success) {
+      document.getElementById('login-error').style.display = 'block';
+      return;
+    }
+    adminToken = d.token;
+    localStorage.setItem('admin_token', adminToken);
+    document.getElementById('admin-name-badge').textContent =
+      `👤 ${d.admin.username} (${d.admin.role})`;
+    showApp();
+  } catch {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+
+function showApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  loadDashboard();
+}
+
+function adminLogout() {
+  adminToken = null;
+  localStorage.removeItem('admin_token');
+  location.reload();
+}
+
+// ── NAVIGATION ─────────────────────────────────────────────
+const pageTitles = {
+  dashboard: 'Dashboard',
+  donations: 'Donations',
+  users: 'Registered Users',
+  campaigns: 'Campaigns',
+  messages: 'Contact Messages',
+};
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick')?.includes(`'${name}'`)) n.classList.add('active');
+  });
+  document.getElementById('page-title').textContent = pageTitles[name] || name;
+  if (name === 'dashboard') loadDashboard();
+  if (name === 'donations') loadDonations();
+  if (name === 'users') loadUsers();
+  if (name === 'campaigns') loadCampaigns();
+  if (name === 'messages') loadMessages();
+}
+
+// ── HELPERS ────────────────────────────────────────────────
+const headers = () => ({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` });
+const fmt = n => 'PKR ' + parseFloat(n || 0).toLocaleString();
+
+function debounce(fn, delay) {
+  let t;
+  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), delay); };
+}
+
+function statusBadge(s) {
+  return `<span class="badge badge-${s}">${s}</span>`;
+}
+
+// ── DASHBOARD ──────────────────────────────────────────────
+async function loadDashboard() {
+  try {
+    const r = await fetch(`${API}/admin/dashboard`, { headers: headers() });
+    const d = await r.json();
+    if (!d.success) return;
+
+    const { stats, byCampaign, byMethod, recentDonations } = d;
+
+    document.getElementById('stats-grid').innerHTML = `
+      <div class="stat-card"><div class="stat-icon green">💰</div><div><div class="stat-value">${fmt(stats.confirmed_amount)}</div><div class="stat-label">Total Raised (Confirmed)</div></div></div>
+      <div class="stat-card"><div class="stat-icon blue">🧾</div><div><div class="stat-value">${stats.total_donations}</div><div class="stat-label">Total Donations</div></div></div>
+      <div class="stat-card"><div class="stat-icon orange">👤</div><div><div class="stat-value">${stats.unique_donors}</div><div class="stat-label">Unique Donors</div></div></div>
+      <div class="stat-card"><div class="stat-icon red">👥</div><div><div class="stat-value">${stats.total_users}</div><div class="stat-label">Registered Users</div></div></div>
+    `;
+
+    const maxAmt = Math.max(...byCampaign.map(c => +c.total_raised), 1);
+    document.getElementById('campaign-bars').innerHTML = byCampaign.map(c => `
+      <div class="bar-row">
+        <span class="bar-label" title="${c.title}">${c.title}</span>
+        <div class="bar-track"><div class="bar-fill" style="width:${(c.total_raised/maxAmt*100).toFixed(1)}%"></div></div>
+        <span class="bar-val">${fmt(c.total_raised)} <small style="color:#aaa">(${c.donation_count} donations)</small></span>
+      </div>
+    `).join('');
+
+    document.getElementById('recent-table').innerHTML = `
+      <table>
+        <thead><tr><th>#</th><th>Donor</th><th>Email</th><th>Amount</th><th>Method</th><th>Campaign</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody>${recentDonations.map(d => `
+          <tr>
+            <td>${d.id}</td>
+            <td>${d.donor_first_name} ${d.donor_last_name}</td>
+            <td>${d.donor_email}</td>
+            <td>${fmt(d.amount)}</td>
+            <td>${d.payment_method}</td>
+            <td>${d.campaign || '<span style="color:#ccc">General</span>'}</td>
+            <td>${statusBadge(d.payment_status)}</td>
+            <td>${new Date(d.created_at).toLocaleDateString()}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>`;
+  } catch (err) { console.error(err); }
+}
+
+// ── DONATIONS ──────────────────────────────────────────────
+async function loadDonations(page) {
+  if (page) donPage = page;
+  const search = document.getElementById('don-search')?.value || '';
+  const status = document.getElementById('don-status')?.value || '';
+  const method = document.getElementById('don-method')?.value || '';
+
+  document.getElementById('don-table').innerHTML = '<div class="loading">Loading donations</div>';
+
+  const params = new URLSearchParams({ page: donPage, limit: 20 });
+  if (search) params.set('search', search);
+  if (status) params.set('status', status);
+  if (method) params.set('method', method);
+
+  try {
+    const r = await fetch(`${API}/admin/donations?${params}`, { headers: headers() });
+    const d = await r.json();
+    if (!d.success) return;
+
+    document.getElementById('don-table').innerHTML = `
+      <table>
+        <thead><tr><th>#</th><th>Donor</th><th>Email</th><th>Phone</th><th>City</th><th>Amount</th><th>Method</th><th>Campaign</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
+        <tbody>${d.donations.map(x => `
+          <tr>
+            <td>${x.id}</td>
+            <td>${x.donor_first_name} ${x.donor_last_name}</td>
+            <td>${x.donor_email}</td>
+            <td>${x.donor_phone || '-'}</td>
+            <td>${x.donor_city || '-'}</td>
+            <td>${fmt(x.amount)}</td>
+            <td>${x.payment_method}</td>
+            <td>${x.campaign_title || '<span style="color:#ccc">General</span>'}</td>
+            <td>
+              <select onchange="updateStatus(${x.id},this.value)" style="border:1px solid #ddd;border-radius:6px;padding:3px 6px;font-size:.8rem;">
+                ${['pending','completed','failed','refunded'].map(s =>
+                  `<option value="${s}" ${s===x.payment_status?'selected':''}>${s}</option>`
+                ).join('')}
+              </select>
+            </td>
+            <td>${new Date(x.created_at).toLocaleDateString()}</td>
+            <td><button class="btn btn-info btn-sm" onclick="showDonModal(${x.id})">View</button></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>`;
+
+    renderPagination('don-pagination', donPage, d.total, 20, loadDonations);
+  } catch (err) { console.error(err); }
+}
+
+async function updateStatus(id, status) {
+  try {
+    await fetch(`${API}/admin/donations/${id}/status`, {
+      method: 'PATCH',
+      headers: headers(),
+      body: JSON.stringify({ status }),
+    });
+  } catch (err) { console.error(err); }
+}
+
+// ── DONATION MODAL ─────────────────────────────────────────
+async function showDonModal(id) {
+  document.getElementById('don-modal').classList.add('open');
+  document.getElementById('modal-content').innerHTML = '<div class="loading">Loading</div>';
+
+  // Re-fetch full row from donations table
+  try {
+    const r = await fetch(`${API}/admin/donations?limit=1&search=${id}`, { headers: headers() });
+    // Fallback: just show id
+    document.getElementById('modal-content').innerHTML = `
+      <p style="color:var(--muted);font-size:.9rem">
+        Donation ID: <strong>#${id}</strong><br>
+        For full record, check the donations table in MySQL.<br><br>
+        Use the status dropdown in the table to update payment status.
+      </p>`;
+  } catch { }
+}
+function closeModal() { document.getElementById('don-modal').classList.remove('open'); }
+document.getElementById('don-modal')?.addEventListener('click', e => { if(e.target.id==='don-modal') closeModal(); });
+
+// ── USERS ──────────────────────────────────────────────────
+async function loadUsers(page) {
+  if (page) usersPage = page;
+  document.getElementById('users-table').innerHTML = '<div class="loading">Loading users</div>';
+
+  try {
+    const r = await fetch(`${API}/admin/users?page=${usersPage}&limit=20`, { headers: headers() });
+    const d = await r.json();
+
+    document.getElementById('users-table').innerHTML = `
+      <table>
+        <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Donations</th><th>Total Donated</th><th>Status</th><th>Joined</th><th>Action</th></tr></thead>
+        <tbody>${d.users.map(u => `
+          <tr>
+            <td>${u.id}</td>
+            <td>${u.first_name} ${u.last_name}</td>
+            <td>${u.email}</td>
+            <td>${u.phone || '-'}</td>
+            <td>${u.total_donations}</td>
+            <td>${fmt(u.total_donated)}</td>
+            <td>${statusBadge(u.is_active ? 'active' : 'failed')}</td>
+            <td>${new Date(u.created_at).toLocaleDateString()}</td>
+            <td>
+              <button class="btn btn-sm ${u.is_active?'btn-danger':'btn-success'}"
+                onclick="toggleUser(${u.id}, ${u.is_active?0:1}, this)">
+                ${u.is_active ? 'Deactivate' : 'Activate'}
+              </button>
+              <button class="btn btn-sm btn-danger" style="margin-left:4px;" onclick="deleteUser(${u.id})">🗑️</button>
+            </td>
+          </tr>`).join('')}
+        </tbody>
+      </table>`;
+
+    renderPagination('users-pagination', usersPage, d.total, 20, loadUsers);
+  } catch (err) { console.error(err); }
+}
+
+async function toggleUser(id, newStatus, btn) {
+  try {
+    await fetch(`${API}/admin/users/${id}/status`, {
+      method: 'PATCH', headers: headers(),
+      body: JSON.stringify({ is_active: newStatus }),
+    });
+    loadUsers(usersPage);
+  } catch (err) { console.error(err); }
+}
+
+async function deleteUser(id) {
+  if (!confirm('Permanently delete this user? Their donation history will remain but be unlinked.')) return;
+  try {
+    const r = await fetch(`${API}/admin/users/${id}`, { method: 'DELETE', headers: headers() });
+    const d = await r.json();
+    if (d.success) loadUsers(usersPage);
+    else alert(d.message || 'Could not delete user');
+  } catch (err) { alert('Network error'); }
+}
+
+function openAddUserModal() {
+  document.getElementById('au-fname').value = '';
+  document.getElementById('au-lname').value = '';
+  document.getElementById('au-email').value = '';
+  document.getElementById('au-phone').value = '';
+  document.getElementById('au-password').value = '';
+  document.getElementById('au-error').style.display = 'none';
+  document.getElementById('add-user-modal').style.display = 'flex';
+}
+function closeAddUserModal() { document.getElementById('add-user-modal').style.display = 'none'; }
+
+async function submitAddUser() {
+  const first_name = document.getElementById('au-fname').value.trim();
+  const last_name  = document.getElementById('au-lname').value.trim();
+  const email      = document.getElementById('au-email').value.trim();
+  const phone      = document.getElementById('au-phone').value.trim();
+  const password   = document.getElementById('au-password').value;
+  const errEl = document.getElementById('au-error');
+
+  if (!first_name || !last_name || !email || password.length < 8) {
+    errEl.textContent = 'All fields required. Password must be 8+ characters.';
+    errEl.style.display = 'block';
+    return;
+  }
+  try {
+    const r = await fetch(`${API}/admin/users`, {
+      method: 'POST', headers: headers(),
+      body: JSON.stringify({ first_name, last_name, email, phone, password })
+    });
+    const d = await r.json();
+    if (d.success) {
+      closeAddUserModal();
+      loadUsers(usersPage);
+    } else {
+      errEl.textContent = d.message || 'Could not create user';
+      errEl.style.display = 'block';
+    }
+  } catch(e) {
+    errEl.textContent = 'Network error';
+    errEl.style.display = 'block';
+  }
+}
+
+// ── CAMPAIGNS ──────────────────────────────────────────────
+async function loadCampaigns() {
+  try {
+    const r = await fetch(`${API}/admin/campaigns`, { headers: headers() });
+    const d = await r.json();
+
+    document.getElementById('campaigns-table').innerHTML = `
+      <table>
+        <thead><tr><th>#</th><th>Title</th><th>Slug</th><th>Goal</th><th>Raised</th><th>Progress</th><th>Donations</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>${d.campaigns.map(c => {
+          const pct = c.goal_amount > 0 ? Math.min(100,(c.raised_amount/c.goal_amount*100)).toFixed(1) : 0;
+          return `<tr>
+            <td>${c.id}</td>
+            <td>${c.title}</td>
+            <td><code style="font-size:.8rem">${c.slug}</code></td>
+            <td>${fmt(c.goal_amount)}</td>
+            <td>${fmt(c.raised_amount)}</td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="flex:1;background:#eee;border-radius:4px;height:8px;">
+                  <div style="width:${pct}%;background:var(--accent);border-radius:4px;height:8px;"></div>
+                </div>
+                <span style="font-size:.78rem;color:var(--muted)">${pct}%</span>
+              </div>
+            </td>
+            <td>${c.donation_count}</td>
+            <td>${statusBadge(c.is_active ? 'active' : 'failed')}</td>
+            <td>
+              <button class="btn btn-sm ${c.is_active?'btn-danger':'btn-success'}"
+                onclick="toggleCampaign(${c.id}, ${c.is_active?false:true})">
+                ${c.is_active ? 'Disable' : 'Enable'}
+              </button>
+              <button class="btn btn-sm btn-danger" style="margin-left:4px;" onclick="deleteCampaign(${c.id}, ${c.donation_count})">🗑️</button>
+            </td>
+          </tr>`;
+        }).join('')}
+        </tbody>
+      </table>`;
+  } catch (err) { console.error(err); }
+}
+
+async function toggleCampaign(id, newStatus) {
+  try {
+    await fetch(`${API}/admin/campaigns/${id}`, {
+      method: 'PATCH', headers: headers(),
+      body: JSON.stringify({ is_active: newStatus }),
+    });
+    loadCampaigns();
+  } catch (err) { console.error(err); }
+}
+
+async function deleteCampaign(id, donationCount) {
+  const msg = donationCount > 0
+    ? `This campaign has ${donationCount} donation(s) linked to it. Deleting it will unlink those donations (they stay in the system as "general donations"). Continue?`
+    : 'Permanently delete this campaign?';
+  if (!confirm(msg)) return;
+  try {
+    const r = await fetch(`${API}/admin/campaigns/${id}`, { method: 'DELETE', headers: headers() });
+    const d = await r.json();
+    if (d.success) loadCampaigns();
+    else alert(d.message || 'Could not delete campaign');
+  } catch (err) { alert('Network error'); }
+}
+
+function openAddCampaignModal() {
+  document.getElementById('ac-title').value = '';
+  document.getElementById('ac-slug').value = '';
+  document.getElementById('ac-desc').value = '';
+  document.getElementById('ac-goal').value = '';
+  document.getElementById('ac-image').value = '';
+  document.getElementById('ac-error').style.display = 'none';
+  document.getElementById('add-campaign-modal').style.display = 'flex';
+}
+function closeAddCampaignModal() { document.getElementById('add-campaign-modal').style.display = 'none'; }
+
+// Auto-generate slug from title
+document.addEventListener('DOMContentLoaded', () => {
+  const titleEl = document.getElementById('ac-title');
+  if (titleEl) {
+    titleEl.addEventListener('input', () => {
+      const slug = titleEl.value.trim().toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+      document.getElementById('ac-slug').value = slug;
+    });
+  }
+});
+
+async function submitAddCampaign() {
+  const title       = document.getElementById('ac-title').value.trim();
+  const slug        = document.getElementById('ac-slug').value.trim();
+  const description = document.getElementById('ac-desc').value.trim();
+  const goal_amount  = parseFloat(document.getElementById('ac-goal').value);
+  const image_url    = document.getElementById('ac-image').value.trim();
+  const errEl = document.getElementById('ac-error');
+
+  if (!title || !slug || !goal_amount || goal_amount <= 0) {
+    errEl.textContent = 'Title, slug, and a valid goal amount are required.';
+    errEl.style.display = 'block';
+    return;
+  }
+  try {
+    const r = await fetch(`${API}/admin/campaigns`, {
+      method: 'POST', headers: headers(),
+      body: JSON.stringify({ slug, title, description, goal_amount, image_url })
+    });
+    const d = await r.json();
+    if (d.success) {
+      closeAddCampaignModal();
+      loadCampaigns();
+    } else {
+      errEl.textContent = d.message || 'Could not create campaign';
+      errEl.style.display = 'block';
+    }
+  } catch(e) {
+    errEl.textContent = 'Network error';
+    errEl.style.display = 'block';
+  }
+}
+
+// ── MESSAGES ──────────────────────────────────────────────
+let _msgs = [];
+let _msgFilter = 'all';
+
+function setMsgFilter(f) {
+  _msgFilter = f;
+  ['all','unread','read'].forEach(k => {
+    const b = document.getElementById('mf-' + k);
+    if (!b) return;
+    b.style.background = k === f ? 'var(--accent)' : 'transparent';
+    b.style.color      = k === f ? '#fff'          : 'var(--muted)';
+  });
+  renderMsgsTable();
+}
+
+function renderMsgsTable() {
+  const list = _msgs.filter(m =>
+    _msgFilter === 'unread' ? !m.is_read :
+    _msgFilter === 'read'   ?  m.is_read : true
+  );
+  if (!list.length) {
+    document.getElementById('messages-table').innerHTML =
+      `<p style="padding:20px;color:#888;">No ${_msgFilter !== 'all' ? _msgFilter + ' ' : ''}messages.</p>`;
+    return;
+  }
+  document.getElementById('messages-table').innerHTML = `
+    <table>
+      <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Subject</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+      <tbody>${list.map(m => `
+        <tr>
+          <td>${m.id}</td>
+          <td>${m.name}</td>
+          <td><a href="mailto:${m.email}" style="color:var(--accent);">${m.email}</a></td>
+          <td>${m.phone || '-'}</td>
+          <td>${m.subject || '-'}</td>
+          <td>${m.is_read ? statusBadge('completed') : '<span class="badge badge-pending">Unread</span>'}</td>
+          <td>${new Date(m.created_at).toLocaleDateString()}</td>
+          <td style="white-space:nowrap;">
+            <button class="btn btn-sm btn-info" onclick="openMsgModal(${m.id})" style="margin-right:4px;">📨 Open Message</button>
+            ${!m.is_read ? `<button class="btn btn-sm btn-success" onclick="markRead(${m.id})" style="margin-right:4px;">Mark Read</button>` : ''}
+            <button class="btn btn-sm btn-danger" onclick="deleteMessage(${m.id})">Delete</button>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+async function loadMessages() {
+  try {
+    const r = await fetch(`${API}/admin/messages`, { headers: headers() });
+    const d = await r.json();
+    const badge = document.getElementById('msg-badge');
+    if (d.unread > 0) { badge.textContent = d.unread; badge.style.display = 'inline'; }
+    else { badge.style.display = 'none'; }
+    _msgs = d.messages || [];
+    if (!_msgs.length) {
+      document.getElementById('messages-table').innerHTML = '<p style="padding:20px;color:#888;">No messages yet.</p>';
+      return;
+    }
+    renderMsgsTable();
+  } catch (err) { console.error(err); }
+}
+
+function openMsgModal(id) {
+  const m = _msgs.find(x => x.id === id);
+  if (!m) return;
+  document.getElementById('mm-subject').textContent = m.subject || '(No subject)';
+  document.getElementById('mm-name').textContent    = m.name;
+  const ea = document.getElementById('mm-email');
+  ea.textContent = m.email; ea.href = 'mailto:' + m.email;
+  document.getElementById('mm-phone').textContent   = m.phone || '';
+  document.getElementById('mm-phone-row').style.display = m.phone ? '' : 'none';
+  document.getElementById('mm-date').textContent    = new Date(m.created_at).toLocaleString();
+  document.getElementById('mm-body').textContent    = m.message;
+  const acts = document.getElementById('mm-actions');
+  acts.innerHTML = '';
+  if (!m.is_read) {
+    const b = document.createElement('button');
+    b.className = 'btn btn-sm btn-success';
+    b.textContent = 'Mark as Read';
+    b.onclick = () => { markRead(id); closeMsgModal(); };
+    acts.appendChild(b);
+  }
+  const db = document.createElement('button');
+  db.className = 'btn btn-sm btn-danger';
+  db.textContent = 'Delete';
+  db.onclick = () => { closeMsgModal(); deleteMessage(id); };
+  acts.appendChild(db);
+  document.getElementById('msg-modal').style.display = 'flex';
+  if (!m.is_read) markRead(id);
+}
+
+function closeMsgModal() {
+  document.getElementById('msg-modal').style.display = 'none';
+}
+document.addEventListener('click', e => {
+  if (e.target.id === 'msg-modal') closeMsgModal();
+});
+
+async function markRead(id) {
+  try {
+    await fetch(`${API}/admin/messages/${id}/read`, { method: 'PATCH', headers: headers() });
+    const m = _msgs.find(x => x.id === id);
+    if (m) m.is_read = true;
+    const unread = _msgs.filter(x => !x.is_read).length;
+    const badge = document.getElementById('msg-badge');
+    badge.textContent = unread; badge.style.display = unread > 0 ? 'inline' : 'none';
+    renderMsgsTable();
+  } catch { }
+}
+
+async function deleteMessage(id) {
+  if (!confirm('Delete this message permanently?')) return;
+  try {
+    await fetch(`${API}/admin/messages/${id}`, { method: 'DELETE', headers: headers() });
+    _msgs = _msgs.filter(x => x.id !== id);
+    renderMsgsTable();
+  } catch { }
+}
+
+// ── PAGINATION ─────────────────────────────────────────────
+function renderPagination(containerId, current, total, limit, loadFn) {
+  const pages = Math.ceil(total / limit);
+  if (pages <= 1) { document.getElementById(containerId).innerHTML = ''; return; }
+  let html = `<span>Page ${current} of ${pages} (${total} records)</span>`;
+  if (current > 1) html += `<button onclick="${loadFn.name}(${current-1})">← Prev</button>`;
+  for (let i = Math.max(1,current-2); i <= Math.min(pages,current+2); i++)
+    html += `<button class="${i===current?'active':''}" onclick="${loadFn.name}(${i})">${i}</button>`;
+  if (current < pages) html += `<button onclick="${loadFn.name}(${current+1})">Next →</button>`;
+  document.getElementById(containerId).innerHTML = html;
+}
+</script>
+
+<script>
+// ── Mobile hamburger menu ─────────────────────────────────────
+(function(){
+  var nav = document.querySelector('nav');
+  if (!nav) return;
+  var ul = nav.querySelector('ul');
+  if (!ul) return;
+
+  // Create hamburger button
+  var btn = document.createElement('button');
+  btn.className = 'hh-hamburger';
+  btn.setAttribute('aria-label','Toggle menu');
+  btn.innerHTML = '<span></span><span></span><span></span>';
+  nav.appendChild(btn);
+
+  // Create mobile overlay
+  var overlay = document.createElement('div');
+  overlay.className = 'hh-nav-overlay';
+  document.body.appendChild(overlay);
+
+  function openMenu(){
+    ul.classList.add('hh-nav-open');
+    overlay.classList.add('hh-overlay-active');
+    btn.classList.add('hh-hamburger-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu(){
+    ul.classList.remove('hh-nav-open');
+    overlay.classList.remove('hh-overlay-active');
+    btn.classList.remove('hh-hamburger-open');
+    document.body.style.overflow = '';
+  }
+
+  btn.addEventListener('click', function(){
+    ul.classList.contains('hh-nav-open') ? closeMenu() : openMenu();
+  });
+  overlay.addEventListener('click', closeMenu);
+  ul.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', closeMenu);
+  });
+})();
+</script>
+
+</body>
+</html>

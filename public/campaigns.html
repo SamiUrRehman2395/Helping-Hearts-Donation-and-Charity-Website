@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campaigns - Helping Hearts</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --main-color: #96BF8A;
+    --accent-color: #2ecc71;
+    --donate-color: #e74c3c;
+    --bg-light: #f7f7f7;
+    --text-color: #333;
+}
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+nav { display:flex; justify-content:space-between; align-items:center; padding:15px 50px; background:#fff; box-shadow:0 4px 20px rgba(0,0,0,0.08); position:sticky; top:0; z-index:100; }
+.logo { display:flex; align-items:center; gap:15px; }
+.logo img { width:80px; }
+.logo h2 { color:var(--main-color); font-weight:700; }
+nav ul { display:flex; list-style:none; align-items:center; gap:20px; }
+nav ul li a { text-decoration:none; color:var(--text-color); font-weight:600; padding:8px 12px; transition:0.3s; border-radius:5px; }
+nav ul li a:not(.donate-btn):hover { color:var(--main-color); background:rgba(150,191,138,0.1); }
+.donate-btn { background:var(--donate-color)!important;color:#fff!important;box-shadow:0 4px 15px rgba(231,76,60,0.35); } .donate-btn:hover { background:#c0392b!important;transform:translateY(-2px)!important; }
+.dropdown { position:relative; }
+.dropdown-menu { position:absolute; top:100%; left:0; background:#000; list-style:none; padding:10px 0; min-width:220px; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.3); display:flex; flex-direction:column; opacity:0; visibility:hidden; transform:translateY(10px); transition:0.3s; z-index:999; }
+.dropdown-menu li { width:100%; }
+.dropdown-menu li a { color:#fff; display:block; padding:12px 20px; text-align:left; border-radius:0; }
+.dropdown-menu li a:hover { background:var(--main-color); }
+.dropdown:hover .dropdown-menu { opacity:1; visibility:visible; transform:translateY(0); }
+.campaigns-hero { background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url('donation campaigns.jpg') center/cover; color:#fff; text-align:center; padding:80px 20px; }
+.campaigns-hero h1 { font-size:3rem; margin-bottom:12px; }
+.campaigns-hero p { font-size:1.1rem; opacity:0.85; max-width:600px; margin:0 auto; }
+.stats-bar { display:flex; justify-content:center; gap:60px; flex-wrap:wrap; background:#fff; padding:35px 20px; box-shadow:0 4px 15px rgba(0,0,0,0.06); }
+.stat-item { text-align:center; }
+.stat-item h3 { font-size:2rem; color:var(--accent-color); }
+.stat-item p { color:#888; font-size:0.9rem; font-weight:600; }
+.container { padding:60px 40px; background:var(--bg-light); }
+.search-filter { display:flex; flex-direction:column; align-items:center; gap:20px; margin-bottom:50px; }
+.search-bar { position:relative; width:100%; max-width:550px; }
+.search-bar input { width:100%; padding:14px 20px 14px 50px; border-radius:30px; border:2px solid #e0e0e0; outline:none; font-size:1rem; font-family:'Poppins',sans-serif; transition:0.3s; }
+.search-bar input:focus { border-color:var(--main-color); }
+.search-bar .search-icon { position:absolute; left:18px; top:50%; transform:translateY(-50%); font-size:1.1rem; }
+.filters { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+.filter-btn { padding:9px 22px; border:2px solid #ddd; border-radius:30px; background:#fff; cursor:pointer; font-weight:600; font-family:'Poppins',sans-serif; color:#888; transition:0.3s; }
+.filter-btn:hover, .filter-btn.active { background:var(--main-color); border-color:var(--main-color); color:#fff; }
+.featured-section { margin-bottom:60px; }
+.featured-section h2 { font-size:1.8rem; color:var(--text-color); margin-bottom:25px; }
+.featured-card { background:#fff; border-radius:20px; overflow:hidden; box-shadow:0 15px 40px rgba(0,0,0,0.12); display:grid; grid-template-columns:1fr 1fr; transition:0.3s; }
+.featured-card:hover { transform:translateY(-5px); box-shadow:0 20px 50px rgba(0,0,0,0.18); }
+.featured-img { height:350px; object-fit:cover; width:100%; }
+.featured-content { padding:40px; display:flex; flex-direction:column; justify-content:space-between; }
+.featured-badge { display:inline-block; background:#fff3cd; color:#856404; padding:5px 14px; border-radius:20px; font-size:0.8rem; font-weight:700; margin-bottom:15px; }
+.featured-content h3 { font-size:1.7rem; margin-bottom:12px; color:var(--text-color); }
+.featured-content p { color:#666; line-height:1.7; margin-bottom:20px; }
+.need-items { display:flex; flex-direction:column; gap:8px; margin-bottom:20px; }
+.need-item { display:flex; align-items:center; gap:10px; font-size:0.9rem; color:#555; }
+.need-item .dot { width:8px; height:8px; background:var(--accent-color); border-radius:50%; flex-shrink:0; }
+.cards-section h2 { font-size:1.8rem; color:var(--text-color); margin-bottom:25px; }
+.cards { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr)); gap:28px; }
+.campaign-card { background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 8px 25px rgba(0,0,0,0.08); transition:0.3s; display:flex; flex-direction:column; }
+.campaign-card:hover { transform:translateY(-8px); box-shadow:0 15px 35px rgba(0,0,0,0.14); }
+.campaign-card img { width:100%; height:200px; object-fit:cover; }
+.card-content { padding:22px; flex:1; display:flex; flex-direction:column; }
+.card-tag { display:inline-block; padding:4px 12px; border-radius:20px; font-size:0.75rem; font-weight:700; margin-bottom:10px; }
+.tag-disaster { background:#fce4ec; color:#c62828; }
+.tag-education { background:#e3f2fd; color:#1565c0; }
+.tag-medical { background:#e8f5e9; color:#2e7d32; }
+.tag-food { background:#fff3e0; color:#e65100; }
+.campaign-card h3 { font-size:1.1rem; margin-bottom:8px; color:var(--text-color); }
+.campaign-card .desc { color:#777; font-size:0.88rem; line-height:1.6; margin-bottom:15px; flex:1; }
+.raised-info { display:flex; justify-content:space-between; font-size:0.82rem; margin-bottom:6px; }
+.raised-info .raised { color:#2e7d32; font-weight:700; }
+.raised-info .goal { color:#999; }
+.progress { background:#eee; border-radius:10px; overflow:hidden; margin-bottom:12px; }
+.progress-bar { height:8px; border-radius:10px; background:linear-gradient(to right,#2ecc71,#27ae60); }
+.card-stats { display:flex; gap:15px; margin-bottom:15px; }
+.c-stat { font-size:0.8rem; color:#888; display:flex; align-items:center; gap:4px; }
+.card-actions { display:flex; gap:10px; }
+.btn-donate-card { flex:1; padding:11px; background:var(--donate-color); color:#fff; border:none; border-radius:10px; font-weight:700; cursor:pointer; transition:0.3s; font-family:'Poppins',sans-serif; text-decoration:none; text-align:center; font-size:0.9rem; }
+.btn-donate-card:hover { background:#c0392b; }
+.btn-details { padding:11px 16px; border:2px solid var(--main-color); color:var(--main-color); border-radius:10px; font-weight:700; cursor:pointer; transition:0.3s; font-family:'Poppins',sans-serif; text-decoration:none; text-align:center; font-size:0.9rem; background:#fff; }
+.btn-details:hover { background:var(--main-color); color:#fff; }
+.urgency { display:flex; align-items:center; gap:6px; font-size:0.78rem; color:#c62828; font-weight:700; margin-bottom:10px; }
+.urgency .pulse { width:8px; height:8px; background:#e74c3c; border-radius:50%; animation:pulse 1.2s infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.4);opacity:0.7;} }
+.impact-section { background:linear-gradient(135deg, #2c3e50, #3d6b4f); color:#fff; padding:70px 40px; text-align:center; }
+.impact-section h2 { font-size:2.2rem; margin-bottom:12px; }
+.impact-section p { opacity:0.8; max-width:550px; margin:0 auto 40px; }
+.impact-grid { display:flex; justify-content:center; gap:50px; flex-wrap:wrap; }
+.impact-item { text-align:center; }
+.impact-item h3 { font-size:2.5rem; color:var(--accent-color); font-weight:700; }
+.impact-item p { opacity:0.75; font-size:0.9rem; margin-top:4px; }
+.hiw-section { background:#fff; padding:70px 40px; text-align:center; }
+.hiw-section h2 { font-size:2rem; color:var(--text-color); margin-bottom:12px; }
+.hiw-section .sub { color:#888; max-width:500px; margin:0 auto 45px; }
+.hiw-steps { display:flex; justify-content:center; gap:20px; flex-wrap:wrap; align-items:flex-start; }
+.hiw-step { text-align:center; max-width:200px; }
+.step-num { width:60px; height:60px; background:var(--accent-color); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.3rem; font-weight:700; margin:0 auto 15px; }
+.hiw-step h4 { margin-bottom:8px; color:var(--text-color); }
+.hiw-step p { font-size:0.85rem; color:#888; line-height:1.6; }
+.hiw-arrow { align-self:center; font-size:1.5rem; color:#ddd; padding-top:0; }
+.testimonials { background:var(--bg-light); padding:70px 40px; }
+.testimonials h2 { text-align:center; font-size:2rem; margin-bottom:40px; color:var(--text-color); }
+.testi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px; max-width:1000px; margin:0 auto; }
+.testi-card { background:#fff; border-radius:14px; padding:25px; box-shadow:0 5px 20px rgba(0,0,0,0.07); }
+.testi-text { color:#555; line-height:1.7; margin-bottom:18px; font-style:italic; font-size:0.92rem; }
+.testi-author { display:flex; align-items:center; gap:12px; }
+.testi-avatar { width:44px; height:44px; border-radius:50%; background:var(--main-color); display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+.testi-name { font-weight:700; font-size:0.9rem; }
+.testi-loc { font-size:0.78rem; color:#aaa; }
+.stars { color:#f1c40f; font-size:0.85rem; margin-bottom:10px; }
+.cta-section { background:linear-gradient(135deg, var(--donate-color), #c0392b); color:#fff; text-align:center; padding:70px 20px; }
+.cta-section h2 { font-size:2.2rem; margin-bottom:12px; }
+.cta-section p { opacity:0.9; margin-bottom:30px; max-width:500px; margin-left:auto; margin-right:auto; }
+.cta-btn { display:inline-block; padding:16px 40px; background:#fff; color:var(--donate-color); border-radius:12px; font-weight:700; font-size:1.05rem; text-decoration:none; transition:0.3s; }
+.cta-btn:hover { transform:translateY(-3px); box-shadow:0 10px 25px rgba(0,0,0,0.2); }
+footer { background:#2c3e50; color:#fff; text-align:center; padding:25px 20px; }
+/* ── Campaign Detail Modal ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);z-index:1000;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.active{display:flex;}
+.modal{background:#fff;border-radius:24px;max-width:820px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,0.3);animation:modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes modalIn{from{opacity:0;transform:scale(0.88) translateY(20px);}to{opacity:1;transform:scale(1) translateY(0);}}
+.modal-hero{position:relative;height:240px;overflow:hidden;border-radius:24px 24px 0 0;}
+.modal-hero img{width:100%;height:100%;object-fit:cover;}
+.modal-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 60%);}
+.modal-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.9);border:none;width:38px;height:38px;border-radius:50%;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.2);transition:0.2s;}
+.modal-close:hover{background:#fff;transform:scale(1.1);}
+.modal-badge-wrap{position:absolute;bottom:16px;left:20px;display:flex;gap:8px;flex-wrap:wrap;}
+.modal-tag{padding:5px 14px;border-radius:20px;font-size:0.75rem;font-weight:700;backdrop-filter:blur(8px);}
+.modal-body{padding:28px 32px 32px;}
+.modal-title{font-size:1.6rem;font-weight:800;color:var(--text-color);margin-bottom:10px;}
+.modal-desc{color:#666;line-height:1.75;font-size:0.95rem;margin-bottom:22px;}
+.modal-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;}
+.m-stat{background:var(--bg-light);border-radius:14px;padding:16px;text-align:center;}
+.m-stat-val{font-size:1.4rem;font-weight:800;color:var(--accent-color);}
+.m-stat-label{font-size:0.75rem;color:#888;font-weight:600;margin-top:3px;}
+.modal-progress-wrap{margin-bottom:22px;}
+.modal-raised-row{display:flex;justify-content:space-between;font-size:0.88rem;margin-bottom:8px;}
+.modal-raised-row .raised{color:#2e7d32;font-weight:700;}
+.modal-raised-row .goal{color:#999;}
+.modal-progress{background:#eee;border-radius:10px;overflow:hidden;margin-bottom:6px;}
+.modal-progress-bar{height:10px;border-radius:10px;background:linear-gradient(to right,#2ecc71,#27ae60);}
+.modal-pct{font-size:0.78rem;color:#888;}
+.modal-section-title{font-size:1rem;font-weight:700;color:var(--text-color);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.modal-needs{display:flex;flex-direction:column;gap:8px;margin-bottom:22px;}
+.modal-need-item{display:flex;align-items:flex-start;gap:12px;background:var(--bg-light);border-radius:10px;padding:12px 14px;font-size:0.88rem;color:#444;}
+.modal-need-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+.modal-beneficiaries{background:#f0f9f0;border-radius:14px;padding:18px;margin-bottom:22px;}
+.modal-ben-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+.modal-ben-item{display:flex;align-items:center;gap:8px;font-size:0.85rem;color:#444;}
+.modal-ben-icon{font-size:1.1rem;}
+.modal-actions{display:flex;gap:12px;margin-top:4px;}
+.modal-donate-btn{flex:1;padding:14px;background:var(--donate-color);color:#fff;border:none;border-radius:12px;font-weight:700;font-size:1rem;cursor:pointer;transition:0.3s;font-family:'Poppins',sans-serif;text-decoration:none;text-align:center;}
+.modal-donate-btn:hover{background:#c0392b;transform:translateY(-2px);}
+.modal-share-btn{padding:14px 20px;border:2px solid var(--main-color);color:var(--main-color);border-radius:12px;font-weight:700;cursor:pointer;background:#fff;transition:0.3s;font-family:'Poppins',sans-serif;font-size:0.9rem;}
+.modal-share-btn:hover{background:var(--main-color);color:#fff;}
+@media(max-width:600px){.modal-stats-row{grid-template-columns:1fr 1fr;}.modal-ben-grid{grid-template-columns:1fr;}.modal-body{padding:20px;}.modal-title{font-size:1.3rem;}}
+
+
+/* ════════════════════════════════════════════════
+   GLOBAL MOBILE RESPONSIVE — Helping Hearts
+   Works on all pages: web, Android, iOS
+   ════════════════════════════════════════════════ */
+
+/* Hamburger button */
+.hh-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px; height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 200;
+}
+.hh-hamburger span {
+  display: block;
+  height: 3px;
+  background: #333;
+  border-radius: 3px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.hh-hamburger.hh-hamburger-open span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+.hh-hamburger.hh-hamburger-open span:nth-child(2) { opacity: 0; }
+.hh-hamburger.hh-hamburger-open span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+
+/* Mobile nav overlay */
+.hh-nav-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 150;
+}
+.hh-nav-overlay.hh-overlay-active { display: block; }
+
+/* ── 768px and below ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* NAV */
+  nav {
+    padding: 12px 16px !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 160 !important;
+  }
+  .logo img { width: 52px !important; }
+  .logo h2  { font-size: 1rem !important; }
+
+  .hh-hamburger { display: flex; }
+
+  nav ul {
+    display: none !important;
+    position: fixed !important;
+    top: 0; right: 0;
+    width: min(300px, 80vw);
+    height: 100vh;
+    background: #fff;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+    padding: 80px 0 30px !important;
+    box-shadow: -4px 0 30px rgba(0,0,0,0.15);
+    z-index: 170;
+    overflow-y: auto;
+  }
+  nav ul.hh-nav-open { display: flex !important; }
+  nav ul li { width: 100%; }
+  nav ul li a {
+    display: block !important;
+    padding: 14px 24px !important;
+    border-radius: 0 !important;
+    font-size: 1rem !important;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .donate-btn {
+    margin: 12px 20px !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+  }
+  .admin-btn {
+    margin: 8px 20px !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+  }
+
+  /* HERO sections */
+  .hero           { height: 95vh !important; min-height: 500px; }
+  .hero h1        { font-size: 2rem !important; }
+  .hero p         { font-size: 1rem !important; }
+  .hero-btns a    { padding: 13px 24px !important; font-size: 0.92rem !important; }
+  .hero-btns      { flex-direction: column !important; align-items: center !important; }
+  .hero-tag       { font-size: 0.75rem !important; }
+
+  .about-hero h1, .contact-hero h1, .campaigns-hero h1 {
+    font-size: 2rem !important;
+  }
+  .donate-hero h1 { font-size: 1.8rem !important; }
+
+  /* STATS BARS */
+  .stats-bar      { flex-direction: column !important; gap: 0 !important; }
+  .stat-item      { border-right: none !important; border-bottom: 1px solid #eee; padding: 20px 16px !important; }
+  .stat-item:last-child { border-bottom: none; }
+  .stat-item h3   { font-size: 1.6rem !important; }
+
+  .quick-strip    { flex-direction: column !important; }
+  .quick-item     { border-right: none !important; border-bottom: 1px solid #eee; padding: 18px 20px !important; min-width: unset !important; }
+
+  /* GRIDS → single column */
+  .mission-cards,
+  .causes-grid,
+  .testi-grid,
+  .values-grid,
+  .team-grid      { grid-template-columns: 1fr !important; }
+
+  .impact-grid,
+  .hiw-steps,
+  .numbers-grid   { flex-direction: column !important; align-items: center !important; gap: 16px !important; }
+  .hiw-arrow      { display: none !important; }
+
+  .number-item, .impact-item { min-width: unset !important; width: 100%; max-width: 300px; }
+
+  /* SECTION PADDING */
+  .mission, .causes, .hiw, .values, .team, .numbers, .impact-section,
+  .testimonials, .cta, .story, .map-section, .faq, .contact-main,
+  .hiw-section, .cta-section, .impact-section { padding: 60px 16px !important; }
+
+  /* CONTACT */
+  .contact-inner  { grid-template-columns: 1fr !important; gap: 30px !important; }
+  .form-row       { grid-template-columns: 1fr !important; }
+
+  /* STORY */
+  .story-inner    { grid-template-columns: 1fr !important; gap: 30px !important; }
+  .story-image img{ height: 280px !important; }
+
+  /* CAMPAIGNS */
+  .featured-card  { grid-template-columns: 1fr !important; }
+  .featured-img   { height: 220px !important; }
+  .featured-content { padding: 24px !important; }
+  .cards          { grid-template-columns: 1fr !important; }
+
+  /* AUTH CARD */
+  .auth-wrapper   { margin-top: 76px; border-radius: 0 !important; }
+  .auth-body      { padding: 24px 20px !important; }
+  .input-row      { grid-template-columns: 1fr !important; }
+
+  /* DONATE */
+  .amount-grid    { grid-template-columns: 1fr 1fr !important; }
+  .custom-amount  { grid-column: span 2 !important; }
+  .payment-methods{ grid-template-columns: 1fr 1fr !important; }
+  .btn-row        { flex-direction: column !important; }
+  .btn-back, .btn-next, .btn-donate { width: 100% !important; }
+  .stepper        { gap: 4px !important; padding: 16px 8px !important; }
+  .step-label     { font-size: 0.72rem !important; }
+  .step-line      { width: 20px !important; }
+  .card           { padding: 20px 16px !important; }
+
+  /* FOOTER */
+  footer { padding: 30px 16px 20px !important; }
+  .footer-inner { flex-direction: column !important; gap: 24px !important; }
+  .footer-brand p { max-width: 100% !important; }
+
+  /* CTA buttons */
+  .cta-buttons    { flex-direction: column !important; align-items: center !important; }
+  .cta-btn-white, .cta-btn-outline { width: 100%; max-width: 320px; text-align: center; padding: 15px 24px !important; }
+
+  /* CONFIRM actions */
+  .confirm-actions { flex-direction: column !important; align-items: center !important; }
+  .btn-outline, .btn-filled { width: 100%; max-width: 320px; text-align: center; }
+
+  /* MODAL */
+  .modal-body     { padding: 16px !important; }
+  .modal-stats-row{ grid-template-columns: 1fr 1fr !important; }
+  .modal-ben-grid { grid-template-columns: 1fr !important; }
+  .modal-actions  { flex-direction: column !important; }
+  .modal-donate-btn, .modal-share-btn { width: 100%; text-align: center; }
+}
+
+/* ── 480px and below (small phones) ──────────────────────── */
+@media (max-width: 480px) {
+  .hero h1        { font-size: 1.7rem !important; }
+  .amount-grid    { grid-template-columns: 1fr !important; }
+  .custom-amount  { grid-column: span 1 !important; }
+  .payment-methods{ grid-template-columns: 1fr 1fr !important; }
+  .freq-btn       { padding: 10px 6px !important; font-size: 0.82rem !important; }
+  .social-btns    { flex-direction: column !important; }
+  .share-btns     { flex-wrap: wrap !important; justify-content: center !important; }
+  .social-links   { flex-wrap: wrap !important; }
+  .campaigns-hero h1 { font-size: 1.7rem !important; }
+  .filters        { gap: 6px !important; }
+  .filter-btn     { padding: 7px 14px !important; font-size: 0.82rem !important; }
+  .modal-stats-row{ grid-template-columns: 1fr !important; }
+}
+
+/* ── Tap target minimum size for iOS/Android ─────────────── */
+@media (max-width: 768px) {
+  a, button, [role="button"] { min-height: 44px; }
+  .amount-btn, .freq-btn, .pay-method { min-height: 48px !important; }
+}
+
+</style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">
+        <img src="logo.png" alt="Helping Hearts Logo">
+        <h2>Helping Hearts</h2>
+    </div>
+    <ul>
+        <li><a href="helpingheart.html">Home</a></li>
+        <li><a href="campaigns.html">Campaigns</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a class="donate-btn" href="auth.html?redirect=donate.html">Donate</a></li>
+    </ul>
+</nav>
+
+<section class="campaigns-hero">
+    <h1>🌍 Active Campaigns</h1>
+    <p>Every campaign represents real lives waiting for your help. Choose a cause and make your donation count.</p>
+</section>
+
+<div class="stats-bar">
+    <div class="stat-item"><h3>12</h3><p>Active Campaigns</p></div>
+    <div class="stat-item"><h3>PKR 42M+</h3><p>Total Raised</p></div>
+    <div class="stat-item"><h3>15,000+</h3><p>Lives Impacted</p></div>
+    <div class="stat-item"><h3>98%</h3><p>Funds Reach Beneficiaries</p></div>
+</div>
+
+<div class="container">
+    <div class="search-filter">
+        <div class="search-bar">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search-input" placeholder="Search campaigns..." oninput="filterCampaigns()">
+        </div>
+        <div class="filters">
+            <button class="filter-btn active" onclick="setFilter(this,'All')">All</button>
+            <button class="filter-btn" onclick="setFilter(this,'Medical')">💊 Medical</button>
+            <button class="filter-btn" onclick="setFilter(this,'Education')">📚 Education</button>
+            <button class="filter-btn" onclick="setFilter(this,'Disaster')">🌊 Disaster Relief</button>
+            <button class="filter-btn" onclick="setFilter(this,'Food')">🍽️ Food</button>
+        </div>
+    </div>
+
+    <!-- FEATURED -->
+    <div class="featured-section" id="featured-section" data-category="Disaster">
+        <h2>⭐ Featured Campaign</h2>
+        <div class="featured-card">
+            <img src="flood.jpg" alt="Flood Relief" class="featured-img">
+            <div class="featured-content">
+                <div>
+                    <span class="featured-badge">🚨 URGENT</span>
+                    <h3>2026 Flood Victims — Emergency Relief</h3>
+                    <p>Thousands of families across southern Pakistan have lost everything to devastating floods. Your donation provides emergency food rations, clean water, and temporary shelter within 24 hours of receiving funds.</p>
+                    <div class="need-items">
+                        <div class="need-item"><div class="dot"></div>3,200 families need food packets</div>
+                        <div class="need-item"><div class="dot"></div>850 households need clean water supply</div>
+                        <div class="need-item"><div class="dot"></div>400 families need temporary shelter kits</div>
+                        <div class="need-item"><div class="dot"></div>Medical teams deployed in 8 flood-hit areas</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="raised-info">
+                        <span class="raised">PKR 14,700,000 raised</span>
+                        <span class="goal">Goal: PKR 21,000,000</span>
+                    </div>
+                    <div class="progress"><div class="progress-bar" style="width:70%"></div></div>
+                    <div style="font-size:0.82rem;color:#888;margin-bottom:15px;">70% funded • 1,240 donors • 14 days left</div>
+                    <div class="card-actions">
+                        <a class="btn-donate-card" href="auth.html?campaign=Flood Relief">❤️ Donate Now</a>
+                        <button class="btn-details" onclick="openModal('flood')">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cards-section">
+        <h2>All Campaigns</h2>
+        <div class="cards" id="cards-container">
+
+            <div class="campaign-card" data-category="Education">
+                <img src="education.jpg" alt="Education">
+                <div class="card-content">
+                    <span class="card-tag tag-education">📚 Education</span>
+                    <div class="urgency"><div class="pulse"></div>Enrollment deadline approaching</div>
+                    <h3>Education for Underprivileged Kids</h3>
+                    <p class="desc">Give children in rural Pakistan the gift of education. Covers school fees, uniforms, books, and stationery for children who cannot afford it.</p>
+                    <div class="raised-info"><span class="raised">PKR 5,250,000 raised</span><span class="goal">PKR 10,500,000</span></div>
+                    <div class="progress"><div class="progress-bar" style="width:50%"></div></div>
+                    <div class="card-stats"><span class="c-stat">👤 876 donors</span><span class="c-stat">📅 45 days left</span><span class="c-stat">👶 620 children</span></div>
+                    <div class="card-actions">
+                        <a class="btn-donate-card" href="auth.html?campaign=Education for Kids">Donate Now</a>
+                        <button class="btn-details" onclick="openModal('education')">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="campaign-card" data-category="Medical">
+                <img src="medical.jpg" alt="Medical">
+                <div class="card-content">
+                    <span class="card-tag tag-medical">💊 Medical</span>
+                    <h3>Free Medical Camp — Rural Areas</h3>
+                    <p class="desc">Organize free medical camps in villages with no hospital access. Doctors, nurses, and medicines deployed directly to communities in need.</p>
+                    <div class="raised-info"><span class="raised">PKR 2,080,000 raised</span><span class="goal">PKR 5,200,000</span></div>
+                    <div class="progress"><div class="progress-bar" style="width:40%"></div></div>
+                    <div class="card-stats"><span class="c-stat">👤 412 donors</span><span class="c-stat">📅 30 days left</span><span class="c-stat">🏥 8 camps</span></div>
+                    <div class="card-actions">
+                        <a class="btn-donate-card" href="auth.html?campaign=Medical Emergency">Donate Now</a>
+                        <button class="btn-details" onclick="openModal('medical')">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="campaign-card" data-category="Food">
+                <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&q=80" alt="Food Support">
+                <div class="card-content">
+                    <span class="card-tag tag-food">🍽️ Food</span>
+                    <h3>Ramadan Food Baskets</h3>
+                    <p class="desc">Provide complete monthly food ration baskets to deserving families during Ramadan. Each basket feeds a family of 6 for a full month.</p>
+                    <div class="raised-info"><span class="raised">PKR 3,750,000 raised</span><span class="goal">PKR 6,000,000</span></div>
+                    <div class="progress"><div class="progress-bar" style="width:63%"></div></div>
+                    <div class="card-stats"><span class="c-stat">👤 1,102 donors</span><span class="c-stat">📅 20 days left</span><span class="c-stat">🏠 500 families</span></div>
+                    <div class="card-actions">
+                        <a class="btn-donate-card" href="auth.html?campaign=Ramadan Food Baskets">Donate Now</a>
+                        <button class="btn-details" onclick="openModal('food')">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="campaign-card" data-category="Medical">
+                <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&q=80" alt="Cancer Treatment">
+                <div class="card-content">
+                    <span class="card-tag tag-medical">💊 Medical</span>
+                    <h3>Cancer Treatment Support Fund</h3>
+                    <p class="desc">Help families afford life-saving cancer treatments. Cover chemotherapy and surgical costs for patients who have no financial means.</p>
+                    <div class="raised-info"><span class="raised">PKR 8,100,000 raised</span><span class="goal">PKR 15,000,000</span></div>
+                    <div class="progress"><div class="progress-bar" style="width:54%"></div></div>
+                    <div class="card-stats"><span class="c-stat">👤 2,340 donors</span><span class="c-stat">📅 60 days left</span><span class="c-stat">👥 78 patients</span></div>
+                    <div class="card-actions">
+                        <a class="btn-donate-card" href="auth.html?campaign=Cancer Treatment Fund">Donate Now</a>
+                        <button class="btn-details" onclick="openModal('cancer')">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="campaign-card" data-category="Education">
+                <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80" alt="Girls Education">
+                <div class="card-content">
+                    <span class="card-tag tag-education">📚 Education</span>
+                    <div class="urgency"><div class="pulse"></div>New academic year starting</div>
+                    <h3>Girls Education in Balochistan</h3>
+                    <p class="desc">Empower girls through education in remote Balochistan. Build classrooms, train female teachers, and provide scholarships to keep girls in school.</p>
+                    <div class="raised-info"><span class="raised">PKR 4,200,000 raised</span><span class="goal">PKR 9,000,000</span></div>
+                    <div class="progress"><div class="progress-bar" style="width:47%"></div></div>
+                    <div class="card-stats"><span class="c-stat">👤 730 donors</span><span class="c-stat">📅 55 days left</span><span class="c-stat">👧 350 girls</span></div>
+                    <div class="card-actions">
+                        <a class="btn-donate-card" href="auth.html?campaign=Girls Education">Donate Now</a>
+                        <button class="btn-details" onclick="openModal('girls')">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="campaign-card" data-category="Disaster">
+                <img src="https://images.unsplash.com/photo-1500964757637-c85e8a162699?w=600&q=80" alt="Earthquake Relief">
+                <div class="card-content">
+                    <span class="card-tag tag-disaster">🌍 Disaster Relief</span>
+                    <h3>Earthquake Survivors — KPK</h3>
+                    <p class="desc">Rebuild homes and livelihoods for earthquake survivors in KPK. Funds go directly to construction materials, temporary housing, and support.</p>
+                    <div class="raised-info"><span class="raised">PKR 6,300,000 raised</span><span class="goal">PKR 12,000,000</span></div>
+                    <div class="progress"><div class="progress-bar" style="width:53%"></div></div>
+                    <div class="card-stats"><span class="c-stat">👤 980 donors</span><span class="c-stat">📅 40 days left</span><span class="c-stat">🏠 200 homes</span></div>
+                    <div class="card-actions">
+                        <a class="btn-donate-card" href="auth.html?campaign=Earthquake Relief KPK">Donate Now</a>
+                        <button class="btn-details" onclick="openModal('earthquake')">Details</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div id="no-results"><h3>No campaigns found</h3><p>Try a different search or filter.</p></div>
+    </div>
+</div>
+
+<section class="impact-section">
+    <h2>The Real Impact of Your Donations</h2>
+    <p>Here's what Helping Hearts has accomplished together with donors like you</p>
+    <div class="impact-grid">
+        <div class="impact-item"><h3>15K+</h3><p>Lives Directly Helped</p></div>
+        <div class="impact-item"><h3>PKR 42M+</h3><p>Total Funds Raised</p></div>
+        <div class="impact-item"><h3>5,200+</h3><p>Children in School</p></div>
+        <div class="impact-item"><h3>12 Cities</h3><p>Coverage Across Pakistan</p></div>
+    </div>
+</section>
+
+<section class="hiw-section">
+    <h2>How Your Donation Works</h2>
+    <p class="sub">We ensure maximum transparency — from your wallet to the beneficiary</p>
+    <div class="hiw-steps">
+        <div class="hiw-step"><div class="step-num">1</div><h4>You Choose</h4><p>Browse campaigns and select the cause that matters most to you</p></div>
+        <div class="hiw-arrow">→</div>
+        <div class="hiw-step"><div class="step-num">2</div><h4>You Give</h4><p>Donate securely using your preferred payment method</p></div>
+        <div class="hiw-arrow">→</div>
+        <div class="hiw-step"><div class="step-num">3</div><h4>We Deliver</h4><p>98% of funds reach beneficiaries within 48–72 hours</p></div>
+        <div class="hiw-arrow">→</div>
+        <div class="hiw-step"><div class="step-num">4</div><h4>You See Impact</h4><p>Receive photos, stories, and updates from the field</p></div>
+    </div>
+</section>
+
+<section class="testimonials">
+    <h2>What Our Donors Say ❤️</h2>
+    <div class="testi-grid">
+        <div class="testi-card">
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+            <p class="testi-text">"I donated to the flood relief campaign and within 2 days received a photo update of the family I helped. The transparency is incredible!"</p>
+            <div class="testi-author"><div class="testi-avatar">👨</div><div><div class="testi-name">Usman Tariq</div><div class="testi-loc">Lahore, Punjab</div></div></div>
+        </div>
+        <div class="testi-card">
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+            <p class="testi-text">"Sponsored a girl's education in Balochistan last year. She just passed her 5th grade exams! Helping Hearts kept me updated every step of the way."</p>
+            <div class="testi-author"><div class="testi-avatar">👩</div><div><div class="testi-name">Sana Khalid</div><div class="testi-loc">Karachi, Sindh</div></div></div>
+        </div>
+        <div class="testi-card">
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+            <p class="testi-text">"The donation process is so easy and I trust that my money is being used properly. I've donated 4 times already and each time feels just as meaningful."</p>
+            <div class="testi-author"><div class="testi-avatar">👨‍💼</div><div><div class="testi-name">Bilal Mahmood</div><div class="testi-loc">Islamabad</div></div></div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <h2>Ready to Change a Life Today?</h2>
+    <p>It takes less than 2 minutes. Your donation reaches those in need within 48 hours.</p>
+    <a href="auth.html?redirect=donate.html" class="cta-btn">❤️ Donate Now</a>
+</section>
+
+<footer><p>© 2026 Helping Hearts | Made with ❤️</p></footer>
+
+<!-- ── Campaign Detail Modal ── -->
+<div class="modal-overlay" id="campaignModal" onclick="closeModalOnBg(event)">
+  <div class="modal" id="modalInner">
+    <div class="modal-hero">
+      <img id="modal-img" src="" alt="">
+      <div class="modal-hero-overlay"></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-badge-wrap">
+        <span id="modal-tag" class="modal-tag"></span>
+        <span id="modal-urgency-badge" class="modal-tag" style="background:rgba(231,76,60,0.85);color:#fff;display:none;">🚨 Urgent</span>
+      </div>
+    </div>
+    <div class="modal-body">
+      <h2 class="modal-title" id="modal-title"></h2>
+      <p class="modal-desc" id="modal-desc"></p>
+
+      <div class="modal-stats-row">
+        <div class="m-stat"><div class="m-stat-val" id="modal-donors"></div><div class="m-stat-label">Total Donors</div></div>
+        <div class="m-stat"><div class="m-stat-val" id="modal-helped"></div><div class="m-stat-label">People Helped</div></div>
+        <div class="m-stat"><div class="m-stat-val" id="modal-days"></div><div class="m-stat-label">Days Remaining</div></div>
+      </div>
+
+      <div class="modal-progress-wrap">
+        <div class="modal-raised-row">
+          <span class="raised" id="modal-raised"></span>
+          <span class="goal" id="modal-goal"></span>
+        </div>
+        <div class="modal-progress"><div class="modal-progress-bar" id="modal-bar"></div></div>
+        <div class="modal-pct" id="modal-pct"></div>
+      </div>
+
+      <div class="modal-section-title">📋 What We Need</div>
+      <div class="modal-needs" id="modal-needs"></div>
+
+      <div class="modal-section-title">👥 Who We Help</div>
+      <div class="modal-beneficiaries">
+        <div class="modal-ben-grid" id="modal-beneficiaries"></div>
+      </div>
+
+      <div class="modal-actions">
+        <a class="modal-donate-btn" id="modal-donate-link" href="#">❤️ Donate to This Campaign</a>
+        <button class="modal-share-btn" onclick="shareModal()">📤 Share</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── existing filter logic ── */
+let currentFilter = 'All';
+function setFilter(btn, category) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = category;
+    filterCampaigns();
+}
+function filterCampaign(category) {
+    currentFilter = category;
+    document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.toggle('active', b.textContent.includes(category));
+    });
+    filterCampaigns();
+    setTimeout(() => document.querySelector('.cards-section').scrollIntoView({behavior:'smooth'}), 100);
+}
+function filterCampaigns() {
+    const query = document.getElementById('search-input').value.toLowerCase();
+    const cards = document.querySelectorAll('.campaign-card');
+    let visible = 0;
+    cards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        const text = card.textContent.toLowerCase();
+        const matchFilter = currentFilter === 'All' || cat === currentFilter;
+        const matchSearch = !query || text.includes(query);
+        const show = matchFilter && matchSearch;
+        card.style.display = show ? 'flex' : 'none';
+        if (show) visible++;
+    });
+    document.getElementById('no-results').style.display = visible === 0 ? 'block' : 'none';
+    const featured = document.getElementById('featured-section');
+    featured.style.display = (currentFilter === 'All' || currentFilter === 'Disaster') ? 'block' : 'none';
+}
+
+/* ── Campaign data ── */
+const campaigns = {
+  'flood': {
+    title: '2026 Flood Victims — Emergency Relief',
+    img: 'flood.jpg',
+    tag: '🌊 Disaster Relief',
+    tagClass: 'tag-disaster',
+    tagStyle: 'background:#fce4ec;color:#c62828;',
+    urgent: true,
+    desc: 'Thousands of families across southern Pakistan have lost everything to the devastating 2026 monsoon floods. Entire villages submerged, crops destroyed, and clean water sources contaminated. Your donation provides emergency food rations, clean water purification tablets, and temporary shelter tarpaulins within 24 hours of receiving funds. Every rupee goes directly to the field — our on-ground teams are already deployed in 8 flood-hit districts.',
+    raised: 'PKR 14,700,000',
+    goal: 'Goal: PKR 21,000,000',
+    pct: 70,
+    donors: '1,240',
+    helped: '3,200 families',
+    days: '14',
+    donateLink: 'auth.html?campaign=Flood Relief',
+    needs: [
+      {icon:'🍱', text:'Emergency food packets for 3,200 families (7-day supply per family)'},
+      {icon:'💧', text:'Clean water supply & purification tablets for 850 households'},
+      {icon:'🏕️', text:'Temporary shelter tarpaulin kits for 400 displaced families'},
+      {icon:'🩺', text:'Medical teams and first-aid supplies deployed across 8 districts'},
+      {icon:'🧺', text:'Hygiene kits including soap, sanitizers, and basic toiletries'},
+    ],
+    beneficiaries: [
+      {icon:'👨‍👩‍👧‍👦', text:'Displaced families in Sindh & Balochistan'},
+      {icon:'🧒', text:'Children under 12 — priority nutrition support'},
+      {icon:'🤰', text:'Pregnant & nursing women'},
+      {icon:'👴', text:'Elderly individuals with mobility needs'},
+      {icon:'🐄', text:'Farmers who lost livestock & crops'},
+      {icon:'🏚️', text:'Homeowners with fully submerged houses'},
+    ],
+  },
+  'education': {
+    title: 'Education for Underprivileged Kids',
+    img: 'education.jpg',
+    tag: '📚 Education',
+    tagStyle: 'background:#e3f2fd;color:#1565c0;',
+    urgent: true,
+    desc: 'In rural Pakistan, 1 in 3 children drops out before completing primary school — not because they lack talent, but because their families cannot afford fees, uniforms, or books. This campaign covers full annual school fees, two sets of uniforms, complete stationery kits, and nutritious daily snacks for children in Khyber Pakhtunkhwa, Sindh, and Punjab. Every child sponsored receives a dedicated learning mentor who tracks their progress monthly.',
+    raised: 'PKR 5,250,000',
+    goal: 'Goal: PKR 10,500,000',
+    pct: 50,
+    donors: '876',
+    helped: '620 children',
+    days: '45',
+    donateLink: 'auth.html?campaign=Education for Kids',
+    needs: [
+      {icon:'📖', text:'School fees, books & stationery for 620 children (annual)'},
+      {icon:'👕', text:'Two sets of uniforms per child including shoes & bag'},
+      {icon:'🍎', text:'Daily nutritious snack program at 12 partner schools'},
+      {icon:'👩‍🏫', text:'Salary support for 18 underpaid rural schoolteachers'},
+      {icon:'🏫', text:'Basic classroom repairs and learning material upgrades'},
+    ],
+    beneficiaries: [
+      {icon:'👦', text:'Boys aged 5–14 in rural KPK'},
+      {icon:'👧', text:'Girls in southern Punjab at drop-out risk'},
+      {icon:'🧑‍🦽', text:'Children with learning disabilities'},
+      {icon:'👨‍👩‍👦', text:'Orphaned children with no guardians'},
+      {icon:'🌾', text:'Children from daily-wage farming families'},
+      {icon:'🏘️', text:'Kids in flood-displaced temporary settlements'},
+    ],
+  },
+  'medical': {
+    title: 'Free Medical Camp — Rural Areas',
+    img: 'medical.jpg',
+    tag: '💊 Medical',
+    tagStyle: 'background:#e8f5e9;color:#2e7d32;',
+    urgent: false,
+    desc: 'Millions of Pakistanis in remote villages live more than 50 km away from the nearest government hospital. Minor treatable conditions turn fatal due to lack of access. This campaign deploys fully-equipped mobile medical camps with licensed doctors, nurses, lab technicians, and a pharmacy directly into communities. Each camp serves 200–400 patients over two days with free consultations, medicines, and lab tests.',
+    raised: 'PKR 2,080,000',
+    goal: 'Goal: PKR 5,200,000',
+    pct: 40,
+    donors: '412',
+    helped: '3,200 patients',
+    days: '30',
+    donateLink: 'auth.html?campaign=Medical Emergency',
+    needs: [
+      {icon:'💊', text:'Essential medicines including antibiotics, painkillers & vitamins'},
+      {icon:'🩺', text:'Consultant doctor & nurse fees for 8 camps'},
+      {icon:'🧪', text:'Mobile lab equipment for blood tests & sugar screenings'},
+      {icon:'🚐', text:'Transport of medical teams and supplies to remote areas'},
+      {icon:'📋', text:'Patient health record system for follow-up care'},
+    ],
+    beneficiaries: [
+      {icon:'👴', text:'Elderly patients with chronic conditions'},
+      {icon:'🤱', text:'Mothers & newborns needing post-natal care'},
+      {icon:'🧒', text:'Children with malnutrition & preventable diseases'},
+      {icon:'👩‍🌾', text:'Women denied access to male doctors culturally'},
+      {icon:'🦷', text:'Patients needing basic dental care'},
+      {icon:'👁️', text:'Vision-impaired individuals needing glasses'},
+    ],
+  },
+  'food': {
+    title: 'Ramadan Food Baskets',
+    img: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&q=80',
+    tag: '🍽️ Food',
+    tagStyle: 'background:#fff3e0;color:#e65100;',
+    urgent: false,
+    desc: 'During Ramadan, the pressure on Pakistan\'s poorest families intensifies — iftar and sehri require food that many simply cannot afford. Each food basket in this campaign is carefully curated to feed a family of 6 for an entire month: 20kg flour, 5L cooking oil, 5kg rice, 2kg lentils, 2kg sugar, 1kg salt, spices, and vermicelli for Eid. Baskets are assembled locally to support community vendors and delivered directly to verified deserving families.',
+    raised: 'PKR 3,750,000',
+    goal: 'Goal: PKR 6,000,000',
+    pct: 63,
+    donors: '1,102',
+    helped: '500 families',
+    days: '20',
+    donateLink: 'auth.html?campaign=Ramadan Food Baskets',
+    needs: [
+      {icon:'🌾', text:'20kg flour per basket — staple for bread and rotis'},
+      {icon:'🛢️', text:'5L cooking oil for frying and cooking'},
+      {icon:'🍚', text:'5kg basmati rice, 2kg lentils (dal), 2kg sugar'},
+      {icon:'🌶️', text:'Spice pack, salt, and dried chillies'},
+      {icon:'🚚', text:'Last-mile delivery volunteers and transport to 12 cities'},
+    ],
+    beneficiaries: [
+      {icon:'👨‍👩‍👧‍👦', text:'Families of 6+ with daily income under PKR 500'},
+      {icon:'👵', text:'Widowed women as sole breadwinners'},
+      {icon:'🧒', text:'Households with 3 or more children under 10'},
+      {icon:'♿', text:'Families with disabled members unable to work'},
+      {icon:'🏚️', text:'Residents of katchi abadis & slum settlements'},
+      {icon:'🌊', text:'Flood-displaced families still in temporary camps'},
+    ],
+  },
+  'cancer': {
+    title: 'Cancer Treatment Support Fund',
+    img: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80',
+    tag: '💊 Medical',
+    tagStyle: 'background:#e8f5e9;color:#2e7d32;',
+    urgent: false,
+    desc: 'Cancer is the second leading cause of death in Pakistan, yet treatment at private hospitals can cost PKR 500,000–2,000,000 per patient — completely out of reach for most families. This fund covers chemotherapy sessions, surgical costs, diagnostic tests (MRI/CT scans), and essential post-treatment medication for patients who have been certified unable to pay by a licensed social worker. We partner with 6 major hospitals in Lahore, Karachi, and Islamabad.',
+    raised: 'PKR 8,100,000',
+    goal: 'Goal: PKR 15,000,000',
+    pct: 54,
+    donors: '2,340',
+    helped: '78 patients',
+    days: '60',
+    donateLink: 'auth.html?campaign=Cancer Treatment Fund',
+    needs: [
+      {icon:'💉', text:'Chemotherapy drug costs for 78 registered patients'},
+      {icon:'🔬', text:'MRI, CT scans & biopsy diagnostic tests'},
+      {icon:'🏥', text:'Surgical procedure funding at partner hospitals'},
+      {icon:'💊', text:'Post-chemo medication & anti-nausea drugs'},
+      {icon:'🚗', text:'Transport reimbursement for outstation patients'},
+    ],
+    beneficiaries: [
+      {icon:'👩', text:'Women with breast & cervical cancer'},
+      {icon:'👦', text:'Children with leukemia & blood cancers'},
+      {icon:'👴', text:'Elderly patients with lung & prostate cancer'},
+      {icon:'🏘️', text:'Patients from rural areas with no local oncologist'},
+      {icon:'💔', text:'Families who exhausted savings on first round of treatment'},
+      {icon:'📋', text:'Patients certified by hospital social welfare department'},
+    ],
+  },
+  'girls': {
+    title: 'Girls Education in Balochistan',
+    img: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&q=80',
+    tag: '📚 Education',
+    tagStyle: 'background:#e3f2fd;color:#1565c0;',
+    urgent: true,
+    desc: 'Balochistan has Pakistan\'s lowest female literacy rate at just 24%. Cultural barriers, long distances to schools, and lack of female teachers prevent girls from accessing education. This campaign builds dedicated girls\' classrooms in 5 target villages, trains and hires local women as teachers, and provides full scholarships covering fees, uniforms, transport stipends, and monthly performance bonuses to families who keep their daughters enrolled. Educated girls transform entire communities.',
+    raised: 'PKR 4,200,000',
+    goal: 'Goal: PKR 9,000,000',
+    pct: 47,
+    donors: '730',
+    helped: '350 girls',
+    days: '55',
+    donateLink: 'auth.html?campaign=Girls Education',
+    needs: [
+      {icon:'🏫', text:'Construction of 3 dedicated girls\' classrooms in remote villages'},
+      {icon:'👩‍🏫', text:'Salary for 8 trained female teachers for one academic year'},
+      {icon:'📚', text:'Full scholarship pack: fees, books, uniform, stationery'},
+      {icon:'🚌', text:'Transport stipend for girls traveling more than 3km'},
+      {icon:'🎓', text:'Vocational skills training for older girls aged 16–18'},
+    ],
+    beneficiaries: [
+      {icon:'👧', text:'Girls aged 6–18 in 5 target Balochistan villages'},
+      {icon:'🧕', text:'Girls from conservative families needing female-only spaces'},
+      {icon:'🌾', text:'Daughters of subsistence farmers & nomadic families'},
+      {icon:'👩', text:'Young women aged 16+ wanting literacy & skills'},
+      {icon:'👨‍👩‍👧', text:'Families incentivized with performance bonuses'},
+      {icon:'🌍', text:'Future female community leaders & role models'},
+    ],
+  },
+  'earthquake': {
+    title: 'Earthquake Survivors — KPK',
+    img: 'https://images.unsplash.com/photo-1500964757637-c85e8a162699?w=800&q=80',
+    tag: '🌍 Disaster Relief',
+    tagStyle: 'background:#fce4ec;color:#c62828;',
+    urgent: false,
+    desc: 'The 2025 KPK earthquake left over 200 families homeless, with collapsed homes and destroyed livelihoods across 3 districts. Beyond immediate relief, this campaign focuses on long-term rebuilding: earthquake-resistant construction, livelihood restoration grants for farmers and artisans, and psychosocial support for trauma-affected survivors. Our team is on the ground, working with local contractors and community leaders to ensure reconstruction is done properly.',
+    raised: 'PKR 6,300,000',
+    goal: 'Goal: PKR 12,000,000',
+    pct: 53,
+    donors: '980',
+    helped: '200 families',
+    days: '40',
+    donateLink: 'auth.html?campaign=Earthquake Relief KPK',
+    needs: [
+      {icon:'🧱', text:'Earthquake-resistant construction materials for 200 homes'},
+      {icon:'🏕️', text:'Temporary shelter kits for families still in tents'},
+      {icon:'🌾', text:'Livelihood restoration grants for farming families'},
+      {icon:'🧰', text:'Toolkits and seed grants for artisans & small traders'},
+      {icon:'🧠', text:'Trauma counseling & psychosocial support sessions'},
+    ],
+    beneficiaries: [
+      {icon:'🏚️', text:'Homeowners whose houses fully collapsed'},
+      {icon:'👩‍👦', text:'Single mothers heading households alone'},
+      {icon:'👴', text:'Elderly with no younger family members to support them'},
+      {icon:'🌾', text:'Farmers who lost orchards, livestock & tools'},
+      {icon:'🧒', text:'Children displaced from schools for 6+ months'},
+      {icon:'🏘️', text:'Entire villages in remote inaccessible terrain'},
+    ],
+  },
+};
+
+function openModal(key) {
+  const d = campaigns[key];
+  if (!d) return;
+  document.getElementById('modal-img').src = d.img;
+  document.getElementById('modal-img').alt = d.title;
+  document.getElementById('modal-tag').textContent = d.tag;
+  document.getElementById('modal-tag').style.cssText = d.tagStyle + 'backdrop-filter:blur(8px);';
+  document.getElementById('modal-urgency-badge').style.display = d.urgent ? 'inline-block' : 'none';
+  document.getElementById('modal-title').textContent = d.title;
+  document.getElementById('modal-desc').textContent = d.desc;
+  document.getElementById('modal-donors').textContent = d.donors;
+  document.getElementById('modal-helped').textContent = d.helped;
+  document.getElementById('modal-days').textContent = d.days;
+  document.getElementById('modal-raised').textContent = d.raised;
+  document.getElementById('modal-goal').textContent = d.goal;
+  document.getElementById('modal-bar').style.width = d.pct + '%';
+  document.getElementById('modal-pct').textContent = d.pct + '% funded';
+  document.getElementById('modal-donate-link').href = d.donateLink;
+
+  const needsEl = document.getElementById('modal-needs');
+  needsEl.innerHTML = d.needs.map(n => `<div class="modal-need-item"><span class="modal-need-icon">${n.icon}</span>${n.text}</div>`).join('');
+
+  const benEl = document.getElementById('modal-beneficiaries');
+  benEl.innerHTML = d.beneficiaries.map(b => `<div class="modal-ben-item"><span class="modal-ben-icon">${b.icon}</span>${b.text}</div>`).join('');
+
+  document.getElementById('campaignModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('campaignModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function closeModalOnBg(e) {
+  if (e.target === document.getElementById('campaignModal')) closeModal();
+}
+
+function shareModal() {
+  if (navigator.share) {
+    navigator.share({ title: 'Helping Hearts Campaign', url: window.location.href });
+  } else {
+    navigator.clipboard.writeText(window.location.href);
+    alert('Link copied to clipboard!');
+  }
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+
+<script>
+// ── Mobile hamburger menu ─────────────────────────────────────
+(function(){
+  var nav = document.querySelector('nav');
+  if (!nav) return;
+  var ul = nav.querySelector('ul');
+  if (!ul) return;
+
+  // Create hamburger button
+  var btn = document.createElement('button');
+  btn.className = 'hh-hamburger';
+  btn.setAttribute('aria-label','Toggle menu');
+  btn.innerHTML = '<span></span><span></span><span></span>';
+  nav.appendChild(btn);
+
+  // Create mobile overlay
+  var overlay = document.createElement('div');
+  overlay.className = 'hh-nav-overlay';
+  document.body.appendChild(overlay);
+
+  function openMenu(){
+    ul.classList.add('hh-nav-open');
+    overlay.classList.add('hh-overlay-active');
+    btn.classList.add('hh-hamburger-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu(){
+    ul.classList.remove('hh-nav-open');
+    overlay.classList.remove('hh-overlay-active');
+    btn.classList.remove('hh-hamburger-open');
+    document.body.style.overflow = '';
+  }
+
+  btn.addEventListener('click', function(){
+    ul.classList.contains('hh-nav-open') ? closeMenu() : openMenu();
+  });
+  overlay.addEventListener('click', closeMenu);
+  ul.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', closeMenu);
+  });
+})();
+</script>
+
+<script>
+/* Smart nav — swaps Login for Profile+Logout when user is logged in */
+(function() {
+  var token = localStorage.getItem('hh_token');
+  var navLinks = document.querySelectorAll('nav ul li');
+
+  navLinks.forEach(function(li) {
+    var a = li.querySelector('a');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    // Target the Login link (auth.html, NOT the donate redirect)
+    var isLogin = href.indexOf('auth.html') !== -1
+               && href.indexOf('redirect=donate') === -1
+               && !a.classList.contains('donate-btn');
+    if (!isLogin) return;
+
+    if (token) {
+      // User is logged in — replace Login with Profile name + Logout
+      var user = {};
+      try { user = JSON.parse(localStorage.getItem('hh_user') || '{}'); } catch(e) {}
+      var name = user.first_name || 'My Profile';
+
+      // Profile link
+      var pLi = document.createElement('li');
+      var pA  = document.createElement('a');
+      pA.href = 'profile.html';
+      pA.textContent = '\u{1F464} ' + name;
+      pA.style.cssText = 'color:#96BF8A;font-weight:700;';
+      pLi.appendChild(pA);
+
+      // Logout link
+      var lLi = document.createElement('li');
+      var lA  = document.createElement('a');
+      lA.href = '#';
+      lA.textContent = 'Logout';
+      lA.style.cssText = 'color:#e74c3c;font-weight:700;';
+      lA.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (confirm('Are you sure you want to logout?')) {
+          localStorage.removeItem('hh_token');
+          localStorage.removeItem('hh_user');
+          window.location.href = 'helpingheart.html';
+        }
+      });
+      lLi.appendChild(lA);
+
+      li.parentNode.insertBefore(pLi, li);
+      li.parentNode.insertBefore(lLi, li);
+      li.style.display = 'none';
+    }
+  });
+})();
+</script>
+</body>
+</html>

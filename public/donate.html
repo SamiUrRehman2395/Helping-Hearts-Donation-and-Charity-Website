@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Donate - Helping Hearts</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --main-color: #96BF8A;
+    --accent-color: #2ecc71;
+    --donate-color: #e74c3c;
+    --bg-light: #f7f7f7;
+    --text-color: #333;
+}
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+
+body {
+    background: var(--bg-light);
+    min-height: 100vh;
+}
+
+/* NAVBAR */
+nav {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:12px 50px; background:#fff;
+    box-shadow:0 4px 20px rgba(0,0,0,0.08);
+    position:sticky; top:0; z-index:100;
+}
+.logo { display:flex; align-items:center; gap:12px; }
+.logo img { width:65px; }
+.logo h2 { color:var(--main-color); font-weight:700; font-size:1.2rem; }
+nav ul { display:flex; list-style:none; gap:20px; align-items:center; }
+nav ul li a { text-decoration:none; color:var(--text-color); font-weight:600; padding:8px 12px; border-radius:5px; transition:0.3s; }
+nav ul li a:hover { background:var(--main-color); color:#fff; }
+
+/* HERO BANNER */
+.donate-hero {
+    background: linear-gradient(135deg, #2c3e50, #3d6b4f);
+    color: #fff;
+    text-align: center;
+    padding: 50px 20px 60px;
+}
+.donate-hero h1 { font-size: 2.4rem; margin-bottom: 10px; }
+.donate-hero p { font-size: 1.05rem; opacity: 0.85; }
+
+/* STEPPER */
+.stepper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    padding: 30px 20px;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+.step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.step-circle {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: #ddd;
+    color: #999;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.9rem;
+    transition: 0.3s;
+}
+.step.active .step-circle { background: var(--accent-color); color: #fff; }
+.step.done .step-circle { background: var(--main-color); color: #fff; }
+.step-label { font-size: 0.85rem; font-weight: 600; color: #999; }
+.step.active .step-label { color: var(--accent-color); }
+.step.done .step-label { color: var(--main-color); }
+.step-line { width: 50px; height: 2px; background: #ddd; margin: 0 5px; }
+.step-line.done { background: var(--main-color); }
+
+/* MAIN LAYOUT */
+.donate-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+}
+
+/* PANELS */
+.panel { display: none; animation: fadeIn 0.4s ease; }
+.panel.active { display: block; }
+@keyframes fadeIn { from{opacity:0; transform:translateY(15px);} to{opacity:1; transform:translateY(0);} }
+
+/* CARD */
+.card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 35px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+.card h2 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin-bottom: 8px;
+}
+.card .card-subtitle {
+    color: #888; font-size: 0.9rem; margin-bottom: 28px;
+}
+
+/* CAMPAIGN BADGE */
+.campaign-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+/* AMOUNT GRID */
+.amount-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.amount-btn {
+    padding: 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    background: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-color);
+}
+.amount-btn:hover, .amount-btn.selected {
+    border-color: var(--accent-color);
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+.custom-amount {
+    grid-column: span 3;
+    position: relative;
+}
+.custom-amount .currency {
+    position: absolute;
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+    font-weight: 700; color: #888;
+}
+.custom-amount input {
+    width: 100%; padding: 14px 14px 14px 45px;
+    border: 2px solid #e0e0e0; border-radius: 12px;
+    font-size: 1rem; font-family: 'Poppins', sans-serif;
+    outline: none; transition: 0.3s;
+}
+.custom-amount input:focus { border-color: var(--main-color); }
+
+/* FREQUENCY */
+.frequency-tabs {
+    display: flex; gap: 10px; margin-bottom: 25px;
+}
+.freq-btn {
+    flex: 1; padding: 12px;
+    border: 2px solid #e0e0e0; border-radius: 10px;
+    background: #fff; font-weight: 600; cursor: pointer;
+    transition: 0.3s; font-family: 'Poppins', sans-serif;
+    color: #888;
+}
+.freq-btn.selected { border-color: var(--main-color); background: #f0f9ef; color: #2e7d32; }
+
+/* INPUT GROUP */
+.input-group { margin-bottom: 18px; }
+.input-group label { display:block; font-weight:600; color:#555; margin-bottom:6px; font-size:0.9rem; }
+.input-group input, .input-group select, .input-group textarea {
+    width:100%; padding:12px 15px;
+    border:2px solid #e0e0e0; border-radius:10px;
+    font-size:0.95rem; font-family:'Poppins',sans-serif;
+    transition:0.3s; outline:none;
+    background: #fff; color: var(--text-color);
+}
+.input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+    border-color: var(--main-color);
+    box-shadow: 0 0 0 3px rgba(150,191,138,0.2);
+}
+.input-row { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+
+/* DEDICATE */
+.dedicate-toggle {
+    display: flex; align-items: center; gap:10px;
+    margin-bottom: 20px; cursor: pointer;
+}
+.toggle-switch {
+    width: 44px; height: 24px;
+    background: #ddd; border-radius: 12px;
+    position: relative; transition: 0.3s; cursor: pointer;
+}
+.toggle-switch.on { background: var(--main-color); }
+.toggle-dot {
+    width: 18px; height: 18px; background: #fff;
+    border-radius: 50%; position:absolute;
+    top:3px; left:3px; transition:0.3s;
+}
+.toggle-switch.on .toggle-dot { left: 23px; }
+.dedicate-label { font-size:0.9rem; color:#555; font-weight:600; }
+
+/* PAYMENT METHOD */
+.payment-methods {
+    display: grid; grid-template-columns: repeat(3,1fr); gap:12px; margin-bottom:25px;
+}
+.pay-method {
+    border: 2px solid #e0e0e0; border-radius: 12px;
+    padding: 18px 12px; text-align:center; cursor:pointer;
+    transition:0.3s; background:#fff;
+}
+.pay-method:hover, .pay-method.selected {
+    border-color: var(--main-color); background: #f0f9ef;
+}
+.pay-method .icon { font-size: 2rem; margin-bottom: 6px; }
+.pay-method .label { font-size:0.82rem; font-weight:600; color:#555; }
+
+/* CARD INPUTS */
+.card-icon {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    font-size: 1.2rem;
+}
+.relative { position: relative; }
+
+/* SUMMARY */
+.summary-box {
+    background: #f9fef9;
+    border: 2px solid #c8e6c9;
+    border-radius: 14px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+.summary-row {
+    display: flex; justify-content: space-between;
+    padding: 10px 0; border-bottom: 1px solid #e8f5e9;
+    font-size: 0.95rem;
+}
+.summary-row:last-child { border-bottom: none; font-weight: 700; font-size: 1.05rem; color: #2e7d32; }
+.summary-row span:first-child { color: #666; }
+
+/* IMPACT PREVIEW */
+.impact-preview {
+    background: linear-gradient(135deg, #e8f5e9, #f0f9ef);
+    border-radius: 12px; padding: 20px;
+    margin-bottom: 25px;
+}
+.impact-preview h4 { color: #2e7d32; margin-bottom: 12px; font-size:0.95rem; }
+.impact-items { display:flex; gap:15px; flex-wrap:wrap; }
+.impact-item {
+    display:flex; align-items:center; gap:8px;
+    font-size:0.85rem; color:#555;
+}
+.impact-item .dot { width:8px; height:8px; background:var(--accent-color); border-radius:50%; }
+
+/* NAVIGATION BUTTONS */
+.btn-row { display:flex; justify-content:space-between; gap:15px; margin-top:25px; }
+.btn-back {
+    padding: 14px 30px;
+    border: 2px solid #ddd; border-radius:10px;
+    background:#fff; font-weight:700; cursor:pointer;
+    transition:0.3s; font-family:'Poppins',sans-serif; color:#888;
+}
+.btn-back:hover { border-color: #bbb; color:#555; }
+.btn-next {
+    flex:1; padding:14px;
+    background: var(--accent-color); color:#fff;
+    border:none; border-radius:10px;
+    font-size:1rem; font-weight:700; cursor:pointer;
+    transition:0.3s; font-family:'Poppins',sans-serif;
+}
+.btn-next:hover { background:#27ae60; transform:translateY(-2px); box-shadow:0 6px 20px rgba(46,204,113,0.4); }
+.btn-donate {
+    flex:1; padding:14px;
+    background: var(--donate-color); color:#fff;
+    border:none; border-radius:10px;
+    font-size:1.05rem; font-weight:700; cursor:pointer;
+    transition:0.3s; font-family:'Poppins',sans-serif;
+}
+.btn-donate:hover { background:#c0392b; transform:translateY(-2px); box-shadow:0 6px 20px rgba(231,76,60,0.4); }
+
+/* SECURE BADGE */
+.secure-badge {
+    display:flex; align-items:center; gap:8px; justify-content:center;
+    margin-top:15px; font-size:0.8rem; color:#999;
+}
+
+/* ===== CONFIRMATION PAGE ===== */
+#panel-confirm {
+    text-align: center;
+}
+.confirm-icon {
+    width: 90px; height:90px;
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    border-radius: 50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:2.5rem;
+    margin: 0 auto 25px;
+    box-shadow: 0 10px 30px rgba(46,204,113,0.4);
+    animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes popIn {
+    from { transform:scale(0); opacity:0; }
+    to { transform:scale(1); opacity:1; }
+}
+#panel-confirm h2 { font-size:2rem; color:#2e7d32; margin-bottom:10px; }
+#panel-confirm .confirm-subtitle { color:#888; margin-bottom:30px; }
+
+.confirm-details {
+    background: #f9fef9; border:2px solid #c8e6c9;
+    border-radius:14px; padding:25px; margin:25px 0; text-align:left;
+}
+.confirm-row {
+    display:flex; justify-content:space-between;
+    padding:10px 0; border-bottom:1px solid #e8f5e9;
+    font-size:0.95rem;
+}
+.confirm-row:last-child { border-bottom:none; font-weight:700; color:#2e7d32; font-size:1.05rem; }
+.confirm-row span:first-child { color:#666; }
+
+.ref-number {
+    background: #fff3e0; border:2px dashed #ffb300;
+    border-radius:10px; padding:14px; text-align:center;
+    font-size:1.1rem; font-weight:700; color:#e65100;
+    margin-bottom:25px; letter-spacing:2px;
+}
+
+.confirm-actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.btn-outline {
+    padding:12px 25px; border:2px solid var(--main-color);
+    border-radius:10px; background:#fff; color:var(--main-color);
+    font-weight:700; cursor:pointer; font-family:'Poppins',sans-serif;
+    transition:0.3s; text-decoration:none; display:inline-block;
+}
+.btn-outline:hover { background:var(--main-color); color:#fff; }
+.btn-filled {
+    padding:12px 25px; background:var(--main-color);
+    border:none; border-radius:10px; color:#fff;
+    font-weight:700; cursor:pointer; font-family:'Poppins',sans-serif;
+    transition:0.3s; text-decoration:none; display:inline-block;
+}
+.btn-filled:hover { background:#7aab6e; }
+
+/* SHARE */
+.share-section { margin:25px 0; }
+.share-section h4 { color:#555; margin-bottom:12px; font-size:0.95rem; }
+.share-btns { display:flex; gap:10px; justify-content:center; }
+.share-btn {
+    padding:10px 20px; border-radius:8px; border:none;
+    font-weight:600; cursor:pointer; font-family:'Poppins',sans-serif;
+    font-size:0.85rem; transition:0.3s;
+}
+.share-wa { background:#25D366; color:#fff; }
+.share-fb { background:#1877F2; color:#fff; }
+.share-cp { background:#f0f0f0; color:#555; }
+
+/* PROGRESS BAR ON PAYMENT */
+.processing-overlay {
+    display:none; position:fixed; inset:0;
+    background:rgba(0,0,0,0.5); z-index:999;
+    align-items:center; justify-content:center;
+}
+.processing-overlay.show { display:flex; }
+.processing-box {
+    background:#fff; border-radius:16px; padding:40px;
+    text-align:center; min-width:300px;
+}
+.processing-box h3 { margin-bottom:15px; color:#2e7d32; }
+.proc-bar { background:#eee; border-radius:10px; overflow:hidden; height:8px; }
+.proc-fill { height:100%; background:linear-gradient(90deg,#2ecc71,#27ae60); border-radius:10px; animation:procAnim 2s ease forwards; }
+@keyframes procAnim { from{width:0} to{width:100%} }
+
+/* ════════════════════════════════════════════════
+   GLOBAL MOBILE RESPONSIVE — Helping Hearts
+   Works on all pages: web, Android, iOS
+   ════════════════════════════════════════════════ */
+
+/* Hamburger button */
+.hh-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px; height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 200;
+}
+.hh-hamburger span {
+  display: block;
+  height: 3px;
+  background: #333;
+  border-radius: 3px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.hh-hamburger.hh-hamburger-open span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+.hh-hamburger.hh-hamburger-open span:nth-child(2) { opacity: 0; }
+.hh-hamburger.hh-hamburger-open span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+
+/* Mobile nav overlay */
+.hh-nav-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 150;
+}
+.hh-nav-overlay.hh-overlay-active { display: block; }
+
+/* ── 768px and below ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* NAV */
+  nav {
+    padding: 12px 16px !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 160 !important;
+  }
+  .logo img { width: 52px !important; }
+  .logo h2  { font-size: 1rem !important; }
+
+  .hh-hamburger { display: flex; }
+
+  nav ul {
+    display: none !important;
+    position: fixed !important;
+    top: 0; right: 0;
+    width: min(300px, 80vw);
+    height: 100vh;
+    background: #fff;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+    padding: 80px 0 30px !important;
+    box-shadow: -4px 0 30px rgba(0,0,0,0.15);
+    z-index: 170;
+    overflow-y: auto;
+  }
+  nav ul.hh-nav-open { display: flex !important; }
+  nav ul li { width: 100%; }
+  nav ul li a {
+    display: block !important;
+    padding: 14px 24px !important;
+    border-radius: 0 !important;
+    font-size: 1rem !important;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .donate-btn {
+    margin: 12px 20px !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+  }
+  .admin-btn {
+    margin: 8px 20px !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+  }
+
+  /* HERO sections */
+  .hero           { height: 95vh !important; min-height: 500px; }
+  .hero h1        { font-size: 2rem !important; }
+  .hero p         { font-size: 1rem !important; }
+  .hero-btns a    { padding: 13px 24px !important; font-size: 0.92rem !important; }
+  .hero-btns      { flex-direction: column !important; align-items: center !important; }
+  .hero-tag       { font-size: 0.75rem !important; }
+
+  .about-hero h1, .contact-hero h1, .campaigns-hero h1 {
+    font-size: 2rem !important;
+  }
+  .donate-hero h1 { font-size: 1.8rem !important; }
+
+  /* STATS BARS */
+  .stats-bar      { flex-direction: column !important; gap: 0 !important; }
+  .stat-item      { border-right: none !important; border-bottom: 1px solid #eee; padding: 20px 16px !important; }
+  .stat-item:last-child { border-bottom: none; }
+  .stat-item h3   { font-size: 1.6rem !important; }
+
+  .quick-strip    { flex-direction: column !important; }
+  .quick-item     { border-right: none !important; border-bottom: 1px solid #eee; padding: 18px 20px !important; min-width: unset !important; }
+
+  /* GRIDS → single column */
+  .mission-cards,
+  .causes-grid,
+  .testi-grid,
+  .values-grid,
+  .team-grid      { grid-template-columns: 1fr !important; }
+
+  .impact-grid,
+  .hiw-steps,
+  .numbers-grid   { flex-direction: column !important; align-items: center !important; gap: 16px !important; }
+  .hiw-arrow      { display: none !important; }
+
+  .number-item, .impact-item { min-width: unset !important; width: 100%; max-width: 300px; }
+
+  /* SECTION PADDING */
+  .mission, .causes, .hiw, .values, .team, .numbers, .impact-section,
+  .testimonials, .cta, .story, .map-section, .faq, .contact-main,
+  .hiw-section, .cta-section, .impact-section { padding: 60px 16px !important; }
+
+  /* CONTACT */
+  .contact-inner  { grid-template-columns: 1fr !important; gap: 30px !important; }
+  .form-row       { grid-template-columns: 1fr !important; }
+
+  /* STORY */
+  .story-inner    { grid-template-columns: 1fr !important; gap: 30px !important; }
+  .story-image img{ height: 280px !important; }
+
+  /* CAMPAIGNS */
+  .featured-card  { grid-template-columns: 1fr !important; }
+  .featured-img   { height: 220px !important; }
+  .featured-content { padding: 24px !important; }
+  .cards          { grid-template-columns: 1fr !important; }
+
+  /* AUTH CARD */
+  .auth-wrapper   { margin-top: 76px; border-radius: 0 !important; }
+  .auth-body      { padding: 24px 20px !important; }
+  .input-row      { grid-template-columns: 1fr !important; }
+
+  /* DONATE */
+  .amount-grid    { grid-template-columns: 1fr 1fr !important; }
+  .custom-amount  { grid-column: span 2 !important; }
+  .payment-methods{ grid-template-columns: 1fr 1fr !important; }
+  .btn-row        { flex-direction: column !important; }
+  .btn-back, .btn-next, .btn-donate { width: 100% !important; }
+  .stepper        { gap: 4px !important; padding: 16px 8px !important; }
+  .step-label     { font-size: 0.72rem !important; }
+  .step-line      { width: 20px !important; }
+  .card           { padding: 20px 16px !important; }
+
+  /* FOOTER */
+  footer { padding: 30px 16px 20px !important; }
+  .footer-inner { flex-direction: column !important; gap: 24px !important; }
+  .footer-brand p { max-width: 100% !important; }
+
+  /* CTA buttons */
+  .cta-buttons    { flex-direction: column !important; align-items: center !important; }
+  .cta-btn-white, .cta-btn-outline { width: 100%; max-width: 320px; text-align: center; padding: 15px 24px !important; }
+
+  /* CONFIRM actions */
+  .confirm-actions { flex-direction: column !important; align-items: center !important; }
+  .btn-outline, .btn-filled { width: 100%; max-width: 320px; text-align: center; }
+
+  /* MODAL */
+  .modal-body     { padding: 16px !important; }
+  .modal-stats-row{ grid-template-columns: 1fr 1fr !important; }
+  .modal-ben-grid { grid-template-columns: 1fr !important; }
+  .modal-actions  { flex-direction: column !important; }
+  .modal-donate-btn, .modal-share-btn { width: 100%; text-align: center; }
+}
+
+/* ── 480px and below (small phones) ──────────────────────── */
+@media (max-width: 480px) {
+  .hero h1        { font-size: 1.7rem !important; }
+  .amount-grid    { grid-template-columns: 1fr !important; }
+  .custom-amount  { grid-column: span 1 !important; }
+  .payment-methods{ grid-template-columns: 1fr 1fr !important; }
+  .freq-btn       { padding: 10px 6px !important; font-size: 0.82rem !important; }
+  .social-btns    { flex-direction: column !important; }
+  .share-btns     { flex-wrap: wrap !important; justify-content: center !important; }
+  .social-links   { flex-wrap: wrap !important; }
+  .campaigns-hero h1 { font-size: 1.7rem !important; }
+  .filters        { gap: 6px !important; }
+  .filter-btn     { padding: 7px 14px !important; font-size: 0.82rem !important; }
+  .modal-stats-row{ grid-template-columns: 1fr !important; }
+}
+
+/* ── Tap target minimum size for iOS/Android ─────────────── */
+@media (max-width: 768px) {
+  a, button, [role="button"] { min-height: 44px; }
+  .amount-btn, .freq-btn, .pay-method { min-height: 48px !important; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+    <div class="logo">
+        <img src="logo.png" alt="Logo">
+        <h2>Helping Hearts</h2>
+    </div>
+    <ul>
+        <li><a href="helpingheart.html">Home</a></li>
+        <li><a href="campaigns.html">Campaigns</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="about.html">About</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<div class="donate-hero">
+    <h1>❤️ Make a Donation</h1>
+    <p>Every rupee you give creates ripples of hope and healing</p>
+</div>
+
+<!-- STEPPER -->
+<div class="stepper">
+    <div class="step active" id="step1">
+        <div class="step-circle">1</div>
+        <span class="step-label">Amount</span>
+    </div>
+    <div class="step-line" id="line1"></div>
+    <div class="step" id="step2">
+        <div class="step-circle">2</div>
+        <span class="step-label">Details</span>
+    </div>
+    <div class="step-line" id="line2"></div>
+    <div class="step" id="step3">
+        <div class="step-circle">3</div>
+        <span class="step-label">Payment</span>
+    </div>
+    <div class="step-line" id="line3"></div>
+    <div class="step" id="step4">
+        <div class="step-circle">✓</div>
+        <span class="step-label">Confirm</span>
+    </div>
+</div>
+
+<div class="donate-wrapper">
+
+    <!-- =========== STEP 1: AMOUNT =========== -->
+    <div class="panel active" id="panel-1">
+        <div class="card">
+            <div class="campaign-badge" id="campaign-badge" style="display:none">
+                <span>🎯</span> <span id="campaign-badge-text">Campaign</span>
+            </div>
+            <!-- Campaign selector -->
+            <div style="margin-bottom:18px;">
+                <label style="font-weight:600;font-size:.9rem;color:#555;display:block;margin-bottom:8px;">🎯 Donating To</label>
+                <select id="campaign-select" onchange="updateCampaignFromDropdown(this.value)" style="width:100%;padding:12px 14px;border:2px solid #e0e0e0;border-radius:10px;font-size:.95rem;font-family:'Poppins',sans-serif;outline:none;color:#333;background:#fff;cursor:pointer;">
+                    <option value="">General Fund (All Campaigns)</option>
+                    <option value="Flood Relief">🌊 2026 Flood Victims — Emergency Relief</option>
+                    <option value="Education for Kids">📚 Education for Underprivileged Kids</option>
+                    <option value="Medical Emergency">💊 Free Medical Camp — Rural Areas</option>
+                    <option value="Cancer Treatment Fund">🏥 Cancer Treatment Support Fund</option>
+                    <option value="Girls Education">👧 Girls Education in Balochistan</option>
+                    <option value="Earthquake Relief KPK">🌍 Earthquake Survivors — KPK</option>
+                    <option value="Ramadan Food Baskets">🍽️ Ramadan Food Baskets</option>
+                </select>
+            </div>
+            <h2>Choose Your Gift Amount</h2>
+            <p class="card-subtitle">Select a preset amount or enter your own</p>
+
+            <!-- FREQUENCY -->
+            <div class="frequency-tabs">
+                <button class="freq-btn selected" onclick="selectFreq(this,'one-time')">One-time</button>
+                <button class="freq-btn" onclick="selectFreq(this,'monthly')">Monthly</button>
+                <button class="freq-btn" onclick="selectFreq(this,'annually')">Annual</button>
+            </div>
+
+            <!-- AMOUNTS -->
+            <div class="amount-grid">
+                <button class="amount-btn" onclick="selectAmount(this, 500)">PKR 500</button>
+                <button class="amount-btn" onclick="selectAmount(this, 1000)">PKR 1,000</button>
+                <button class="amount-btn" onclick="selectAmount(this, 2500)">PKR 2,500</button>
+                <button class="amount-btn" onclick="selectAmount(this, 5000)">PKR 5,000</button>
+                <button class="amount-btn" onclick="selectAmount(this, 10000)">PKR 10,000</button>
+                <button class="amount-btn" onclick="selectAmount(this, 25000)">PKR 25,000</button>
+                <div class="custom-amount">
+                    <span class="currency">PKR</span>
+                    <input type="number" id="custom-amount" placeholder="Enter custom amount" oninput="customAmount(this)">
+                </div>
+            </div>
+
+            <!-- IMPACT PREVIEW -->
+            <div class="impact-preview" id="impact-preview" style="display:none">
+                <h4>💡 Your donation impact:</h4>
+                <div class="impact-items" id="impact-items"></div>
+            </div>
+
+            <div class="btn-row">
+                <button class="btn-next" onclick="goToStep(2)">Continue →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========== STEP 2: DETAILS =========== -->
+    <div class="panel" id="panel-2">
+        <div class="card">
+            <h2>Your Information</h2>
+            <p class="card-subtitle">Help us send you a receipt and impact report</p>
+
+            <div class="input-row">
+                <div class="input-group">
+                    <label>First Name *</label>
+                    <input type="text" id="d-fname" placeholder="Ali">
+                </div>
+                <div class="input-group">
+                    <label>Last Name *</label>
+                    <input type="text" id="d-lname" placeholder="Ahmed">
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Email Address *</label>
+                <input type="email" id="d-email" placeholder="you@example.com">
+            </div>
+            <div class="input-group">
+                <label>Phone Number</label>
+                <input type="tel" id="d-phone" placeholder="+92 300 0000000">
+            </div>
+            <div class="input-group">
+                <label>City</label>
+                <input type="text" id="d-city" placeholder="Lahore">
+            </div>
+
+            <!-- DEDICATE -->
+            <div class="dedicate-toggle" onclick="toggleDedicate()">
+                <div class="toggle-switch" id="ded-toggle"><div class="toggle-dot"></div></div>
+                <span class="dedicate-label">Dedicate this donation to someone special</span>
+            </div>
+            <div id="dedicate-fields" style="display:none">
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Honoree's Name</label>
+                        <input type="text" id="d-honoree" placeholder="In memory of...">
+                    </div>
+                    <div class="input-group">
+                        <label>Their Email (optional)</label>
+                        <input type="email" id="d-honoree-email" placeholder="Notify them">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Personal Message</label>
+                    <textarea rows="3" id="d-message" placeholder="Write a heartfelt message..." style="resize:vertical;"></textarea>
+                </div>
+            </div>
+
+            <div class="btn-row">
+                <button class="btn-back" onclick="goToStep(1)">← Back</button>
+                <button class="btn-next" onclick="goToStep(3)">Continue →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========== STEP 3: PAYMENT =========== -->
+    <div class="panel" id="panel-3">
+        <div class="card">
+            <h2>Payment Details</h2>
+            <p class="card-subtitle">Choose your preferred payment method</p>
+
+            <!-- PAYMENT METHODS -->
+            <div class="payment-methods">
+                <div class="pay-method selected" onclick="selectPayment(this,'card')" id="pm-card">
+                    <div class="icon">💳</div>
+                    <div class="label">Credit / Debit Card</div>
+                </div>
+                <div class="pay-method" onclick="selectPayment(this,'easypaisa')" id="pm-easypaisa">
+                    <div class="icon">📱</div>
+                    <div class="label">EasyPaisa</div>
+                </div>
+                <div class="pay-method" onclick="selectPayment(this,'jazzcash')" id="pm-jazzcash">
+                    <div class="icon">💜</div>
+                    <div class="label">JazzCash</div>
+                </div>
+                <div class="pay-method" onclick="selectPayment(this,'bank')" id="pm-bank">
+                    <div class="icon">🏦</div>
+                    <div class="label">Bank Transfer</div>
+                </div>
+                <div class="pay-method" onclick="selectPayment(this,'sadapay')" id="pm-sadapay">
+                    <div class="icon">🟢</div>
+                    <div class="label">SadaPay / Nayapay</div>
+                </div>
+                <div class="pay-method" onclick="selectPayment(this,'crypto')" id="pm-crypto">
+                    <div class="icon">₿</div>
+                    <div class="label">Crypto</div>
+                </div>
+            </div>
+
+            <!-- CARD FIELDS -->
+            <div id="fields-card">
+                <div class="input-group">
+                    <label>Cardholder Name</label>
+                    <input type="text" id="p-name" placeholder="As on card">
+                </div>
+                <div class="input-group relative">
+                    <label>Card Number</label>
+                    <input type="text" id="p-card" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCard(this)">
+                    <span class="card-icon">💳</span>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Expiry Date</label>
+                        <input type="text" id="p-expiry" placeholder="MM / YY" maxlength="7" oninput="formatExpiry(this)">
+                    </div>
+                    <div class="input-group">
+                        <label>CVV</label>
+                        <input type="text" id="p-cvv" placeholder="123" maxlength="3">
+                    </div>
+                </div>
+            </div>
+
+            <!-- EASYPAISA FIELDS -->
+            <div id="fields-easypaisa" style="display:none">
+                <div class="input-group">
+                    <label>EasyPaisa Mobile Number</label>
+                    <input type="tel" id="p-easy" placeholder="03XX XXXXXXX">
+                </div>
+                <p style="font-size:0.85rem;color:#888;margin-top:8px;">📲 You will receive a confirmation PIN on this number</p>
+            </div>
+
+            <!-- JAZZCASH FIELDS -->
+            <div id="fields-jazzcash" style="display:none">
+                <div class="input-group">
+                    <label>JazzCash Mobile Number</label>
+                    <input type="tel" id="p-jazz" placeholder="03XX XXXXXXX">
+                </div>
+                <div class="input-group">
+                    <label>JazzCash MPIN</label>
+                    <input type="password" id="p-jazz-pin" placeholder="4-digit MPIN" maxlength="4">
+                </div>
+            </div>
+
+            <!-- BANK FIELDS -->
+            <div id="fields-bank" style="display:none">
+                <div style="background:#f9f9f9;border:2px solid #eee;border-radius:12px;padding:20px;margin-bottom:15px;">
+                    <h4 style="margin-bottom:12px;color:#555;">Bank Account Details</h4>
+                    <p style="font-size:0.9rem;color:#666;margin:5px 0;"><strong>Account Title:</strong> Helping Hearts Foundation</p>
+                    <p style="font-size:0.9rem;color:#666;margin:5px 0;"><strong>Account No:</strong> 0123-4567890-01</p>
+                    <p style="font-size:0.9rem;color:#666;margin:5px 0;"><strong>Bank:</strong> HBL (Habib Bank Limited)</p>
+                    <p style="font-size:0.9rem;color:#666;margin:5px 0;"><strong>IBAN:</strong> PK36HABB0000000012345670</p>
+                </div>
+                <div class="input-group">
+                    <label>Transaction / Reference Number</label>
+                    <input type="text" id="p-txn" placeholder="Enter transaction ID after transfer">
+                </div>
+            </div>
+
+            <!-- SADAPAY FIELDS -->
+            <div id="fields-sadapay" style="display:none">
+                <div class="input-group">
+                    <label>SadaPay / Nayapay Number</label>
+                    <input type="tel" id="p-sada" placeholder="03XX XXXXXXX">
+                </div>
+                <p style="font-size:0.85rem;color:#888;margin-top:8px;">Send to: <strong>0312-3456789</strong> (Helping Hearts) then enter your reference below</p>
+                <div class="input-group" style="margin-top:15px;">
+                    <label>Payment Reference</label>
+                    <input type="text" id="p-sada-ref" placeholder="Enter confirmation number">
+                </div>
+            </div>
+
+            <!-- CRYPTO FIELDS -->
+            <div id="fields-crypto" style="display:none">
+                <div style="background:#fff3e0;border:2px solid #ffb300;border-radius:12px;padding:20px;margin-bottom:15px;text-align:center;">
+                    <p style="font-weight:700;color:#e65100;margin-bottom:8px;">₿ Bitcoin Address</p>
+                    <p style="font-size:0.85rem;color:#666;word-break:break-all;font-family:monospace;">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</p>
+                    <p style="font-size:0.8rem;color:#999;margin-top:8px;">USDT (TRC20): TFP4A7xxxxxxxxxxxxxxxxxxx</p>
+                </div>
+                <div class="input-group">
+                    <label>Transaction Hash</label>
+                    <input type="text" id="p-crypto" placeholder="Paste TX hash after sending">
+                </div>
+            </div>
+
+            <!-- DONATION SUMMARY -->
+            <div class="summary-box">
+                <div class="summary-row">
+                    <span>Donation Amount</span>
+                    <span id="sum-amount">PKR 0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Campaign</span>
+                    <span id="sum-campaign">General Fund</span>
+                </div>
+                <div class="summary-row">
+                    <span>Frequency</span>
+                    <span id="sum-freq">One-time</span>
+                </div>
+                <div class="summary-row">
+                    <span>💚 Total</span>
+                    <span id="sum-total">PKR 0</span>
+                </div>
+            </div>
+
+            <div class="secure-badge">🔒 256-bit SSL Encrypted &nbsp;|&nbsp; 🛡️ PCI-DSS Compliant</div>
+
+            <div class="btn-row">
+                <button class="btn-back" onclick="goToStep(2)">← Back</button>
+                <button class="btn-donate" onclick="processDonation()">❤️ Donate Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========== STEP 4: CONFIRMATION =========== -->
+    <div class="panel" id="panel-confirm">
+        <div class="card">
+            <div class="confirm-icon">✓</div>
+            <h2>Thank You! 🎉</h2>
+            <p class="confirm-subtitle">Your donation has been received. You are making a real difference!</p>
+
+            <div class="ref-number" id="ref-number">REF: HH-2026-000000</div>
+
+            <div class="confirm-details">
+                <div class="confirm-row"><span>Donor Name</span><span id="c-name">—</span></div>
+                <div class="confirm-row"><span>Email</span><span id="c-email">—</span></div>
+                <div class="confirm-row"><span>Campaign</span><span id="c-campaign">—</span></div>
+                <div class="confirm-row"><span>Payment Method</span><span id="c-payment">—</span></div>
+                <div class="confirm-row"><span>Date</span><span id="c-date">—</span></div>
+                <div class="confirm-row"><span>💚 Amount Donated</span><span id="c-amount">—</span></div>
+            </div>
+
+            <p style="color:#888;font-size:0.88rem;margin-bottom:20px;">
+                📧 A receipt has been sent to your email. Your donation is tax-deductible. Certificate of donation will arrive within 3 business days.
+            </p>
+
+            <!-- SHARE -->
+            <div class="share-section">
+                <h4>💙 Inspire others — Share your good deed:</h4>
+                <div class="share-btns">
+                    <button class="share-btn share-wa" onclick="shareWhatsApp()">📲 WhatsApp</button>
+                    <button class="share-btn share-fb" onclick="shareFB()">📘 Facebook</button>
+                    <button class="share-btn share-cp" onclick="copyLink()">🔗 Copy Link</button>
+                </div>
+            </div>
+
+            <div class="confirm-actions">
+                <a href="campaigns.html" class="btn-outline">View More Campaigns</a>
+                <a href="helpingheart.html" class="btn-filled">Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- PROCESSING OVERLAY -->
+<div class="processing-overlay" id="processing-overlay">
+    <div class="processing-box">
+        <h3>⏳ Processing Your Donation...</h3>
+        <p style="color:#888;margin-bottom:20px;font-size:0.9rem;">Please wait, do not close this window</p>
+        <div class="proc-bar"><div class="proc-fill"></div></div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer style="background:#2c3e50;color:#fff;text-align:center;padding:25px 20px;margin-top:60px;">
+    <p>© 2026 Helping Hearts | Made with ❤️</p>
+</footer>
+
+<script>
+let selectedAmount = 0;
+let selectedFreq = 'one-time';
+let selectedPayment = 'card';
+let campaignName = '';
+
+// Slug map — campaign name to database slug
+const slugMap = {
+    'Flood Relief':          'flood-relief',
+    'Education for Kids':    'education-fund',
+    'Medical Emergency':     'medical-aid',
+    'Cancer Treatment Fund': 'cancer-treatment',
+    'Girls Education':       'girls-education',
+    'Earthquake Relief KPK': 'earthquake-kpk',
+    'Ramadan Food Baskets':  'food-baskets',
+};
+
+function updateCampaignFromDropdown(val) {
+    campaignName = val;
+    const badge = document.getElementById('campaign-badge');
+    const badgeText = document.getElementById('campaign-badge-text');
+    const sumCampaign = document.getElementById('sum-campaign');
+    if (val) {
+        badge.style.display = 'inline-flex';
+        badgeText.textContent = val;
+        if (sumCampaign) sumCampaign.textContent = val;
+    } else {
+        badge.style.display = 'none';
+        if (sumCampaign) sumCampaign.textContent = 'General Fund';
+    }
+}
+
+// Read URL params
+const urlParams = new URLSearchParams(window.location.search);
+const urlCampaign = urlParams.get('campaign');
+if (urlCampaign) {
+    campaignName = urlCampaign;
+    document.getElementById('campaign-badge').style.display = 'inline-flex';
+    document.getElementById('campaign-badge-text').textContent = urlCampaign;
+    // Pre-select dropdown
+    const sel = document.getElementById('campaign-select');
+    if (sel) {
+        for (let opt of sel.options) {
+            if (opt.value === urlCampaign) { opt.selected = true; break; }
+        }
+    }
+}
+
+function selectAmount(btn, val) {
+    document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedAmount = val;
+    document.getElementById('custom-amount').value = '';
+    showImpact(val);
+}
+
+function customAmount(input) {
+    document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+    selectedAmount = parseInt(input.value) || 0;
+    if (selectedAmount > 0) showImpact(selectedAmount);
+    else document.getElementById('impact-preview').style.display = 'none';
+}
+
+function showImpact(amount) {
+    const items = [];
+    if (amount >= 500)  items.push('🍽️ Feeds a family for 1 day');
+    if (amount >= 1000) items.push('📚 Provides school supplies for 1 child');
+    if (amount >= 2500) items.push('💊 Covers basic medical checkup');
+    if (amount >= 5000) items.push('🏕️ Emergency shelter kit');
+    if (amount >= 10000) items.push('📖 Sponsors a child for 1 month');
+    if (items.length) {
+        document.getElementById('impact-preview').style.display = 'block';
+        document.getElementById('impact-items').innerHTML = items.map(i =>
+            `<div class="impact-item"><div class="dot"></div>${i}</div>`).join('');
+    }
+}
+
+function selectFreq(btn, val) {
+    document.querySelectorAll('.freq-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedFreq = val;
+    // Update display label nicely
+    const labels = {'one-time':'One-time','monthly':'Monthly','annually':'Annually'};
+    const el = document.getElementById('sum-freq');
+    if (el) el.textContent = labels[val] || val;
+}
+
+let dedicateOn = false;
+function toggleDedicate() {
+    dedicateOn = !dedicateOn;
+    const tog = document.getElementById('ded-toggle');
+    const fields = document.getElementById('dedicate-fields');
+    tog.classList.toggle('on', dedicateOn);
+    fields.style.display = dedicateOn ? 'block' : 'none';
+}
+
+function selectPayment(el, method) {
+    document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedPayment = method;
+    // Hide all field groups
+    ['card','easypaisa','jazzcash','bank','sadapay','crypto'].forEach(m => {
+        document.getElementById('fields-' + m).style.display = 'none';
+    });
+    document.getElementById('fields-' + method).style.display = 'block';
+}
+
+function goToStep(step) {
+    if (step === 2 && selectedAmount <= 0) {
+        alert('Please select or enter a donation amount.');
+        return;
+    }
+    if (step === 3) {
+        const fname = document.getElementById('d-fname').value;
+        const email = document.getElementById('d-email').value;
+        if (!fname || !email) { alert('Please fill in your name and email.'); return; }
+        document.getElementById('sum-amount').textContent = 'PKR ' + selectedAmount.toLocaleString();
+        document.getElementById('sum-total').textContent = 'PKR ' + selectedAmount.toLocaleString();
+        document.getElementById('sum-campaign').textContent = campaignName;
+        }
+
+    // Update stepper
+    for (let i = 1; i <= 4; i++) {
+        const s = document.getElementById('step' + i);
+        if (!s) continue;
+        s.classList.remove('active','done');
+        if (i < step) s.classList.add('done');
+        if (i === step) s.classList.add('active');
+    }
+    for (let i = 1; i <= 3; i++) {
+        const l = document.getElementById('line' + i);
+        if (!l) continue;
+        l.classList.toggle('done', i < step);
+    }
+
+    // Show panel
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + step).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function processDonation() {
+    const overlay = document.getElementById('processing-overlay');
+    overlay.classList.add('show');
+
+    const fname    = document.getElementById('d-fname').value.trim();
+    const lname    = document.getElementById('d-lname').value.trim();
+    const email    = document.getElementById('d-email').value.trim();
+    const phone    = document.getElementById('d-phone')?.value.trim() || '';
+    const city     = document.getElementById('d-city')?.value.trim() || '';
+    const token    = localStorage.getItem('hh_token');
+
+    // Use global slugMap — null if general fund
+    const campaign_slug = campaignName ? (slugMap[campaignName] || null) : null;
+
+    try {
+        const res = await fetch((window.location.hostname === 'localhost' ? 'http://localhost:5000/api' : '/api') + '/donations', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                amount:           selectedAmount,
+                currency:         'PKR',
+                frequency:        selectedFreq || 'one-time',
+                donor_first_name: fname,
+                donor_last_name:  lname,
+                donor_email:      email,
+                donor_phone:      phone,
+                donor_city:       city,
+                campaign_slug:    campaign_slug || '',
+                payment_method:   selectedPayment || 'jazzcash',
+                transaction_ref:  'HH-2026-' + Math.floor(Math.random()*900000+100000),
+            })
+        });
+
+        const data = await res.json();
+        overlay.classList.remove('show');
+
+        if (!data.success) {
+            alert('Donation failed: ' + (data.message || 'Please try again.'));
+            return;
+        }
+        showConfirmation();
+
+    } catch (err) {
+        overlay.classList.remove('show');
+        alert('Could not connect to server. Make sure the backend is running on port 5000.');
+    }
+}
+
+function showConfirmation() {
+    const fname = document.getElementById('d-fname').value;
+    const lname = document.getElementById('d-lname').value;
+    const email = document.getElementById('d-email').value;
+    const payLabels = { card:'Credit/Debit Card', easypaisa:'EasyPaisa', jazzcash:'JazzCash', bank:'Bank Transfer', sadapay:'SadaPay/Nayapay', crypto:'Cryptocurrency' };
+    const ref = 'HH-2026-' + Math.floor(Math.random()*900000+100000);
+
+    document.getElementById('ref-number').textContent = 'REF: ' + ref;
+    document.getElementById('c-name').textContent = fname + ' ' + lname;
+    document.getElementById('c-email').textContent = email;
+    document.getElementById('c-campaign').textContent = campaignName;
+    document.getElementById('c-payment').textContent = payLabels[selectedPayment];
+    document.getElementById('c-date').textContent = new Date().toLocaleDateString('en-PK', {year:'numeric',month:'long',day:'numeric'});
+    document.getElementById('c-amount').textContent = 'PKR ' + selectedAmount.toLocaleString();
+
+    // Update stepper to done
+    for (let i = 1; i <= 3; i++) {
+        document.getElementById('step' + i).classList.remove('active');
+        document.getElementById('step' + i).classList.add('done');
+        document.getElementById('line' + i).classList.add('done');
+    }
+    document.getElementById('step4').classList.add('active');
+
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-confirm').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function formatCard(input) {
+    let v = input.value.replace(/\D/g,'').substring(0,16);
+    input.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+function formatExpiry(input) {
+    let v = input.value.replace(/\D/g,'').substring(0,4);
+    if (v.length >= 2) v = v.substring(0,2) + ' / ' + v.substring(2);
+    input.value = v;
+}
+
+function shareWhatsApp() {
+    window.open(`https://wa.me/?text=I just donated PKR ${selectedAmount.toLocaleString()} to Helping Hearts! Join me in making a difference: ${window.location.origin}/helpingheart.html`);
+}
+function shareFB() {
+    window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href));
+}
+function copyLink() {
+    navigator.clipboard.writeText(window.location.origin + '/helpingheart.html');
+    alert('Link copied to clipboard!');
+}
+</script>
+
+<script>
+// ── Mobile hamburger menu ─────────────────────────────────────
+(function(){
+  var nav = document.querySelector('nav');
+  if (!nav) return;
+  var ul = nav.querySelector('ul');
+  if (!ul) return;
+
+  // Create hamburger button
+  var btn = document.createElement('button');
+  btn.className = 'hh-hamburger';
+  btn.setAttribute('aria-label','Toggle menu');
+  btn.innerHTML = '<span></span><span></span><span></span>';
+  nav.appendChild(btn);
+
+  // Create mobile overlay
+  var overlay = document.createElement('div');
+  overlay.className = 'hh-nav-overlay';
+  document.body.appendChild(overlay);
+
+  function openMenu(){
+    ul.classList.add('hh-nav-open');
+    overlay.classList.add('hh-overlay-active');
+    btn.classList.add('hh-hamburger-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu(){
+    ul.classList.remove('hh-nav-open');
+    overlay.classList.remove('hh-overlay-active');
+    btn.classList.remove('hh-hamburger-open');
+    document.body.style.overflow = '';
+  }
+
+  btn.addEventListener('click', function(){
+    ul.classList.contains('hh-nav-open') ? closeMenu() : openMenu();
+  });
+  overlay.addEventListener('click', closeMenu);
+  ul.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', closeMenu);
+  });
+})();
+</script>
+
+<script>
+/* Smart nav — swaps Login for Profile+Logout when user is logged in */
+(function() {
+  var token = localStorage.getItem('hh_token');
+  var navLinks = document.querySelectorAll('nav ul li');
+
+  navLinks.forEach(function(li) {
+    var a = li.querySelector('a');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    // Target the Login link (auth.html, NOT the donate redirect)
+    var isLogin = href.indexOf('auth.html') !== -1
+               && href.indexOf('redirect=donate') === -1
+               && !a.classList.contains('donate-btn');
+    if (!isLogin) return;
+
+    if (token) {
+      // User is logged in — replace Login with Profile name + Logout
+      var user = {};
+      try { user = JSON.parse(localStorage.getItem('hh_user') || '{}'); } catch(e) {}
+      var name = user.first_name || 'My Profile';
+
+      // Profile link
+      var pLi = document.createElement('li');
+      var pA  = document.createElement('a');
+      pA.href = 'profile.html';
+      pA.textContent = '\u{1F464} ' + name;
+      pA.style.cssText = 'color:#96BF8A;font-weight:700;';
+      pLi.appendChild(pA);
+
+      // Logout link
+      var lLi = document.createElement('li');
+      var lA  = document.createElement('a');
+      lA.href = '#';
+      lA.textContent = 'Logout';
+      lA.style.cssText = 'color:#e74c3c;font-weight:700;';
+      lA.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (confirm('Are you sure you want to logout?')) {
+          localStorage.removeItem('hh_token');
+          localStorage.removeItem('hh_user');
+          window.location.href = 'helpingheart.html';
+        }
+      });
+      lLi.appendChild(lA);
+
+      li.parentNode.insertBefore(pLi, li);
+      li.parentNode.insertBefore(lLi, li);
+      li.style.display = 'none';
+    }
+  });
+})();
+</script>
+</body>
+</html>

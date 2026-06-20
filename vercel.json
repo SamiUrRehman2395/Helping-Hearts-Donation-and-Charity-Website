@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "public/**",
+          "routes/**",
+          "middleware/**",
+          "config/**"
+        ]
+      }
+    }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/server.js" },
+    { "src": "/(.*\\.html)", "dest": "/server.js" },
+    { "src": "/(.*\\.(jpg|jpeg|png|gif|ico|svg|webp|woff|woff2|ttf|eot|css|js))", "dest": "/server.js" },
+    { "src": "/", "dest": "/server.js" },
+    { "src": "/(.*)", "dest": "/server.js" }
+  ]
+}

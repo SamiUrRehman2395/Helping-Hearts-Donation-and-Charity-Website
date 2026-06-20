@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In / Sign Up - Helping Hearts</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --main-color: #96BF8A;
+    --accent-color: #2ecc71;
+    --donate-color: #e74c3c;
+    --bg-light: #f7f7f7;
+    --text-color: #333;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+                url('view-hands-holding-red-heart-represent-affection.jpg') center/cover no-repeat fixed;
+                
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* NAVBAR */
+nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 50px;
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    z-index: 100;
+}
+.logo { display:flex; align-items:center; gap:12px; }
+.logo img { width:65px; }
+.logo h2 { color: var(--main-color); font-weight:700; font-size:1.2rem; }
+nav ul { display:flex; list-style:none; gap:20px; align-items:center; }
+nav ul li a { text-decoration:none; color:var(--text-color); font-weight:600; padding:8px 12px; border-radius:5px; transition:0.3s; }
+nav ul li a:hover { background:var(--main-color); color:#fff; }
+
+/* AUTH CARD */
+.auth-wrapper {
+    margin-top: 80px;
+    background: rgba(255,255,255,0.97);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    width: 100%;
+    max-width: 480px;
+    overflow: hidden;
+    animation: slideUp 0.6s ease;
+}
+
+@keyframes slideUp {
+    from { opacity:0; transform:translateY(30px); }
+    to { opacity:1; transform:translateY(0); }
+}
+
+/* TABS */
+.tab-header {
+    display: flex;
+}
+.tab-btn {
+    flex: 1;
+    padding: 18px;
+    border: none;
+    background: #f0f0f0;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    color: #888;
+    font-family: 'Poppins', sans-serif;
+}
+.tab-btn.active {
+    background: var(--main-color);
+    color: #fff;
+}
+
+/* FORM BODY */
+.auth-body { padding: 35px 40px; }
+
+.auth-body h2 {
+    font-size: 1.6rem;
+    color: var(--text-color);
+    margin-bottom: 6px;
+}
+.auth-body p.subtitle {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+}
+
+/* INPUT GROUP */
+.input-group {
+    margin-bottom: 18px;
+}
+.input-group label {
+    display: block;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+}
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: 'Poppins', sans-serif;
+    transition: 0.3s;
+    outline: none;
+}
+.input-group input:focus {
+    border-color: var(--main-color);
+    box-shadow: 0 0 0 3px rgba(150,191,138,0.2);
+}
+
+.input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* SUBMIT BUTTON */
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent-color);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 8px;
+}
+.submit-btn:hover {
+    background: #27ae60;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(46,204,113,0.4);
+}
+
+/* DIVIDER */
+.divider {
+    text-align: center;
+    color: #aaa;
+    font-size: 0.85rem;
+    margin: 18px 0;
+    position: relative;
+}
+.divider::before, .divider::after {
+    content: '';
+    position: absolute;
+    top: 50%; width: 40%;
+    height: 1px;
+    background: #ddd;
+}
+.divider::before { left: 0; }
+.divider::after { right: 0; }
+
+/* SOCIAL BUTTONS */
+.social-btns { display:flex; gap:12px; }
+.social-btn {
+    flex:1; padding:11px;
+    border: 2px solid #e0e0e0;
+    border-radius:10px;
+    background:#fff;
+    font-size:0.9rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+    font-family:'Poppins',sans-serif;
+    color: #555;
+}
+.social-btn:hover { border-color: var(--main-color); color: var(--main-color); }
+
+/* FORGOT */
+.forgot {
+    text-align: right;
+    font-size: 0.82rem;
+    margin-bottom: 5px;
+}
+.forgot a { color: var(--main-color); text-decoration: none; font-weight:600; }
+
+/* TERMS */
+.terms {
+    font-size: 0.78rem;
+    color: #999;
+    text-align: center;
+    margin-top: 15px;
+}
+.terms a { color: var(--main-color); text-decoration: none; }
+
+/* CAMPAIGN REDIRECT INFO */
+.campaign-info {
+    background: linear-gradient(135deg, #f0f9ef, #e8f5e9);
+    border-left: 4px solid var(--main-color);
+    border-radius: 0 10px 10px 0;
+    padding: 12px 15px;
+    margin-bottom: 22px;
+    font-size: 0.88rem;
+    color: #555;
+}
+.campaign-info strong { color: var(--main-color); }
+
+/* TAB PANELS */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* PASSWORD STRENGTH */
+.strength-bar {
+    height: 4px;
+    background: #eee;
+    border-radius: 4px;
+    margin-top: 6px;
+    overflow: hidden;
+}
+.strength-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s, background 0.3s;
+    width: 0%;
+}
+
+/* ════════════════════════════════════════════════
+   GLOBAL MOBILE RESPONSIVE — Helping Hearts
+   Works on all pages: web, Android, iOS
+   ════════════════════════════════════════════════ */
+
+/* Hamburger button */
+.hh-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px; height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 200;
+}
+.hh-hamburger span {
+  display: block;
+  height: 3px;
+  background: #333;
+  border-radius: 3px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.hh-hamburger.hh-hamburger-open span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+.hh-hamburger.hh-hamburger-open span:nth-child(2) { opacity: 0; }
+.hh-hamburger.hh-hamburger-open span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+
+/* Mobile nav overlay */
+.hh-nav-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 150;
+}
+.hh-nav-overlay.hh-overlay-active { display: block; }
+
+/* ── 768px and below ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* NAV */
+  nav {
+    padding: 12px 16px !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 160 !important;
+  }
+  .logo img { width: 52px !important; }
+  .logo h2  { font-size: 1rem !important; }
+
+  .hh-hamburger { display: flex; }
+
+  nav ul {
+    display: none !important;
+    position: fixed !important;
+    top: 0; right: 0;
+    width: min(300px, 80vw);
+    height: 100vh;
+    background: #fff;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+    padding: 80px 0 30px !important;
+    box-shadow: -4px 0 30px rgba(0,0,0,0.15);
+    z-index: 170;
+    overflow-y: auto;
+  }
+  nav ul.hh-nav-open { display: flex !important; }
+  nav ul li { width: 100%; }
+  nav ul li a {
+    display: block !important;
+    padding: 14px 24px !important;
+    border-radius: 0 !important;
+    font-size: 1rem !important;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .donate-btn {
+    margin: 12px 20px !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+  }
+  .admin-btn {
+    margin: 8px 20px !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+  }
+
+  /* HERO sections */
+  .hero           { height: 95vh !important; min-height: 500px; }
+  .hero h1        { font-size: 2rem !important; }
+  .hero p         { font-size: 1rem !important; }
+  .hero-btns a    { padding: 13px 24px !important; font-size: 0.92rem !important; }
+  .hero-btns      { flex-direction: column !important; align-items: center !important; }
+  .hero-tag       { font-size: 0.75rem !important; }
+
+  .about-hero h1, .contact-hero h1, .campaigns-hero h1 {
+    font-size: 2rem !important;
+  }
+  .donate-hero h1 { font-size: 1.8rem !important; }
+
+  /* STATS BARS */
+  .stats-bar      { flex-direction: column !important; gap: 0 !important; }
+  .stat-item      { border-right: none !important; border-bottom: 1px solid #eee; padding: 20px 16px !important; }
+  .stat-item:last-child { border-bottom: none; }
+  .stat-item h3   { font-size: 1.6rem !important; }
+
+  .quick-strip    { flex-direction: column !important; }
+  .quick-item     { border-right: none !important; border-bottom: 1px solid #eee; padding: 18px 20px !important; min-width: unset !important; }
+
+  /* GRIDS → single column */
+  .mission-cards,
+  .causes-grid,
+  .testi-grid,
+  .values-grid,
+  .team-grid      { grid-template-columns: 1fr !important; }
+
+  .impact-grid,
+  .hiw-steps,
+  .numbers-grid   { flex-direction: column !important; align-items: center !important; gap: 16px !important; }
+  .hiw-arrow      { display: none !important; }
+
+  .number-item, .impact-item { min-width: unset !important; width: 100%; max-width: 300px; }
+
+  /* SECTION PADDING */
+  .mission, .causes, .hiw, .values, .team, .numbers, .impact-section,
+  .testimonials, .cta, .story, .map-section, .faq, .contact-main,
+  .hiw-section, .cta-section, .impact-section { padding: 60px 16px !important; }
+
+  /* CONTACT */
+  .contact-inner  { grid-template-columns: 1fr !important; gap: 30px !important; }
+  .form-row       { grid-template-columns: 1fr !important; }
+
+  /* STORY */
+  .story-inner    { grid-template-columns: 1fr !important; gap: 30px !important; }
+  .story-image img{ height: 280px !important; }
+
+  /* CAMPAIGNS */
+  .featured-card  { grid-template-columns: 1fr !important; }
+  .featured-img   { height: 220px !important; }
+  .featured-content { padding: 24px !important; }
+  .cards          { grid-template-columns: 1fr !important; }
+
+  /* AUTH CARD */
+  .auth-wrapper   { margin-top: 76px; border-radius: 0 !important; }
+  .auth-body      { padding: 24px 20px !important; }
+  .input-row      { grid-template-columns: 1fr !important; }
+
+  /* DONATE */
+  .amount-grid    { grid-template-columns: 1fr 1fr !important; }
+  .custom-amount  { grid-column: span 2 !important; }
+  .payment-methods{ grid-template-columns: 1fr 1fr !important; }
+  .btn-row        { flex-direction: column !important; }
+  .btn-back, .btn-next, .btn-donate { width: 100% !important; }
+  .stepper        { gap: 4px !important; padding: 16px 8px !important; }
+  .step-label     { font-size: 0.72rem !important; }
+  .step-line      { width: 20px !important; }
+  .card           { padding: 20px 16px !important; }
+
+  /* FOOTER */
+  footer { padding: 30px 16px 20px !important; }
+  .footer-inner { flex-direction: column !important; gap: 24px !important; }
+  .footer-brand p { max-width: 100% !important; }
+
+  /* CTA buttons */
+  .cta-buttons    { flex-direction: column !important; align-items: center !important; }
+  .cta-btn-white, .cta-btn-outline { width: 100%; max-width: 320px; text-align: center; padding: 15px 24px !important; }
+
+  /* CONFIRM actions */
+  .confirm-actions { flex-direction: column !important; align-items: center !important; }
+  .btn-outline, .btn-filled { width: 100%; max-width: 320px; text-align: center; }
+
+  /* MODAL */
+  .modal-body     { padding: 16px !important; }
+  .modal-stats-row{ grid-template-columns: 1fr 1fr !important; }
+  .modal-ben-grid { grid-template-columns: 1fr !important; }
+  .modal-actions  { flex-direction: column !important; }
+  .modal-donate-btn, .modal-share-btn { width: 100%; text-align: center; }
+}
+
+/* ── 480px and below (small phones) ──────────────────────── */
+@media (max-width: 480px) {
+  .hero h1        { font-size: 1.7rem !important; }
+  .amount-grid    { grid-template-columns: 1fr !important; }
+  .custom-amount  { grid-column: span 1 !important; }
+  .payment-methods{ grid-template-columns: 1fr 1fr !important; }
+  .freq-btn       { padding: 10px 6px !important; font-size: 0.82rem !important; }
+  .social-btns    { flex-direction: column !important; }
+  .share-btns     { flex-wrap: wrap !important; justify-content: center !important; }
+  .social-links   { flex-wrap: wrap !important; }
+  .campaigns-hero h1 { font-size: 1.7rem !important; }
+  .filters        { gap: 6px !important; }
+  .filter-btn     { padding: 7px 14px !important; font-size: 0.82rem !important; }
+  .modal-stats-row{ grid-template-columns: 1fr !important; }
+}
+
+/* ── Tap target minimum size for iOS/Android ─────────────── */
+@media (max-width: 768px) {
+  a, button, [role="button"] { min-height: 44px; }
+  .amount-btn, .freq-btn, .pay-method { min-height: 48px !important; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+    <div class="logo">
+        <img src="logo.png" alt="Helping Hearts Logo">
+        <h2>Helping Hearts</h2>
+    </div>
+    <ul>
+        <li><a href="helpingheart.html">Home</a></li>
+        <li><a href="campaigns.html">Campaigns</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="about.html">About</a></li>
+    </ul>
+</nav>
+
+<!-- AUTH CARD -->
+<div class="auth-wrapper">
+    <div class="tab-header">
+        <button class="tab-btn active" onclick="switchTab('login')">Sign In</button>
+        <button class="tab-btn" onclick="switchTab('signup')">Create Account</button>
+    </div>
+
+    <div class="auth-body">
+
+        <!-- ======== LOGIN PANEL ======== -->
+        <div class="tab-panel active" id="login-panel">
+            <h2>Welcome Back 👋</h2>
+            <p class="subtitle">Sign in to continue your journey of giving</p>
+
+            <div class="campaign-info" id="login-info" style="display:none">
+                Please <strong>sign in</strong> to proceed with your donation ❤️
+            </div>
+
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" id="login-email" placeholder="you@example.com">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="login-password" placeholder="Enter your password">
+            </div>
+            <div class="forgot"><a href="#">Forgot Password?</a></div>
+
+            <button class="submit-btn" onclick="handleLogin()">Sign In & Continue</button>
+
+            <div class="divider">or continue with</div>
+            <div class="social-btns">
+                <button class="social-btn" onclick="socialLogin()">🇬 Google</button>
+                <button class="social-btn" onclick="socialLogin()">📘 Facebook</button>
+            </div>
+            <p class="terms">Don't have an account? <a href="#" onclick="switchTab('signup')">Create one free</a></p>
+        </div>
+
+        <!-- ======== SIGNUP PANEL ======== -->
+        <div class="tab-panel" id="signup-panel">
+            <h2>Join Helping Hearts 💚</h2>
+            <p class="subtitle">Create a free account to start making a difference</p>
+
+            <div class="campaign-info" id="signup-info" style="display:none">
+                <strong>Almost there!</strong> Create your account to complete your donation ❤️
+            </div>
+
+            <div class="input-row">
+                <div class="input-group">
+                    <label>First Name</label>
+                    <input type="text" id="fname" placeholder="Ali">
+                </div>
+                <div class="input-group">
+                    <label>Last Name</label>
+                    <input type="text" id="lname" placeholder="Ahmed">
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" id="signup-email" placeholder="you@example.com">
+            </div>
+            <div class="input-group">
+                <label>Phone Number</label>
+                <input type="tel" id="phone" placeholder="+92 300 0000000">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="signup-password" placeholder="Min. 8 characters" oninput="checkStrength(this.value)">
+                <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+            </div>
+            <div class="input-group">
+                <label>Confirm Password</label>
+                <input type="password" id="confirm-password" placeholder="Repeat password">
+            </div>
+
+            <button class="submit-btn" onclick="handleSignup()">Create Account & Continue</button>
+
+            <div class="divider">or sign up with</div>
+            <div class="social-btns">
+                <button class="social-btn" onclick="socialLogin()">🇬 Google</button>
+                <button class="social-btn" onclick="socialLogin()">📘 Facebook</button>
+            </div>
+            <p class="terms">By signing up you agree to our <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a></p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+// Get campaign redirect from URL
+const urlParams = new URLSearchParams(window.location.search);
+const campaign = urlParams.get('campaign');
+const redirect = urlParams.get('redirect') || 'profile.html';
+
+// Show campaign info banner if coming from campaign
+if (campaign) {
+    document.getElementById('login-info').style.display = 'block';
+    document.getElementById('signup-info').style.display = 'block';
+}
+
+function switchTab(tab) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(tab + '-panel').classList.add('active');
+    document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+}
+
+const API = window.location.hostname === 'localhost' ? 'http://localhost:5000/api' : '/api';
+
+async function handleLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const pass  = document.getElementById('login-password').value;
+    if (!email || !pass) { alert('Please fill in all fields.'); return; }
+
+    const btn = document.querySelector('#login-panel .submit-btn');
+    btn.disabled = true; btn.textContent = 'Signing in...';
+
+    try {
+        const res  = await fetch(`${API}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password: pass })
+        });
+        const data = await res.json();
+        if (!data.success) {
+            alert(data.message || 'Invalid email or password.');
+            btn.disabled = false; btn.textContent = 'Sign In & Continue';
+            return;
+        }
+        localStorage.setItem('hh_token', data.token);
+        localStorage.setItem('hh_user',  JSON.stringify(data.user));
+        const dest = campaign ? `donate.html?campaign=${encodeURIComponent(campaign)}` : redirect;
+        window.location.href = dest;
+    } catch (e) {
+        alert('Could not connect to server. Make sure backend is running.');
+        btn.disabled = false; btn.textContent = 'Sign In & Continue';
+    }
+}
+
+async function handleSignup() {
+    const fname   = document.getElementById('fname').value.trim();
+    const lname   = document.getElementById('lname').value.trim();
+    const email   = document.getElementById('signup-email').value.trim();
+    const phone   = document.getElementById('phone').value.trim();
+    const pass    = document.getElementById('signup-password').value;
+    const confirm = document.getElementById('confirm-password').value;
+
+    if (!fname || !lname || !email || !pass || !confirm) { alert('Please fill in all required fields.'); return; }
+    if (pass.length < 8)  { alert('Password must be at least 8 characters.'); return; }
+    if (pass !== confirm) { alert('Passwords do not match.'); return; }
+
+    const btn = document.querySelector('#signup-panel .submit-btn');
+    btn.disabled = true; btn.textContent = 'Creating account...';
+
+    try {
+        const res  = await fetch(`${API}/auth/signup`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ first_name: fname, last_name: lname, email, phone, password: pass })
+        });
+        const data = await res.json();
+        if (!data.success) {
+            alert(data.message || 'Signup failed. Please try again.');
+            btn.disabled = false; btn.textContent = 'Create Account & Continue';
+            return;
+        }
+        localStorage.setItem('hh_token', data.token);
+        localStorage.setItem('hh_user',  JSON.stringify(data.user));
+        const dest = campaign ? `donate.html?campaign=${encodeURIComponent(campaign)}` : redirect;
+        window.location.href = dest;
+    } catch (e) {
+        alert('Could not connect to server. Make sure backend is running.');
+        btn.disabled = false; btn.textContent = 'Create Account & Continue';
+    }
+}
+
+function socialLogin() {
+    alert('Social login coming soon. Please use email/password for now.');
+}
+
+function checkStrength(val) {
+    const fill = document.getElementById('strength-fill');
+    let strength = 0;
+    if (val.length >= 8) strength++;
+    if (/[A-Z]/.test(val)) strength++;
+    if (/[0-9]/.test(val)) strength++;
+    if (/[^A-Za-z0-9]/.test(val)) strength++;
+    const pct = (strength / 4) * 100;
+    fill.style.width = pct + '%';
+    const colors = ['#e74c3c','#e67e22','#f1c40f','#2ecc71'];
+    fill.style.background = colors[strength - 1] || '#eee';
+}
+</script>
+
+<script>
+// ── Mobile hamburger menu ─────────────────────────────────────
+(function(){
+  var nav = document.querySelector('nav');
+  if (!nav) return;
+  var ul = nav.querySelector('ul');
+  if (!ul) return;
+
+  // Create hamburger button
+  var btn = document.createElement('button');
+  btn.className = 'hh-hamburger';
+  btn.setAttribute('aria-label','Toggle menu');
+  btn.innerHTML = '<span></span><span></span><span></span>';
+  nav.appendChild(btn);
+
+  // Create mobile overlay
+  var overlay = document.createElement('div');
+  overlay.className = 'hh-nav-overlay';
+  document.body.appendChild(overlay);
+
+  function openMenu(){
+    ul.classList.add('hh-nav-open');
+    overlay.classList.add('hh-overlay-active');
+    btn.classList.add('hh-hamburger-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu(){
+    ul.classList.remove('hh-nav-open');
+    overlay.classList.remove('hh-overlay-active');
+    btn.classList.remove('hh-hamburger-open');
+    document.body.style.overflow = '';
+  }
+
+  btn.addEventListener('click', function(){
+    ul.classList.contains('hh-nav-open') ? closeMenu() : openMenu();
+  });
+  overlay.addEventListener('click', closeMenu);
+  ul.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', closeMenu);
+  });
+})();
+</script>
+
+<script>
+/* Smart nav — swaps Login for Profile+Logout when user is logged in */
+(function() {
+  var token = localStorage.getItem('hh_token');
+  var navLinks = document.querySelectorAll('nav ul li');
+
+  navLinks.forEach(function(li) {
+    var a = li.querySelector('a');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    // Target the Login link (auth.html, NOT the donate redirect)
+    var isLogin = href.indexOf('auth.html') !== -1
+               && href.indexOf('redirect=donate') === -1
+               && !a.classList.contains('donate-btn');
+    if (!isLogin) return;
+
+    if (token) {
+      // User is logged in — replace Login with Profile name + Logout
+      var user = {};
+      try { user = JSON.parse(localStorage.getItem('hh_user') || '{}'); } catch(e) {}
+      var name = user.first_name || 'My Profile';
+
+      // Profile link
+      var pLi = document.createElement('li');
+      var pA  = document.createElement('a');
+      pA.href = 'profile.html';
+      pA.textContent = '\u{1F464} ' + name;
+      pA.style.cssText = 'color:#96BF8A;font-weight:700;';
+      pLi.appendChild(pA);
+
+      // Logout link
+      var lLi = document.createElement('li');
+      var lA  = document.createElement('a');
+      lA.href = '#';
+      lA.textContent = 'Logout';
+      lA.style.cssText = 'color:#e74c3c;font-weight:700;';
+      lA.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (confirm('Are you sure you want to logout?')) {
+          localStorage.removeItem('hh_token');
+          localStorage.removeItem('hh_user');
+          window.location.href = 'helpingheart.html';
+        }
+      });
+      lLi.appendChild(lA);
+
+      li.parentNode.insertBefore(pLi, li);
+      li.parentNode.insertBefore(lLi, li);
+      li.style.display = 'none';
+    }
+  });
+})();
+</script>
+</body>
+</html>
