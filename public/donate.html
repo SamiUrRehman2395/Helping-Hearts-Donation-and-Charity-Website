@@ -690,11 +690,11 @@ nav ul li a:hover { background:var(--main-color); color:#fff; }
     <div class="panel" id="panel-2">
         <div class="card">
             <h2>Your Information</h2>
-            <div id="logged-in-banner" style="display:none;flex-direction:column;gap:8px;background:#e8f5e9;border:1px solid #c8e6c9;padding:16px;border-radius:14px;margin-bottom:18px;color:#2d6b3b;">
-                <strong>Logged in as <span id="logged-in-name"></span></strong>
-                <span style="font-size:0.95rem;color:#4f7942;">Your donation will be processed using your account details.</span>
-            </div>
             <p class="card-subtitle">Help us send you a receipt and impact report</p>
+
+            <div id="logged-in-banner" style="display:none;background:linear-gradient(135deg,rgba(150,191,138,0.12),rgba(46,204,113,0.06));border:1px solid rgba(150,191,138,0.3);border-radius:10px;padding:12px 16px;margin-bottom:18px;font-size:0.85rem;color:#2d5a2d;display:flex;align-items:center;gap:8px;">
+                ✅ <span>Logged in as <strong id="logged-in-name"></strong> — your details are pre-filled below.</span>
+            </div>
 
             <div class="input-row">
                 <div class="input-group">
@@ -957,32 +957,34 @@ let selectedFreq = 'one-time';
 let selectedPayment = 'card';
 let campaignName = '';
 
-// Redirect and autofill for logged-in users
-(function() {
-  var token = localStorage.getItem('hh_token');
-  if (!token) {
-    window.location.href = 'auth.html?redirect=donate.html';
-    return;
-  }
+// ── Require login to donate — redirect if not signed in ───────
+const _donateToken = localStorage.getItem('hh_token');
+if (!_donateToken) {
+  window.location.href = 'auth.html?redirect=donate.html';
+}
 
-  var user = {};
-  try { user = JSON.parse(localStorage.getItem('hh_user') || '{}'); } catch (e) {}
+// ── Pre-fill donor details from logged-in user + show banner ──
+(function prefillDonorInfo() {
+  if (!_donateToken) return;
+  let u = {};
+  try { u = JSON.parse(localStorage.getItem('hh_user') || '{}'); } catch(e) {}
+  if (!u || !u.email) return;
 
-  var fname = document.getElementById('d-fname');
-  var lname = document.getElementById('d-lname');
-  var email = document.getElementById('d-email');
-  var phone = document.getElementById('d-phone');
+  const fname = document.getElementById('d-fname');
+  const lname = document.getElementById('d-lname');
+  const email = document.getElementById('d-email');
+  const phone = document.getElementById('d-phone');
 
-  if (fname && user.first_name) fname.value = user.first_name;
-  if (lname && user.last_name) lname.value = user.last_name;
-  if (email && user.email) email.value = user.email;
-  if (phone && user.phone) phone.value = user.phone;
+  if (fname) fname.value = u.first_name || '';
+  if (lname) lname.value = u.last_name  || '';
+  if (email) email.value = u.email      || '';
+  if (phone && u.phone) phone.value = u.phone;
 
-  var banner = document.getElementById('logged-in-banner');
-  var bannerName = document.getElementById('logged-in-name');
-  if (banner && bannerName) {
+  const banner = document.getElementById('logged-in-banner');
+  const nameEl = document.getElementById('logged-in-name');
+  if (banner && nameEl) {
+    nameEl.textContent = `${u.first_name || ''} ${u.last_name || ''}`.trim() || u.email;
     banner.style.display = 'flex';
-    bannerName.textContent = [user.first_name, user.last_name].filter(Boolean).join(' ') || user.email || 'Logged-in user';
   }
 })();
 
@@ -1265,58 +1267,7 @@ function copyLink() {
 })();
 </script>
 
-<script>
-/* Smart nav — swaps Login for Profile+Logout when user is logged in */
-(function() {
-  var token = localStorage.getItem('hh_token');
-  var navLinks = document.querySelectorAll('nav ul li');
 
-  navLinks.forEach(function(li) {
-    var a = li.querySelector('a');
-    if (!a) return;
-    var href = a.getAttribute('href') || '';
-    // Target the Login link (auth.html, NOT the donate redirect)
-    var isLogin = href.indexOf('auth.html') !== -1
-               && href.indexOf('redirect=donate') === -1
-               && !a.classList.contains('donate-btn');
-    if (!isLogin) return;
-
-    if (token) {
-      // User is logged in — replace Login with Profile name + Logout
-      var user = {};
-      try { user = JSON.parse(localStorage.getItem('hh_user') || '{}'); } catch(e) {}
-      var name = user.first_name || 'My Profile';
-
-      // Profile link
-      var pLi = document.createElement('li');
-      var pA  = document.createElement('a');
-      pA.href = 'profile.html';
-      pA.textContent = '\u{1F464} ' + name;
-      pA.style.cssText = 'color:#96BF8A;font-weight:700;';
-      pLi.appendChild(pA);
-
-      // Logout link
-      var lLi = document.createElement('li');
-      var lA  = document.createElement('a');
-      lA.href = '#';
-      lA.textContent = 'Logout';
-      lA.style.cssText = 'color:#e74c3c;font-weight:700;';
-      lA.addEventListener('click', function(e) {
-        e.preventDefault();
-        if (confirm('Are you sure you want to logout?')) {
-          localStorage.removeItem('hh_token');
-          localStorage.removeItem('hh_user');
-          window.location.href = 'helpingheart.html';
-        }
-      });
-      lLi.appendChild(lA);
-
-      li.parentNode.insertBefore(pLi, li);
-      li.parentNode.insertBefore(lLi, li);
-      li.style.display = 'none';
-    }
-  });
-})();
-</script>
+<script src="shared-nav.js"></script>
 </body>
 </html>

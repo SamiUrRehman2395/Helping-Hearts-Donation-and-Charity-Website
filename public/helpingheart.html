@@ -338,7 +338,7 @@ footer{background:#1a2a1a;color:#ccc;padding:40px 40px 30px;}
         <li><a href="campaigns.html">Campaigns</a></li>
         <li><a href="contact.html">Contact</a></li>
         <li><a href="about.html">About</a></li>
-        <li><a class="donate-btn" href="auth.html?redirect=donate.html">Donate</a></li>
+        <li><a class="donate-btn" href="donate.html">Donate</a></li>
         
     </ul>
 </nav>
@@ -349,7 +349,7 @@ footer{background:#1a2a1a;color:#ccc;padding:40px 40px 30px;}
         <h1>Be the <span>Hope</span> Someone Needs Today</h1>
         <p>Every rupee you give transforms a life. Join thousands of kind souls helping flood victims, sick children, and families in need across Pakistan.</p>
         <div class="hero-btns">
-            <a class="btn-primary" href="auth.html?redirect=donate.html">❤️ Donate Now</a>
+            <a class="btn-primary" href="donate.html">❤️ Donate Now</a>
             <a class="btn-secondary" href="campaigns.html">Browse Campaigns →</a>
         </div>
     </div>
@@ -451,7 +451,7 @@ footer{background:#1a2a1a;color:#ccc;padding:40px 40px 30px;}
     <h2>Ready to Change a Life Today?</h2>
     <p>It takes less than 2 minutes. Your donation reaches those in need within 48 hours — and we'll show you the proof.</p>
     <div class="cta-buttons">
-        <a class="cta-btn-white" href="auth.html?redirect=donate.html">❤️ Donate Now</a>
+        <a class="cta-btn-white" href="donate.html">❤️ Donate Now</a>
         <a class="cta-btn-outline" href="campaigns.html">Browse Campaigns</a>
     </div>
 </section>
@@ -515,58 +515,7 @@ reveals.forEach(el=>obs.observe(el));
 })();
 </script>
 
-<script>
-/* Smart nav — swaps Login for Profile+Logout when user is logged in */
-(function() {
-  var token = localStorage.getItem('hh_token');
-  var navLinks = document.querySelectorAll('nav ul li');
 
-  navLinks.forEach(function(li) {
-    var a = li.querySelector('a');
-    if (!a) return;
-    var href = a.getAttribute('href') || '';
-    // Target the Login link (auth.html, NOT the donate redirect)
-    var isLogin = href.indexOf('auth.html') !== -1
-               && href.indexOf('redirect=donate') === -1
-               && !a.classList.contains('donate-btn');
-    if (!isLogin) return;
-
-    if (token) {
-      // User is logged in — replace Login with Profile name + Logout
-      var user = {};
-      try { user = JSON.parse(localStorage.getItem('hh_user') || '{}'); } catch(e) {}
-      var name = user.first_name || 'My Profile';
-
-      // Profile link
-      var pLi = document.createElement('li');
-      var pA  = document.createElement('a');
-      pA.href = 'profile.html';
-      pA.textContent = '\u{1F464} ' + name;
-      pA.style.cssText = 'color:#96BF8A;font-weight:700;';
-      pLi.appendChild(pA);
-
-      // Logout link
-      var lLi = document.createElement('li');
-      var lA  = document.createElement('a');
-      lA.href = '#';
-      lA.textContent = 'Logout';
-      lA.style.cssText = 'color:#e74c3c;font-weight:700;';
-      lA.addEventListener('click', function(e) {
-        e.preventDefault();
-        if (confirm('Are you sure you want to logout?')) {
-          localStorage.removeItem('hh_token');
-          localStorage.removeItem('hh_user');
-          window.location.href = 'helpingheart.html';
-        }
-      });
-      lLi.appendChild(lA);
-
-      li.parentNode.insertBefore(pLi, li);
-      li.parentNode.insertBefore(lLi, li);
-      li.style.display = 'none';
-    }
-  });
-})();
-</script>
+<script src="shared-nav.js"></script>
 </body>
 </html>

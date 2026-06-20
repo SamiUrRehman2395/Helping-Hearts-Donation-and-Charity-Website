@@ -116,9 +116,6 @@ nav ul li a:not(.donate-btn):hover{color:var(--main);background:rgba(150,191,138
     <li><a href="contact.html">Contact</a></li>
     <li><a href="about.html">About</a></li>
     <li><a class="donate-btn" href="donate.html">Donate</a></li>
-    <li id="nav-profile-item" style="display:none"><a href="profile.html" style="color:var(--main);font-weight:700;">👤 My Profile</a></li>
-    <li id="nav-logout-item" style="display:none"><a href="#" onclick="logout()" style="color:var(--red);font-weight:700;">Logout</a></li>
-    <li id="nav-login-item"><a href="auth.html">Login</a></li>
   </ul>
   <button class="hh-hamburger" aria-label="Menu" id="hh-ham">
     <span></span><span></span><span></span>
@@ -190,12 +187,7 @@ if (!token) {
   window.location.href = 'auth.html?redirect=profile.html';
 }
 
-// ── Show nav state ───────────────────────────────────────────
-if (token) {
-  document.getElementById('nav-profile-item').style.display = '';
-  document.getElementById('nav-logout-item').style.display  = '';
-  document.getElementById('nav-login-item').style.display   = 'none';
-}
+// Nav profile/logout state is now handled by shared-nav.js automatically
 
 // ── Load profile from localStorage first (instant) ──────────
 if (userData) {
@@ -453,55 +445,6 @@ async function saveEdit() {
 }
 </script>
 
-<script>
-/* Smart nav — swaps Login for Profile+Logout when user is logged in */
-(function() {
-  var token = localStorage.getItem('hh_token');
-  var navLinks = document.querySelectorAll('nav ul li');
-
-  navLinks.forEach(function(li) {
-    var a = li.querySelector('a');
-    if (!a) return;
-    var href = a.getAttribute('href') || '';
-    var isLogin = href.indexOf('auth.html') !== -1
-               && href.indexOf('redirect=donate') === -1
-               && !a.classList.contains('donate-btn');
-    if (!isLogin) return;
-
-    if (token) {
-      var user = {};
-      try { user = JSON.parse(localStorage.getItem('hh_user') || '{}'); } catch(e) {}
-      var name = user.first_name || 'My Profile';
-
-      var pLi = document.createElement('li');
-      var pA = document.createElement('a');
-      pA.href = 'profile.html';
-      pA.textContent = '\u{1F464} ' + name;
-      pA.style.cssText = 'color:#96BF8A;font-weight:700;';
-      pLi.appendChild(pA);
-
-      var lLi = document.createElement('li');
-      var lA = document.createElement('a');
-      lA.href = '#';
-      lA.textContent = 'Logout';
-      lA.style.cssText = 'color:#e74c3c;font-weight:700;';
-      lA.addEventListener('click', function(e) {
-        e.preventDefault();
-        if (confirm('Are you sure you want to logout?')) {
-          localStorage.removeItem('hh_token');
-          localStorage.removeItem('hh_user');
-          window.location.href = 'helpingheart.html';
-        }
-      });
-      lLi.appendChild(lA);
-
-      li.parentNode.insertBefore(pLi, li);
-      li.parentNode.insertBefore(lLi, li);
-      li.style.display = 'none';
-    }
-  });
-})();
-</script>
-
+<script src="shared-nav.js"></script>
 </body>
 </html>
