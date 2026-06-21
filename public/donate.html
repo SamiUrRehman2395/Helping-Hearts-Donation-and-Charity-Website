@@ -324,10 +324,31 @@ nav ul li a:hover { background:var(--main-color); color:#fff; }
 .confirm-row {
     display:flex; justify-content:space-between;
     padding:10px 0; border-bottom:1px solid #e8f5e9;
-    font-size:0.95rem;
+    font-size:0.95rem; gap:12px;
 }
 .confirm-row:last-child { border-bottom:none; font-weight:700; color:#2e7d32; font-size:1.05rem; }
-.confirm-row span:first-child { color:#666; }
+.confirm-row span:first-child { color:#666; flex-shrink:0; }
+.confirm-row span:last-child { text-align:right; }
+
+@media (max-width: 480px) {
+    .confirm-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 12px 0;
+    }
+    .confirm-row span:first-child {
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #999;
+    }
+    .confirm-row span:last-child {
+        text-align: left;
+        font-size: 1rem;
+        word-break: break-word;
+    }
+}
 
 .ref-number {
     background: #fff3e0; border:2px dashed #ffb300;
@@ -520,6 +541,7 @@ nav ul li a:hover { background:var(--main-color); color:#fff; }
   .filters        { gap: 6px !important; }
   .filter-btn     { padding: 7px 14px !important; font-size: 0.82rem !important; }
   .modal-stats-row{ grid-template-columns: 1fr !important; }
+  .confirm-details{ padding: 18px !important; }
 }
 
 /* ── Tap target minimum size for iOS/Android ─────────────── */

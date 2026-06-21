@@ -13,7 +13,7 @@
     nav ul { display:flex; align-items:center; gap:8px; list-style:none; margin:0; padding:0; }
 
     /* Profile / Login area — ALWAYS visible, never hidden by hamburger */
-    #hh-auth-area { display:flex; align-items:center; position:relative; margin-left:8px; flex-shrink:0; }
+    #hh-auth-area { display:flex; align-items:center; position:relative; flex-shrink:0; }
     #hh-profile-btn {
       width:42px; height:42px; border-radius:50%; border:2px solid var(--main-color,#96BF8A);
       cursor:pointer; display:flex; align-items:center; justify-content:center;
@@ -52,7 +52,7 @@
     #hh-nav-overlay.active { display:block; }
 
     @media (max-width: 768px) {
-      #hh-hamburger-btn { display:flex; }
+      #hh-hamburger-btn { display:flex; margin-left:4px; }
 
       nav ul#hh-main-menu {
         display:none; position:fixed; top:0; right:0; width:min(300px,80vw); height:100vh;
@@ -236,7 +236,7 @@ function hhWireDonateButtons() {
 
 // ── Run on every page load ──────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
-  hhRenderHamburgerMenu();   // build menu structure FIRST
-  hhRenderAuthArea();        // THEN add profile/login button beside it
+  hhRenderAuthArea();        // Profile/login button FIRST
+  hhRenderHamburgerMenu();   // THEN hamburger — ends up in the corner
   hhWireDonateButtons();
 });
