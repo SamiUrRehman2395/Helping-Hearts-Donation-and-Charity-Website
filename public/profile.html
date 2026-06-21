@@ -169,6 +169,7 @@ nav ul li a:not(.donate-btn):hover{color:var(--main);background:rgba(150,191,138
 
 <script>
 const API = window.location.hostname === 'localhost' ? 'http://localhost:5000/api' : '/api';
+let currentUserData = {};
 
 // ── Auth check — redirect to login if not logged in ──────────
 const token = localStorage.getItem('hh_token');
@@ -299,57 +300,7 @@ function logout() {
 
 // Hamburger menu and profile/login button are now built by shared-nav.js automatically
 
-loadProfile();
-loadDonations();
-</script>
-<!-- AVATAR PICKER MODAL -->
-<div id="avatar-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;padding:20px;">
-  <div style="background:#fff;border-radius:16px;padding:28px;max-width:420px;width:100%;">
-    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;">📷 Change Profile Picture</h3>
-    <p style="font-size:0.85rem;color:#888;margin-bottom:16px;">Choose a photo from your device (JPG, PNG — max 2MB)</p>
-
-    <div id="avatar-preview-wrap" style="display:none;text-align:center;margin-bottom:16px;">
-      <img id="avatar-preview-img" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid var(--main);">
-    </div>
-
-    <label for="avatar-file-input" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border:2px dashed #ccc;border-radius:10px;cursor:pointer;font-size:0.9rem;font-weight:600;color:#666;margin-bottom:12px;">
-      📁 <span id="avatar-file-label">Choose Photo From Device</span>
-    </label>
-    <input type="file" id="avatar-file-input" accept="image/png,image/jpeg,image/jpg,image/webp" style="display:none;">
-
-    <div id="avatar-error" style="display:none;color:var(--red);font-size:0.8rem;margin-bottom:10px;"></div>
-
-    <div style="display:flex;gap:10px;">
-      <button onclick="closeAvatarPicker()" style="flex:1;padding:11px;border:1.5px solid #ddd;background:#fff;border-radius:10px;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif;">Cancel</button>
-      <button onclick="saveAvatar()" id="avatar-save-btn" disabled style="flex:1;padding:11px;border:none;background:#ccc;color:#fff;border-radius:10px;font-weight:700;cursor:not-allowed;font-family:'Poppins',sans-serif;">Save Picture</button>
-    </div>
-  </div>
-</div>
-
-<!-- EDIT PROFILE MODAL -->
-<div id="edit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;padding:20px;">
-  <div style="background:#fff;border-radius:16px;padding:28px;max-width:420px;width:100%;">
-    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;">✏️ Edit Profile</h3>
-    <div class="field-row" style="margin-bottom:14px;">
-      <div><label style="display:block;font-size:0.75rem;font-weight:700;color:#888;margin-bottom:5px;">First Name</label>
-        <input type="text" id="edit-fname" style="width:100%;padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-family:'Poppins',sans-serif;"></div>
-      <div><label style="display:block;font-size:0.75rem;font-weight:700;color:#888;margin-bottom:5px;">Last Name</label>
-        <input type="text" id="edit-lname" style="width:100%;padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-family:'Poppins',sans-serif;"></div>
-    </div>
-    <label style="display:block;font-size:0.75rem;font-weight:700;color:#888;margin-bottom:5px;">Phone</label>
-    <input type="text" id="edit-phone" placeholder="+92 300 0000000"
-      style="width:100%;padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-family:'Poppins',sans-serif;margin-bottom:16px;">
-    <div id="edit-error" style="display:none;color:var(--red);font-size:0.8rem;margin-bottom:10px;"></div>
-    <div style="display:flex;gap:10px;">
-      <button onclick="closeEditModal()" style="flex:1;padding:11px;border:1.5px solid #ddd;background:#fff;border-radius:10px;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif;">Cancel</button>
-      <button onclick="saveEdit()" style="flex:1;padding:11px;border:none;background:var(--main);color:#fff;border-radius:10px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;">Save Changes</button>
-    </div>
-  </div>
-</div>
-
-<script>
-let currentUserData = {};
-
+// ── Avatar picker (file upload) ────────────────────────────────
 let _selectedAvatarData = null;
 
 function openAvatarPicker() {
@@ -448,6 +399,7 @@ function applyAvatar(u) {
   }
 }
 
+// ── Edit profile modal ──────────────────────────────────────
 function openEditModal() {
   document.getElementById('edit-fname').value = currentUserData.first_name || '';
   document.getElementById('edit-lname').value = currentUserData.last_name  || '';
@@ -490,7 +442,56 @@ async function saveEdit() {
     errEl.style.display = 'block';
   }
 }
+
+// ── Now that everything is defined, load the actual data ────
+loadProfile();
+loadDonations();
 </script>
+<!-- AVATAR PICKER MODAL -->
+<div id="avatar-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:16px;padding:28px;max-width:420px;width:100%;">
+    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;">📷 Change Profile Picture</h3>
+    <p style="font-size:0.85rem;color:#888;margin-bottom:16px;">Choose a photo from your device (JPG, PNG — max 2MB)</p>
+
+    <div id="avatar-preview-wrap" style="display:none;text-align:center;margin-bottom:16px;">
+      <img id="avatar-preview-img" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid var(--main);">
+    </div>
+
+    <label for="avatar-file-input" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border:2px dashed #ccc;border-radius:10px;cursor:pointer;font-size:0.9rem;font-weight:600;color:#666;margin-bottom:12px;">
+      📁 <span id="avatar-file-label">Choose Photo From Device</span>
+    </label>
+    <input type="file" id="avatar-file-input" accept="image/png,image/jpeg,image/jpg,image/webp" style="display:none;">
+
+    <div id="avatar-error" style="display:none;color:var(--red);font-size:0.8rem;margin-bottom:10px;"></div>
+
+    <div style="display:flex;gap:10px;">
+      <button onclick="closeAvatarPicker()" style="flex:1;padding:11px;border:1.5px solid #ddd;background:#fff;border-radius:10px;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif;">Cancel</button>
+      <button onclick="saveAvatar()" id="avatar-save-btn" disabled style="flex:1;padding:11px;border:none;background:#ccc;color:#fff;border-radius:10px;font-weight:700;cursor:not-allowed;font-family:'Poppins',sans-serif;">Save Picture</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT PROFILE MODAL -->
+<div id="edit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:16px;padding:28px;max-width:420px;width:100%;">
+    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;">✏️ Edit Profile</h3>
+    <div class="field-row" style="margin-bottom:14px;">
+      <div><label style="display:block;font-size:0.75rem;font-weight:700;color:#888;margin-bottom:5px;">First Name</label>
+        <input type="text" id="edit-fname" style="width:100%;padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-family:'Poppins',sans-serif;"></div>
+      <div><label style="display:block;font-size:0.75rem;font-weight:700;color:#888;margin-bottom:5px;">Last Name</label>
+        <input type="text" id="edit-lname" style="width:100%;padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-family:'Poppins',sans-serif;"></div>
+    </div>
+    <label style="display:block;font-size:0.75rem;font-weight:700;color:#888;margin-bottom:5px;">Phone</label>
+    <input type="text" id="edit-phone" placeholder="+92 300 0000000"
+      style="width:100%;padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-family:'Poppins',sans-serif;margin-bottom:16px;">
+    <div id="edit-error" style="display:none;color:var(--red);font-size:0.8rem;margin-bottom:10px;"></div>
+    <div style="display:flex;gap:10px;">
+      <button onclick="closeEditModal()" style="flex:1;padding:11px;border:1.5px solid #ddd;background:#fff;border-radius:10px;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif;">Cancel</button>
+      <button onclick="saveEdit()" style="flex:1;padding:11px;border:none;background:var(--main);color:#fff;border-radius:10px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;">Save Changes</button>
+    </div>
+  </div>
+</div>
+
 
 <script src="shared-nav.js"></script>
 </body>
