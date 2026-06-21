@@ -52,7 +52,8 @@
     #hh-nav-overlay.active { display:block; }
 
     @media (max-width: 768px) {
-      #hh-hamburger-btn { display:flex; margin-left:4px; }
+      nav { gap: 8px !important; }
+      #hh-hamburger-btn { display:flex; margin-left:0 !important; }
 
       nav ul#hh-main-menu {
         display:none; position:fixed; top:0; right:0; width:min(300px,80vw); height:100vh;
