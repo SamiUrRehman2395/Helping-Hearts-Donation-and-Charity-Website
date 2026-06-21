@@ -54,14 +54,15 @@ router.post('/login', [
 // ── GET /api/admin/dashboard ─────────────────────────────────
 router.get('/dashboard', authAdmin, async (req, res) => {
   try {
-    const [[totals]] = await db.query(`
+    const [totalsRows] = await db.query(`
       SELECT
         COUNT(*)                                                              AS total_donations,
         COALESCE(SUM(amount), 0)                                             AS total_amount,
         COUNT(DISTINCT donor_email)                                          AS unique_donors,
         COALESCE(SUM(CASE WHEN payment_status='completed' THEN amount END), 0) AS confirmed_amount
       FROM donations
-    `).then(([rows]) => [rows[0] || { total_donations:0, total_amount:0, unique_donors:0, confirmed_amount:0 }]);
+    `);
+    const totals = totalsRows[0] || { total_donations:0, total_amount:0, unique_donors:0, confirmed_amount:0 };
 
     const [usersRows] = await db.query('SELECT COUNT(*) AS total_users FROM users');
     const users = usersRows[0];

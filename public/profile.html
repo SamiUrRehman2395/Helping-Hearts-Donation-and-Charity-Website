@@ -196,8 +196,10 @@ async function loadProfile() {
     if (data.success && data.user) {
       populateProfile(data.user);
       localStorage.setItem('hh_user', JSON.stringify(data.user));
+    } else {
+      console.warn('Profile fetch returned no user:', data.message);
     }
-  } catch(e) { console.warn('Could not refresh profile'); }
+  } catch(e) { console.warn('Could not refresh profile:', e.message); }
 }
 
 function populateProfile(u) {

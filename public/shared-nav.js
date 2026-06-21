@@ -40,14 +40,14 @@
     }
     #hh-hamburger-btn span {
       display:block; width:24px; height:3px; background:#333; border-radius:3px;
-      transition:transform 0.3s ease, opacity 0.3s ease;
+      transition:transform 0.3s ease, opacity 0.3s ease; pointer-events:none;
     }
     #hh-hamburger-btn.open span:nth-child(1) { transform:translateY(8px) rotate(45deg); }
     #hh-hamburger-btn.open span:nth-child(2) { opacity:0; }
     #hh-hamburger-btn.open span:nth-child(3) { transform:translateY(-8px) rotate(-45deg); }
 
     #hh-nav-overlay {
-      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:400;
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:399;
     }
     #hh-nav-overlay.active { display:block; }
 
@@ -58,22 +58,25 @@
         display:none; position:fixed; top:0; right:0; width:min(300px,80vw); height:100vh;
         background:#fff; flex-direction:column; align-items:flex-start; gap:0;
         padding:80px 0 30px; box-shadow:-4px 0 30px rgba(0,0,0,0.15);
-        z-index:450; overflow-y:auto; margin:0;
+        z-index:450; overflow-y:auto; margin:0; pointer-events:auto;
       }
       nav ul#hh-main-menu.open { display:flex; }
-      nav ul#hh-main-menu li { width:100%; }
+      nav ul#hh-main-menu li { width:100%; pointer-events:auto; }
       nav ul#hh-main-menu li a {
         display:block; padding:14px 24px; border-radius:0; font-size:1rem;
         border-bottom:1px solid #f0f0f0; width:100%; box-sizing:border-box;
+        pointer-events:auto; position:relative; z-index:1;
       }
       nav ul#hh-main-menu li a.donate-btn { margin:12px 20px; width:calc(100% - 40px); border-radius:8px; text-align:center; }
+    }
 
-      /* A close (back/X) button inside the slide-out panel */
+    /* Close (X) button — ONLY ever visible inside the mobile slide-out panel */
+    #hh-menu-close-btn { display:none; }
+    @media (max-width: 768px) {
       #hh-menu-close-btn {
-        position:absolute; top:18px; right:18px; width:36px; height:36px;
+        display:flex; position:absolute; top:18px; right:18px; width:36px; height:36px;
         border:none; background:#f5f5f5; border-radius:50%; cursor:pointer;
-        font-size:1.1rem; color:#333; z-index:460; display:flex;
-        align-items:center; justify-content:center;
+        font-size:1.1rem; color:#333; z-index:460; align-items:center; justify-content:center;
       }
     }
   `;
@@ -165,15 +168,16 @@ function hhRenderHamburgerMenu() {
   if (!ul) return;
   ul.id = 'hh-main-menu';
 
-  // Remove old hamburger/overlay if present (from previous runs or stale markup)
+  // Remove old hamburger/overlay/close-btn if present (avoids duplicates on re-render)
   document.getElementById('hh-hamburger-btn')?.remove();
   document.getElementById('hh-nav-overlay')?.remove();
+  document.getElementById('hh-menu-close-btn')?.remove();
   document.querySelectorAll('.hh-hamburger').forEach(el => el.remove());
   document.querySelectorAll('.hh-nav-overlay').forEach(el => el.remove());
-  document.getElementById('hh-menu-close-btn')?.remove();
 
   const btn = document.createElement('button');
   btn.id = 'hh-hamburger-btn';
+  btn.type = 'button';
   btn.setAttribute('aria-label', 'Toggle menu');
   btn.innerHTML = '<span></span><span></span><span></span>';
   nav.appendChild(btn);
@@ -182,8 +186,11 @@ function hhRenderHamburgerMenu() {
   overlay.id = 'hh-nav-overlay';
   document.body.appendChild(overlay);
 
+  // Close button lives as the FIRST element inside the <ul>, but is only
+  // ever shown on mobile via CSS (display:none on desktop) — see injected styles.
   const closeBtn = document.createElement('button');
   closeBtn.id = 'hh-menu-close-btn';
+  closeBtn.type = 'button';
   closeBtn.setAttribute('aria-label', 'Close menu');
   closeBtn.innerHTML = '✕';
   ul.insertBefore(closeBtn, ul.firstChild);
@@ -206,7 +213,12 @@ function hhRenderHamburgerMenu() {
   });
   overlay.addEventListener('click', closeMenu);
   closeBtn.addEventListener('click', closeMenu);
-  ul.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+  // IMPORTANT: do NOT call closeMenu() on link clicks here.
+  // Doing so on 'click' (rather than letting navigation happen first)
+  // can race with the browser's own navigation on mobile/WebViews,
+  // which is what previously made menu links appear unresponsive.
+  // The browser navigating away naturally resets all of this anyway.
 }
 
 // ── Rewire ALL Donate buttons/links on the page ─────────────
