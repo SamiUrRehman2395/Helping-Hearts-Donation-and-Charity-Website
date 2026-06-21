@@ -230,6 +230,7 @@ async function loadDonations() {
     });
     const data = await res.json();
     const list = document.getElementById('donations-list');
+    console.log('Donations API response:', data);
 
     if (!data.success || !data.donations || data.donations.length === 0) {
       list.innerHTML = `
@@ -237,6 +238,7 @@ async function loadDonations() {
           <div>💝</div>
           <p>You haven't made any donations yet.</p>
           <a href="campaigns.html">Browse Campaigns →</a>
+          <p style="font-size:0.7rem;color:#bbb;margin-top:14px;">Debug: ${data.success ? `0 donations linked to your account (user id may not match)` : (data.message || 'request failed')}</p>
         </div>`;
       document.getElementById('stat-total').textContent    = 'PKR 0';
       document.getElementById('stat-count').textContent    = '0';

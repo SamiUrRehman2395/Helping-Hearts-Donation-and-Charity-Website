@@ -9,7 +9,7 @@
 (function injectNavStyles() {
   const style = document.createElement('style');
   style.textContent = `
-    nav { display:flex; align-items:center; justify-content:space-between; gap:16px; position:relative; }
+    nav { display:flex; align-items:center; justify-content:space-between; gap:16px; position:relative; z-index:1000 !important; }
     nav ul { display:flex; align-items:center; gap:8px; list-style:none; margin:0; padding:0; }
 
     /* Profile / Login area — ALWAYS visible, never hidden by hamburger */
