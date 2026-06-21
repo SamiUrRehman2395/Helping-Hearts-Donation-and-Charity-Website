@@ -128,37 +128,9 @@ footer{background:#1a2a1a;color:#ccc;padding:40px 40px 30px;}
    Works on all pages: web, Android, iOS
    ════════════════════════════════════════════════ */
 
-/* Hamburger button */
-.hh-hamburger {
-  display: none;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 28px; height: 20px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  z-index: 200;
-}
-.hh-hamburger span {
-  display: block;
-  height: 3px;
-  background: #333;
-  border-radius: 3px;
-  transition: transform 0.3s, opacity 0.3s;
-}
-.hh-hamburger.hh-hamburger-open span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
-.hh-hamburger.hh-hamburger-open span:nth-child(2) { opacity: 0; }
-.hh-hamburger.hh-hamburger-open span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
 
-/* Mobile nav overlay */
-.hh-nav-overlay {
-  display: none;
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.45);
-  z-index: 150;
-}
-.hh-nav-overlay.hh-overlay-active { display: block; }
+
+
 
 /* ── 768px and below ─────────────────────────────────────── */
 @media (max-width: 768px) {
@@ -172,32 +144,7 @@ footer{background:#1a2a1a;color:#ccc;padding:40px 40px 30px;}
   .logo img { width: 52px !important; }
   .logo h2  { font-size: 1rem !important; }
 
-  .hh-hamburger { display: flex; }
-
-  nav ul {
-    display: none !important;
-    position: fixed !important;
-    top: 0; right: 0;
-    width: min(300px, 80vw);
-    height: 100vh;
-    background: #fff;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 0 !important;
-    padding: 80px 0 30px !important;
-    box-shadow: -4px 0 30px rgba(0,0,0,0.15);
-    z-index: 170;
-    overflow-y: auto;
-  }
-  nav ul.hh-nav-open { display: flex !important; }
-  nav ul li { width: 100%; }
-  nav ul li a {
-    display: block !important;
-    padding: 14px 24px !important;
-    border-radius: 0 !important;
-    font-size: 1rem !important;
-    border-bottom: 1px solid #f0f0f0;
-  }
+  
   .donate-btn {
     margin: 12px 20px !important;
     border-radius: 8px !important;
@@ -495,48 +442,7 @@ const obs=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIn
 reveals.forEach(el=>obs.observe(el));
 </script>
 
-<script>
-// ── Mobile hamburger menu ─────────────────────────────────────
-(function(){
-  var nav = document.querySelector('nav');
-  if (!nav) return;
-  var ul = nav.querySelector('ul');
-  if (!ul) return;
 
-  // Create hamburger button
-  var btn = document.createElement('button');
-  btn.className = 'hh-hamburger';
-  btn.setAttribute('aria-label','Toggle menu');
-  btn.innerHTML = '<span></span><span></span><span></span>';
-  nav.appendChild(btn);
-
-  // Create mobile overlay
-  var overlay = document.createElement('div');
-  overlay.className = 'hh-nav-overlay';
-  document.body.appendChild(overlay);
-
-  function openMenu(){
-    ul.classList.add('hh-nav-open');
-    overlay.classList.add('hh-overlay-active');
-    btn.classList.add('hh-hamburger-open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeMenu(){
-    ul.classList.remove('hh-nav-open');
-    overlay.classList.remove('hh-overlay-active');
-    btn.classList.remove('hh-hamburger-open');
-    document.body.style.overflow = '';
-  }
-
-  btn.addEventListener('click', function(){
-    ul.classList.contains('hh-nav-open') ? closeMenu() : openMenu();
-  });
-  overlay.addEventListener('click', closeMenu);
-  ul.querySelectorAll('a').forEach(function(a){
-    a.addEventListener('click', closeMenu);
-  });
-})();
-</script>
 
 
 <script src="shared-nav.js"></script>

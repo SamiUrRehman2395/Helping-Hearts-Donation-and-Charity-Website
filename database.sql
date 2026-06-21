@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS users (
     email        VARCHAR(160) NOT NULL UNIQUE,
     phone        VARCHAR(30),
     password     VARCHAR(255) NOT NULL,
-    avatar_url   VARCHAR(500),                 -- profile picture (added after signup)
+    avatar_url   TEXT,                          -- profile picture (Base64 data URL, added after signup)
     is_active    BOOLEAN      DEFAULT TRUE,
     created_at   TIMESTAMP    DEFAULT NOW(),
     updated_at   TIMESTAMP    DEFAULT NOW()
@@ -129,14 +129,15 @@ INSERT INTO campaigns (slug, title, description, goal_amount, raised_amount, ima
 ON CONFLICT (slug) DO NOTHING;
 
 -- ── SEED: Default superadmin (password: Admin@1234) ──────────
+-- Hash verified to match 'Admin@1234' exactly via bcrypt.compareSync()
 INSERT INTO admins (username, email, password, role) VALUES
 (
   'superadmin',
   'admin@helpinghearts.org',
-  '$2a$12$KIX/SxmSYTi2LFbgf5.tzeO8e/t/l0Y.eGE7HlCOtBX4sFREJqT1i',
+  '$2b$12$v5gpCJWILP2Kxl7Fr8/7mevyF7qTy8q48eCuDbRVfKrLfHwQqXxg6',
   'superadmin'
 )
-ON CONFLICT (email) DO NOTHING;
+ON CONFLICT (email) DO UPDATE SET password = EXCLUDED.password;
 
 -- ── VERIFY (run separately after the above) ───────────────────
 -- SELECT table_name FROM information_schema.tables WHERE table_schema='public';

@@ -20,8 +20,8 @@ app.use(cors({
 }));
 
 // ── Body parsing ──────────────────────────────────────────────
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '4mb' }));
+app.use(express.urlencoded({ extended: true, limit: '4mb' }));
 
 // ── API Routes (each wrapped so one bad route can't crash all) ─
 try { app.use('/api/auth',      require('./routes/auth'));      } catch(e) { console.error('auth route load failed:', e.message); }
