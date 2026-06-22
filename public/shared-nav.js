@@ -52,7 +52,7 @@
     #hh-nav-overlay.active { display:block; }
 
     @media (max-width: 768px) {
-      #hh-hamburger-btn { display:flex; margin-left:-8px !important; }
+      #hh-hamburger-btn { display:flex; }
 
       nav ul#hh-main-menu {
         display:none; position:fixed; top:0; right:0; width:min(300px,80vw); height:100vh;
@@ -115,6 +115,7 @@ function hhGoToDonate(event, campaignName) {
 function hhRenderAuthArea() {
   const nav = document.querySelector('nav');
   if (!nav) return;
+  const parent = document.getElementById('hh-nav-right') || nav;
 
   const existing = document.getElementById('hh-auth-area');
   if (existing) existing.remove();
@@ -140,7 +141,7 @@ function hhRenderAuthArea() {
         <a href="#" id="hh-logout-link" style="display:flex;align-items:center;gap:8px;padding:12px 16px;color:#e74c3c;text-decoration:none;font-size:0.88rem;font-weight:600;border-top:1px solid #f5f5f5;">🚪 Logout</a>
       </div>
     `;
-    nav.appendChild(area);
+    parent.appendChild(area);
 
     const btn = document.getElementById('hh-profile-btn');
     const dropdown = document.getElementById('hh-profile-dropdown');
@@ -156,7 +157,7 @@ function hhRenderAuthArea() {
 
   } else {
     area.innerHTML = `<a id="hh-login-btn" href="auth.html">👤 Login</a>`;
-    nav.appendChild(area);
+    parent.appendChild(area);
   }
 }
 
@@ -180,7 +181,8 @@ function hhRenderHamburgerMenu() {
   btn.type = 'button';
   btn.setAttribute('aria-label', 'Toggle menu');
   btn.innerHTML = '<span></span><span></span><span></span>';
-  nav.appendChild(btn);
+  const wrapper = document.getElementById('hh-nav-right') || nav;
+  wrapper.appendChild(btn);
 
   const overlay = document.createElement('div');
   overlay.id = 'hh-nav-overlay';
@@ -236,7 +238,15 @@ function hhWireDonateButtons() {
 
 // ── Run on every page load ──────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
-  hhRenderAuthArea();        // Profile/login button FIRST
-  hhRenderHamburgerMenu();   // THEN hamburger — ends up in the corner
+  const nav = document.querySelector('nav');
+  if (nav) {
+    // Create a wrapper that holds both profile icon and hamburger as one tight unit
+    const wrapper = document.createElement('div');
+    wrapper.id = 'hh-nav-right';
+    wrapper.style.cssText = 'display:flex;align-items:center;gap:4px;flex-shrink:0;';
+    nav.appendChild(wrapper);
+  }
+  hhRenderAuthArea();        // Profile/login button FIRST (appends into wrapper)
+  hhRenderHamburgerMenu();   // THEN hamburger (appends into wrapper)
   hhWireDonateButtons();
 });
